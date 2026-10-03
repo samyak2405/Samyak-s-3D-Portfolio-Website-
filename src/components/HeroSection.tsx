@@ -34,8 +34,8 @@ export default function HeroSection() {
       </motion.p>
 
       {/* Headline + avatar share a stacking context so the avatar bursts through. */}
-      <div className="relative flex w-full max-w-[1100px] items-end justify-center">
-        <h1 className="hero-heading relative z-10 overflow-hidden text-center">
+      <div className="relative mx-auto flex w-full max-w-[1100px] items-end justify-center">
+        <h1 className="hero-heading relative z-10 w-full overflow-hidden text-center">
           <span className="block text-[#8b8f96]">Hi, I&apos;m</span>
           <span className="block text-chrome">{profile.shortName}</span>
         </h1>
