@@ -37,3 +37,11 @@ pnpm-debug.log*
 .env
 .env.*
 !.env.example
+
+# AI tooling (local scratch/config, not part of the product)
+.agents/
+.aider-desk/
+.codex/
+.claude/
+.impeccable/
+skills-lock.json

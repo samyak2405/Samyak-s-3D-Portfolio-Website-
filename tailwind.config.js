@@ -4,33 +4,52 @@ export default {
   theme: {
     extend: {
       colors: {
-        base: '#0C0C0C',
-        panel: '#121212',
+        // Single dark theme. One accent (amber) locked across the whole page.
+        ink: {
+          DEFAULT: '#0A0B0D', // page background
+          2: '#0E1014', // panels
+          3: '#141820', // elevated surfaces
+        },
+        steel: {
+          // neutral cool greys — the "structure" of the system
+          100: '#E7E9EC',
+          200: '#C3C8CF',
+          300: '#9BA1AA',
+          400: '#6B7280',
+          500: '#4A5058',
+          600: '#2A2E35',
+        },
+        accent: {
+          DEFAULT: '#E6A84B', // warm gold — "the money running through the system"
+          strong: '#F4BB63',
+          dim: 'rgba(230,168,75,0.12)',
+        },
         hairline: 'rgba(255,255,255,0.08)',
+        'hairline-strong': 'rgba(255,255,255,0.15)',
       },
       fontFamily: {
-        sans: ['Kanit', 'system-ui', 'sans-serif'],
+        sans: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
-      },
-      backgroundImage: {
-        chrome: 'linear-gradient(180deg, #646973 0%, #BBCCD7 100%)',
-        accent: 'linear-gradient(135deg, #A855F7 0%, #EC4899 50%, #F97316 100%)',
       },
       maxWidth: {
         content: '1200px',
       },
+      letterSpacing: {
+        label: '0.22em',
+      },
       keyframes: {
-        marquee: {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-50%)' },
-        },
         'fade-up': {
-          '0%': { opacity: '0', transform: 'translateY(24px)' },
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'pulse-ring': {
+          '0%': { transform: 'scale(1)', opacity: '0.7' },
+          '100%': { transform: 'scale(2.4)', opacity: '0' },
         },
       },
       animation: {
-        marquee: 'marquee 40s linear infinite',
+        'fade-up': 'fade-up 0.7s cubic-bezier(0.16,1,0.3,1) both',
+        'pulse-ring': 'pulse-ring 2.4s cubic-bezier(0.16,1,0.3,1) infinite',
       },
     },
   },

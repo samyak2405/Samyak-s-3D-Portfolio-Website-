@@ -2,23 +2,45 @@
   "profile": {
     "name": "Samyak Moon",
     "shortName": "Samyak",
-    "tagline": "I design and build scalable, secure fintech systems — payments, cards, and the distributed plumbing behind them.",
+    "tagline": "I design and build scalable, secure fintech systems: payments, cards, and the distributed plumbing behind them.",
     "role": "Backend Software Engineer",
     "specialization": "Fintech · Distributed Systems · Payments",
     "location": "Bengaluru, Karnataka, India",
-    "yearsOfExperience": "2.8+",
-    "bio": "Backend Software Engineer with 2.8+ years designing and building scalable, secure fintech systems in Java and Spring Boot. I work across microservices, distributed systems, and payment and card platforms, with a strong focus on performance, reliability, and system design. I like problems where correctness, concurrency, and money all have to line up at scale.",
+    "yearsOfExperience": "3+",
+    "bio": "Backend Software Engineer with 3+ years designing and building scalable, secure fintech systems in Java and Spring Boot. I work across microservices, distributed systems, and payment and card platforms, with a strong focus on performance, reliability, and system design. I like problems where correctness, concurrency, and money all have to line up at scale.",
     "avatar": "/avatar.png",
     "social": {
-      "github": "https://github.com/samyakmoon",
-      "linkedin": "https://www.linkedin.com/in/samyak-moon",
-      "leetcode": "https://leetcode.com/samyakmoon",
+      "github": "https://github.com/samyak2405",
+      "linkedin": "https://www.linkedin.com/in/samyakmoon/",
+      "leetcode": "https://leetcode.com/u/Dr_moon_knight/",
       "email": "moon24samyak@gmail.com",
       "phone": "+918551929114",
       "instagram": "",
       "website": ""
     }
   },
+  "metrics": [
+    {
+      "value": "85%",
+      "label": "Faster card generation",
+      "context": "10K+ Visa & RuPay cards, parallelised"
+    },
+    {
+      "value": "60%",
+      "label": "Faster transactions",
+      "context": "Atalla HSM vs a general-purpose HSM"
+    },
+    {
+      "value": "80%",
+      "label": "Fewer audit findings",
+      "context": "CSP, CSRF, CORS, HSTS, TLS hardening"
+    },
+    {
+      "value": "10+",
+      "label": "Enterprise clients",
+      "context": "Multi-tenant auth with strict isolation"
+    }
+  ],
   "skills": {
     "categories": [
       {
@@ -54,12 +76,12 @@
   "services": [
     {
       "title": "Backend & Distributed Systems",
-      "description": "Microservices and multi-tenant platforms in Java and Spring Boot — designed for concurrency, idempotency, and reliability at scale, with gRPC and event-driven messaging between services.",
+      "description": "Microservices and multi-tenant platforms in Java and Spring Boot, designed for concurrency, idempotency, and reliability at scale, with gRPC and event-driven messaging between services.",
       "icon": "Server"
     },
     {
       "title": "Payments & Security",
-      "description": "Card and payment flows across Visa and RuPay — authorization, settlement, and reconciliation — with PCI-DSS-compliant crypto, HSM integration, JWT/RBAC auth, and OTP/2FA.",
+      "description": "Card and payment flows across Visa and RuPay: authorization, settlement, and reconciliation, with PCI-DSS-compliant crypto, HSM integration, JWT/RBAC auth, and OTP/2FA.",
       "icon": "ShieldCheck"
     },
     {
@@ -69,7 +91,7 @@
     },
     {
       "title": "AI-Powered Development",
-      "description": "Using Cursor and LLM-powered workflows to move faster without giving up rigor — from scaffolding and refactors to review, while keeping architecture and correctness my call.",
+      "description": "Using Cursor and LLM-powered workflows to move faster without giving up rigor, from scaffolding and refactors to review, while keeping architecture and correctness my call.",
       "icon": "Sparkles"
     }
   ],
@@ -77,16 +99,28 @@
     {
       "company": "PayU Digital Labs",
       "role": "Software Engineer",
-      "period": "April 2025 — Present",
+      "period": "April 2025 - Present",
       "location": "Bengaluru, Karnataka",
       "summary": "Owning payment, card, and authentication systems end-to-end on a fintech platform serving 10+ enterprise clients.",
       "highlights": [
-        "Designed and owned the Card Order Workflow end-to-end with a maker–checker approval pattern and Quartz-based async scheduling for Visa and RuPay card generation; optimised for parallel processing, cutting generation time for 10K+ cards by 85%.",
-        "Built SecureAuthPro, a multi-tenant authentication & authorization service on Spring Boot, Redis, and RSA-256 JWT; enforced strict tenant isolation, RBAC, and OTP-based login across 10+ enterprise clients to meet regulatory security standards.",
-        "Designed the Wallet-to-Account (W2A) transfer API with idempotency guarantees, concurrency control, and retries, plus a Quartz-based async refund job for failed transactions — ensuring data consistency and financial reconciliation at scale.",
+        "Designed and owned the Card Order Workflow end-to-end with a maker-checker approval pattern and Quartz-based async scheduling for Visa and RuPay card generation; optimised for parallel processing, cutting generation time for 10K+ cards by 85%. Received the Extra Mile Award for individual contribution on the Card Order Flow.",
+        "Designed and built SecureAuthPro, a multi-tenant authentication & authorization service on Spring Boot, Redis, and RSA-256 JWT; enforced strict tenant isolation, RBAC, and OTP-based login across 10+ enterprise clients to meet regulatory security standards.",
+        "Designed the Wallet-to-Account (W2A) transfer API with idempotency guarantees, concurrency control, and retries, plus a Quartz-based async refund job for failed transactions, ensuring data consistency and financial reconciliation at scale.",
         "Enhanced authorization & settlement flows for Visa and RuPay across e-commerce, POS, and ATM channels, reducing latency and adding an external authentication mechanism for clients to approve/reject network transactions in real time.",
-        "Integrated the Atalla Payment HSM for PIN management, key-lifecycle operations, and PCI-DSS-compliant crypto — achieving 60% faster transaction processing versus a general-purpose HSM.",
-        "Implemented Two-Factor Authentication (MPIN + OTP) for financial transactions using Redis TTL-based OTP management, aligned with RBI and PCI-DSS expectations to strengthen fraud prevention and access control."
+        "Integrated the Atalla Payment HSM for PIN management, key-lifecycle operations, and PCI-DSS-compliant crypto, achieving 60% faster transaction processing versus a general-purpose HSM."
+      ]
+    },
+    {
+      "company": "PayU Digital Labs",
+      "role": "Associate Software Engineer",
+      "period": "July 2023 - April 2025",
+      "location": "Bengaluru, Karnataka",
+      "summary": "Built card-lifecycle, transaction-security, and fee-configuration features on the same platform, and led its security hardening.",
+      "highlights": [
+        "Implemented Two-Factor Authentication (MPIN + OTP) for financial transactions using Redis TTL-based OTP management, aligned with RBI and PCI-DSS expectations to strengthen fraud prevention and access control.",
+        "Built Card Adjustment and Card Replacement features on maker-checker workflows with idempotency and strict validation; enforced one active card per product (Visa/RuPay) per customer, improving operational efficiency by 70% and cutting customer turnaround time.",
+        "Led security hardening across CSP, CSRF, CORS, HSTS, TLS, and source-code security issues with InfoSec and DevOps, reducing audit-reported vulnerabilities by 80%.",
+        "Designed Customer Segmentation to group customers into dynamic segments and apply tier-based transactional fee rules, making revenue configuration more flexible and reducing manual intervention."
       ]
     }
   ],
@@ -99,7 +133,7 @@
       "stack": ["Java", "Spring Boot", "gRPC", "Protobuf", "RabbitMQ", "Redis", "Hyperswitch", "Microservices"],
       "role": "Designer & Backend Engineer",
       "year": "2024",
-      "link": "https://github.com/samyakmoon",
+      "link": "https://github.com/samyak2405/Splitmoney-App-Backend",
       "image": "",
       "highlight": true
     }
@@ -108,12 +142,12 @@
     {
       "degree": "M.Tech in Computer Science",
       "institution": "National Institute of Technology, Surathkal",
-      "period": "2021 — 2023"
+      "period": "2021 - 2023"
     },
     {
       "degree": "B.Tech in Computer Science",
       "institution": "Government College of Engineering, Amravati",
-      "period": "2016 — 2020"
+      "period": "2016 - 2020"
     }
   ],
   "testimonials": []

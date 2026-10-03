@@ -21,6 +21,12 @@ export interface Profile {
   social: Social
 }
 
+export interface Metric {
+  value: string
+  label: string
+  context: string
+}
+
 export interface SkillCategory {
   name: string
   items: string[]
@@ -75,6 +81,7 @@ export interface Testimonial {
 
 export interface Portfolio {
   profile: Profile
+  metrics: Metric[]
   skills: Skills
   services: Service[]
   experience: Experience[]
