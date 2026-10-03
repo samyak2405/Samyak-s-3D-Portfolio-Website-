@@ -1,5 +1,6 @@
 import {
   motion,
+  useMotionTemplate,
   useMotionValue,
   useReducedMotion,
   useSpring,
@@ -13,20 +14,26 @@ interface TiltCardProps {
   className?: string
   /** Max tilt in degrees. */
   max?: number
+  /** Adds a cursor-following accent sheen, like a card hologram. */
+  glare?: boolean
 }
 
 /**
- * Pointer-tracking 3D tilt. The rotation is derived from motion values and
- * springs (never React state) so it never re-renders the tree, and it flattens
- * completely under prefers-reduced-motion.
+ * Pointer-tracking 3D tilt. The rotation (and optional glare) is derived from
+ * motion values and springs, never React state, so it never re-renders the tree
+ * and flattens completely under prefers-reduced-motion.
  */
-export default function TiltCard({ children, className, max = 7 }: TiltCardProps) {
+export default function TiltCard({ children, className, max = 7, glare = false }: TiltCardProps) {
   const reduce = useReducedMotion()
   const ref = useRef<HTMLDivElement>(null)
   const px = useMotionValue(0.5)
   const py = useMotionValue(0.5)
   const rx = useSpring(useTransform(py, [0, 1], [max, -max]), { stiffness: 150, damping: 18 })
   const ry = useSpring(useTransform(px, [0, 1], [-max, max]), { stiffness: 150, damping: 18 })
+
+  const glareX = useTransform(px, [0, 1], [0, 100])
+  const glareY = useTransform(py, [0, 1], [0, 100])
+  const glareBg = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(244,187,99,0.15), transparent 55%)`
 
   const onMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (reduce || !ref.current) return
@@ -45,9 +52,16 @@ export default function TiltCard({ children, className, max = 7 }: TiltCardProps
       onPointerMove={onMove}
       onPointerLeave={reset}
       style={reduce ? undefined : { rotateX: rx, rotateY: ry, transformPerspective: 900 }}
-      className={cn('will-change-transform', className)}
+      className={cn('group will-change-transform', className)}
     >
       {children}
+      {glare && !reduce && (
+        <motion.span
+          aria-hidden
+          style={{ background: glareBg }}
+          className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        />
+      )}
     </motion.div>
   )
 }

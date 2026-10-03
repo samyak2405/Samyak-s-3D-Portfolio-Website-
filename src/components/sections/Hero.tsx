@@ -1,14 +1,29 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
+import { useRef } from 'react'
 import { usePortfolio } from '../../hooks/usePortfolio'
 import CanvasMount from '../../three/CanvasMount'
 import MagneticLink from '../ui/MagneticLink'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
+// The headline, split into words so each can rise in sequence.
+const HEADLINE: Array<{ text: string; accent?: boolean }>[] = [
+  [{ text: 'I' }, { text: 'build' }, { text: 'the' }, { text: 'systems' }],
+  [{ text: 'that' }, { text: 'move' }, { text: 'money.', accent: true }],
+]
+
 export default function Hero() {
   const { profile } = usePortfolio()
   const reduce = useReducedMotion()
+
+  const heroRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  })
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 140])
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
 
   const rise = (delay: number) => ({
     initial: reduce ? false : { opacity: 0, y: 24 },
@@ -16,8 +31,10 @@ export default function Hero() {
     transition: { duration: 0.8, delay, ease: EASE },
   })
 
+  let wordIndex = 0
+
   return (
-    <section id="hero" className="relative min-h-[100dvh] overflow-hidden">
+    <section id="hero" ref={heroRef} className="relative min-h-[100dvh] overflow-hidden">
       {/* Live 3D system behind the content */}
       <CanvasMount />
 
@@ -32,7 +49,10 @@ export default function Hero() {
       />
 
       <div className="container-edge relative flex min-h-[100dvh] items-center pt-24 pb-20">
-        <div className="max-w-2xl">
+        <motion.div
+          style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
+          className="max-w-2xl"
+        >
           <motion.p
             {...rise(0)}
             className="mono-label flex items-center gap-3 text-steel-300"
@@ -42,23 +62,35 @@ export default function Hero() {
             {profile.location.split(',')[0]}
           </motion.p>
 
-          <motion.h1
-            {...rise(0.08)}
-            className="display mt-6 text-4xl text-steel-100 sm:text-6xl lg:text-7xl"
-          >
-            I build the systems
-            <br />
-            that move <span className="text-accent">money</span>.
-          </motion.h1>
+          <h1 className="display mt-6 text-4xl text-steel-100 sm:text-6xl lg:text-7xl">
+            {HEADLINE.map((line, li) => (
+              <span key={li} className="flex flex-wrap gap-x-[0.28em]">
+                {line.map((word) => {
+                  const delay = 0.12 + wordIndex++ * 0.05
+                  return (
+                    <motion.span
+                      key={word.text}
+                      initial={reduce ? false : { opacity: 0, y: '0.5em' }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.7, delay, ease: EASE }}
+                      className={`inline-block ${word.accent ? 'text-accent' : ''}`}
+                    >
+                      {word.text}
+                    </motion.span>
+                  )
+                })}
+              </span>
+            ))}
+          </h1>
 
           <motion.p
-            {...rise(0.16)}
+            {...rise(0.55)}
             className="mt-7 max-w-[46ch] text-lg leading-relaxed text-steel-300"
           >
             {profile.tagline}
           </motion.p>
 
-          <motion.div {...rise(0.24)} className="mt-9 flex flex-wrap items-center gap-3">
+          <motion.div {...rise(0.68)} className="mt-9 flex flex-wrap items-center gap-3">
             <MagneticLink href="#work" variant="primary">
               View my work
               <ArrowDown size={16} />
@@ -68,7 +100,7 @@ export default function Hero() {
               <ArrowUpRight size={16} />
             </MagneticLink>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

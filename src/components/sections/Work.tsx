@@ -45,7 +45,10 @@ export default function Work() {
 
           {/* Architecture side — the real stack, rendered as a system manifest */}
           <Reveal delay={0.1}>
-            <TiltCard className="relative overflow-hidden rounded-2xl border border-hairline bg-ink-3 p-7 edge-highlight md:p-9">
+            <TiltCard
+              glare
+              className="relative overflow-hidden rounded-2xl border border-hairline bg-ink-3 p-7 edge-highlight md:p-9"
+            >
               <div className="blueprint-grid absolute inset-0 opacity-60" aria-hidden />
               <div className="relative">
                 <div className="flex items-center justify-between">

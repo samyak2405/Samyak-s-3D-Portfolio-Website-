@@ -1,5 +1,6 @@
 import { usePortfolio } from '../../hooks/usePortfolio'
 import { serviceIcon } from '../../lib/icons'
+import { onSpotlightMove } from '../../lib/spotlight'
 import Reveal from '../ui/Reveal'
 import SectionHeading from '../ui/SectionHeading'
 
@@ -21,7 +22,8 @@ export default function Expertise() {
               <Reveal
                 key={service.title}
                 delay={(i % 2) * 0.08}
-                className="group relative bg-ink-2 p-8 transition-colors duration-300 hover:bg-ink-3 md:p-10"
+                onPointerMove={onSpotlightMove}
+                className="group spotlight relative bg-ink-2 p-8 transition-colors duration-300 hover:bg-ink-3 md:p-10"
               >
                 {/* Machined top edge that lights up on hover (feedback) */}
                 <span

@@ -116,6 +116,26 @@ section[id] {
       linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
     background-size: 64px 64px;
   }
+
+  /* Cursor-following accent glow. The element sets --mx/--my on pointer move
+     (see lib/spotlight.ts); the glow only shows while hovered. */
+  .spotlight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      220px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(230, 168, 75, 0.1),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+  .spotlight:hover::before {
+    opacity: 1;
+  }
 }
 
 @layer utilities {

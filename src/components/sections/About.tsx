@@ -1,4 +1,5 @@
 import { usePortfolio } from '../../hooks/usePortfolio'
+import Counter from '../ui/Counter'
 import Reveal from '../ui/Reveal'
 import SectionHeading from '../ui/SectionHeading'
 
@@ -17,9 +18,10 @@ export default function About() {
         <div className="mt-16 grid grid-cols-2 gap-x-6 gap-y-10 border-t border-hairline pt-10 lg:grid-cols-4">
           {metrics.map((metric, i) => (
             <Reveal key={metric.label} delay={i * 0.06}>
-              <p className="font-mono text-4xl font-medium text-accent md:text-5xl">
-                {metric.value}
-              </p>
+              <Counter
+                value={metric.value}
+                className="block font-mono text-4xl font-medium text-accent md:text-5xl"
+              />
               <p className="mt-3 text-sm font-medium text-steel-100">{metric.label}</p>
               <p className="mt-1 text-sm leading-snug text-steel-400">{metric.context}</p>
             </Reveal>

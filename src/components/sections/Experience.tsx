@@ -1,9 +1,23 @@
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { useRef } from 'react'
 import { usePortfolio } from '../../hooks/usePortfolio'
 import Reveal from '../ui/Reveal'
 import SectionHeading from '../ui/SectionHeading'
 
+const EASE = [0.16, 1, 0.3, 1] as const
+
 export default function Experience() {
   const { experience, education } = usePortfolio()
+  const reduce = useReducedMotion()
+
+  // The accent rail "draws" downward as the section scrolls through the viewport,
+  // tracing the progression through time.
+  const railRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: railRef,
+    offset: ['start 65%', 'end 85%'],
+  })
+  const railScale = useTransform(scrollYProgress, [0, 1], [0, 1])
 
   return (
     <section
@@ -16,7 +30,14 @@ export default function Experience() {
           lead="Payment, card, and authentication systems on a fintech platform serving 10+ enterprise clients, designed and owned from first principles to production."
         />
 
-        <div className="mt-16 border-l border-hairline">
+        <div ref={railRef} className="relative mt-16 border-l border-hairline">
+          {/* Accent line drawn on scroll (static full line under reduced-motion) */}
+          <motion.span
+            aria-hidden
+            style={reduce ? undefined : { scaleY: railScale }}
+            className="absolute -left-px top-0 h-full w-px origin-top bg-accent/70"
+          />
+
           {experience.map((exp, i) => (
             <Reveal
               key={`${exp.company}-${exp.period}`}
@@ -46,16 +67,20 @@ export default function Experience() {
 
                   <ul className="mt-6 divide-y divide-hairline border-t border-hairline">
                     {exp.highlights.map((h, hi) => (
-                      <li
+                      <motion.li
                         key={hi}
-                        className="flex gap-4 py-4 text-sm leading-relaxed text-steel-300"
+                        initial={reduce ? false : { opacity: 0, x: -8 }}
+                        whileInView={reduce ? undefined : { opacity: 1, x: 0 }}
+                        viewport={{ once: true, amount: 0.4 }}
+                        transition={{ duration: 0.5, delay: hi * 0.08, ease: EASE }}
+                        className="group flex gap-4 py-4 text-sm leading-relaxed text-steel-300"
                       >
                         <span
                           aria-hidden
-                          className="mt-2 h-px w-4 shrink-0 bg-accent/50"
+                          className="mt-2 h-px w-4 shrink-0 bg-accent/50 transition-all duration-300 group-hover:w-7 group-hover:bg-accent"
                         />
                         <span>{h}</span>
-                      </li>
+                      </motion.li>
                     ))}
                   </ul>
                 </div>
