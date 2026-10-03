@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ExternalLink, Star } from 'lucide-react'
 import type { Project } from '../types/portfolio'
+import { asset } from '../lib/asset'
 
 export default function ProjectCard({ project, index }: { project: Project; index: number }) {
   const [imgOk, setImgOk] = useState(project.image.trim() !== '')
@@ -16,7 +17,7 @@ export default function ProjectCard({ project, index }: { project: Project; inde
         <div className="relative min-h-[220px] overflow-hidden bg-[radial-gradient(circle_at_30%_20%,#1b1b1f,#0c0c0c)] md:min-h-[360px]">
           {imgOk ? (
             <img
-              src={project.image}
+              src={asset(project.image)}
               alt={project.title}
               onError={() => setImgOk(false)}
               className="h-full w-full object-cover"

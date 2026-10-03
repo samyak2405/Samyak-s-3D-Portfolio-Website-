@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
 import { usePortfolio } from '../hooks/usePortfolio'
 import { useParallax } from '../hooks/useParallax'
+import { asset } from '../lib/asset'
 import SocialLinks from './SocialLinks'
 
 export default function HeroSection() {
@@ -34,8 +35,8 @@ export default function HeroSection() {
       </motion.p>
 
       {/* Headline + avatar share a stacking context so the avatar bursts through. */}
-      <div className="relative flex w-full max-w-[1100px] items-end justify-center">
-        <h1 className="hero-heading relative z-10 overflow-hidden text-center">
+      <div className="relative mx-auto flex w-full max-w-[1100px] items-end justify-center">
+        <h1 className="hero-heading relative z-10 w-full overflow-hidden text-center">
           <span className="block text-[#8b8f96]">Hi, I&apos;m</span>
           <span className="block text-chrome">{profile.shortName}</span>
         </h1>
@@ -50,7 +51,7 @@ export default function HeroSection() {
         >
           {avatarOk ? (
             <img
-              src={profile.avatar}
+              src={asset(profile.avatar)}
               alt={profile.name}
               onError={() => setAvatarOk(false)}
               className="h-[clamp(14rem,34vw,30rem)] w-auto select-none drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)]"
