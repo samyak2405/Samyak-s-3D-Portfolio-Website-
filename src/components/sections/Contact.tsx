@@ -4,6 +4,7 @@ import Reveal from '../ui/Reveal'
 
 const PAGES = [
   { id: 'about', label: 'About' },
+  { id: 'skills', label: 'Skills' },
   { id: 'experience', label: 'Experience' },
   { id: 'expertise', label: 'Expertise' },
   { id: 'work', label: 'Work' },

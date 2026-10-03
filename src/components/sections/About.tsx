@@ -4,7 +4,7 @@ import Reveal from '../ui/Reveal'
 import SectionHeading from '../ui/SectionHeading'
 
 export default function About() {
-  const { profile, metrics, skills } = usePortfolio()
+  const { profile, metrics } = usePortfolio()
 
   return (
     <section id="about" className="relative border-t border-hairline py-24 md:py-32">
@@ -26,38 +26,6 @@ export default function About() {
               <p className="mt-1 text-sm leading-snug text-steel-400">{metric.context}</p>
             </Reveal>
           ))}
-        </div>
-
-        {/* Toolkit — grouped, not a flat bullet list */}
-        <div className="mt-20">
-          <Reveal>
-            <h3 className="mono-label mb-8">Toolkit</h3>
-          </Reveal>
-          <div className="grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
-            {skills.categories.map((category, i) => (
-              <Reveal
-                key={category.name}
-                delay={(i % 3) * 0.05}
-                className="border-t border-hairline pt-5"
-              >
-                <h4 className="text-sm font-medium text-steel-200">{category.name}</h4>
-                <ul className="mt-3 flex flex-wrap gap-2">
-                  {category.items.map((item) => (
-                    <li
-                      key={item.name}
-                      className={
-                        item.recent
-                          ? 'rounded-full border border-accent/40 bg-accent-dim px-3 py-1 font-mono text-xs text-accent'
-                          : 'rounded-full border border-hairline bg-white/[0.02] px-3 py-1 font-mono text-xs text-steel-300'
-                      }
-                    >
-                      {item.name}
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </div>
     </section>
