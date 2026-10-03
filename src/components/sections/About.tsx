@@ -44,10 +44,14 @@ export default function About() {
                 <ul className="mt-3 flex flex-wrap gap-2">
                   {category.items.map((item) => (
                     <li
-                      key={item}
-                      className="rounded-full border border-hairline bg-white/[0.02] px-3 py-1 font-mono text-xs text-steel-300"
+                      key={item.name}
+                      className={
+                        item.recent
+                          ? 'rounded-full border border-accent/40 bg-accent-dim px-3 py-1 font-mono text-xs text-accent'
+                          : 'rounded-full border border-hairline bg-white/[0.02] px-3 py-1 font-mono text-xs text-steel-300'
+                      }
                     >
-                      {item}
+                      {item.name}
                     </li>
                   ))}
                 </ul>

@@ -52,11 +52,16 @@ export default {
           '0%': { transform: 'scaleY(0)' },
           '100%': { transform: 'scaleY(1)' },
         },
+        'pulse-ring': {
+          '0%': { transform: 'scale(1)', opacity: '0.6' },
+          '100%': { transform: 'scale(2.6)', opacity: '0' },
+        },
       },
       animation: {
         'fade-up': 'fade-up 0.7s cubic-bezier(0.16,1,0.3,1) both',
         'draw-x': 'draw-x 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s both',
         'draw-y': 'draw-y 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s both',
+        'pulse-ring': 'pulse-ring 2.4s cubic-bezier(0.16,1,0.3,1) infinite',
       },
     },
   },

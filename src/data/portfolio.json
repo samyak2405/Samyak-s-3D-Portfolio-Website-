@@ -7,7 +7,7 @@
     "specialization": "Fintech · Distributed Systems · Payments",
     "location": "Bengaluru, Karnataka, India",
     "yearsOfExperience": "3+",
-    "bio": "Backend Software Engineer with 3+ years designing and building scalable, secure fintech systems in Java and Spring Boot. I work across microservices, distributed systems, and payment and card platforms, with a strong focus on performance, reliability, and system design. I like problems where correctness, concurrency, and money all have to line up at scale.",
+    "bio": "Software engineer with 3+ years building scalable, secure systems in Java and Spring Boot. I came up on fintech, designing payment, card, and distributed platforms with a focus on performance, reliability, and system design. Now at Walmart I've grown into full-stack delivery and AI-driven services, from a RAG platform to owning containerization and deployment. I like problems where correctness, concurrency, and money all have to line up at scale.",
     "avatar": "/avatar.png",
     "social": {
       "github": "https://github.com/samyak2405",
@@ -44,32 +44,65 @@
   "skills": {
     "categories": [
       {
-        "name": "Programming",
-        "items": ["Java", "Python", "SQL"]
+        "name": "Languages",
+        "items": [{ "name": "Java" }, { "name": "TypeScript" }, { "name": "Python" }]
       },
       {
-        "name": "Backend & Distributed Systems",
-        "items": ["Spring Boot", "REST APIs", "gRPC", "Microservices", "Multi-Tenancy"]
+        "name": "Backend & Frameworks",
+        "items": [
+          { "name": "Spring Boot" },
+          { "name": "REST APIs" },
+          { "name": "gRPC" },
+          { "name": "Microservices" },
+          { "name": "Multi-Tenancy" }
+        ]
       },
       {
-        "name": "Databases & Storage",
-        "items": ["MySQL", "PostgreSQL", "Redis", "Elasticsearch"]
+        "name": "AI / ML",
+        "items": [
+          { "name": "RAG", "recent": true },
+          { "name": "LLM Integration" },
+          { "name": "AI Service Design" }
+        ]
       },
       {
-        "name": "Messaging & Streaming",
-        "items": ["Kafka", "RabbitMQ"]
+        "name": "Databases",
+        "items": [
+          { "name": "PostgreSQL", "recent": true },
+          { "name": "Azure SQL" },
+          { "name": "MySQL" },
+          { "name": "Redis" },
+          { "name": "Elasticsearch" }
+        ]
       },
       {
-        "name": "Cloud & DevOps",
-        "items": ["AWS", "Jenkins", "CI/CD"]
+        "name": "DevOps & Infra",
+        "items": [
+          { "name": "Docker", "recent": true },
+          { "name": "Kubernetes", "recent": true },
+          { "name": "CI/CD", "recent": true },
+          { "name": "AWS" },
+          { "name": "Jenkins" }
+        ]
       },
       {
-        "name": "Observability & Monitoring",
-        "items": ["ELK Stack", "Grafana", "Kibana"]
+        "name": "Distributed Systems & Domain",
+        "items": [
+          { "name": "Payments" },
+          { "name": "Card Systems" },
+          { "name": "HSM Integration" },
+          { "name": "Multi-Tenant Auth" },
+          { "name": "Distributed Systems Design" }
+        ]
       },
       {
-        "name": "AI Tooling",
-        "items": ["Cursor AI (Advanced)", "LLM-powered coding", "Generative AI tools"]
+        "name": "Messaging & Observability",
+        "items": [
+          { "name": "Kafka" },
+          { "name": "RabbitMQ" },
+          { "name": "ELK Stack" },
+          { "name": "Grafana" }
+        ]
       }
     ]
   },
@@ -97,9 +130,22 @@
   ],
   "experience": [
     {
+      "company": "Walmart",
+      "role": "Software Engineer III (SDE-3)",
+      "period": "May 2026 - Present",
+      "location": "Bengaluru, Karnataka",
+      "active": true,
+      "summary": "Owning backend and full-stack delivery across infrastructure, AI services, and deployment.",
+      "highlights": [
+        "Migrated the Number Generator Service from Azure SQL to PostgreSQL, driving a significant infrastructure cost reduction.",
+        "Designed and built a Retrieval-Augmented Generation (RAG) service powering an AI-driven ticket management system.",
+        "Grew from a backend-focused role into full-stack delivery, taking ownership of containerization and deployment with Docker, Kubernetes, and CI/CD."
+      ]
+    },
+    {
       "company": "PayU Digital Labs",
       "role": "Software Engineer",
-      "period": "April 2025 - Present",
+      "period": "April 2025 - May 2026",
       "location": "Bengaluru, Karnataka",
       "summary": "Owning payment, card, and authentication systems end-to-end on a fintech platform serving 10+ enterprise clients.",
       "highlights": [

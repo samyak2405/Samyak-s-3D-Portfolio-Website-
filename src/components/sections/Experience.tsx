@@ -44,15 +44,31 @@ export default function Experience() {
               delay={i * 0.05}
               className="relative pb-16 pl-7 last:pb-0 md:pl-12"
             >
-              {/* Timeline marker */}
-              <span
-                aria-hidden
-                className="absolute -left-[6.5px] top-1.5 h-3 w-3 rounded-full border-2 border-accent bg-ink"
-              />
+              {/* Timeline marker — the current role gets a filled, pulsing node */}
+              {exp.active ? (
+                <span aria-hidden className="absolute -left-[7.5px] top-1.5 h-3.5 w-3.5">
+                  {!reduce && (
+                    <span className="absolute inset-0 rounded-full bg-accent/60 animate-pulse-ring" />
+                  )}
+                  <span className="absolute inset-0 rounded-full bg-accent shadow-[0_0_14px_rgba(230,168,75,0.55)]" />
+                </span>
+              ) : (
+                <span
+                  aria-hidden
+                  className="absolute -left-[6.5px] top-1.5 h-3 w-3 rounded-full border-2 border-accent bg-ink"
+                />
+              )}
 
               <div className="grid gap-5 md:grid-cols-[190px_1fr] md:gap-10">
                 <div>
-                  <p className="font-mono text-xs text-accent">{exp.period}</p>
+                  <p className="flex items-center gap-2 font-mono text-xs text-accent">
+                    {exp.period}
+                    {exp.active && (
+                      <span className="rounded-full border border-accent/40 bg-accent-dim px-2 py-0.5 text-[0.6rem] tracking-wider">
+                        NOW
+                      </span>
+                    )}
+                  </p>
                   <p className="mt-1.5 text-sm text-steel-400">{exp.location}</p>
                 </div>
 

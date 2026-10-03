@@ -27,9 +27,15 @@ export interface Metric {
   context: string
 }
 
+export interface SkillItem {
+  name: string
+  /** Flags a recently added / growth skill for subtle visual emphasis. */
+  recent?: boolean
+}
+
 export interface SkillCategory {
   name: string
-  items: string[]
+  items: SkillItem[]
 }
 
 export interface Skills {
@@ -48,6 +54,8 @@ export interface Experience {
   role: string
   period: string
   location: string
+  /** Marks the current role for an active/pulsing timeline node. */
+  active?: boolean
   summary: string
   highlights: string[]
 }
