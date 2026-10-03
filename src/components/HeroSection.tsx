@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
 import { usePortfolio } from '../hooks/usePortfolio'
 import { useParallax } from '../hooks/useParallax'
+import { asset } from '../lib/asset'
 import SocialLinks from './SocialLinks'
 
 export default function HeroSection() {
@@ -50,7 +51,7 @@ export default function HeroSection() {
         >
           {avatarOk ? (
             <img
-              src={profile.avatar}
+              src={asset(profile.avatar)}
               alt={profile.name}
               onError={() => setAvatarOk(false)}
               className="h-[clamp(14rem,34vw,30rem)] w-auto select-none drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)]"

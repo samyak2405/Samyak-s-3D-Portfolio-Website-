@@ -89,11 +89,24 @@ src/
   animations all stand down.
 - Semantic landmarks, `aria-label`s on icon-only controls, and keyboard-reachable links.
 
-## Deployment (Vercel)
+## Deployment
 
-The app is a static SPA — no server runtime needed.
+The app is a static SPA — no server runtime needed. It builds from root (`base: /`)
+for local, preview, and Vercel; the Pages workflow overrides `base` to the repo
+subpath via the `BASE_PATH` env var.
 
-1. Push to GitHub and import the repo in Vercel (it auto-detects Vite via `vercel.json`).
+### GitHub Pages (automated)
+
+A workflow at [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) type-checks,
+builds, and publishes to GitHub Pages on every push to `main` (and on manual dispatch).
+
+One-time setup: in **Settings → Pages**, set **Source** to **GitHub Actions**. (The
+workflow also attempts to enable this automatically on its first run.) The site then
+publishes to `https://<user>.github.io/<repo>/`.
+
+### Vercel
+
+1. Import the repo in Vercel (it auto-detects Vite via `vercel.json`).
 2. Build command `npm run build`, output directory `dist` — already configured.
 3. The SPA rewrite in `vercel.json` routes all paths to `index.html`.
 
