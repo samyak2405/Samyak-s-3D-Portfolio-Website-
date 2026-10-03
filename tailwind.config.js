@@ -4,35 +4,37 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Single dark theme. One accent (amber) locked across the whole page.
+        // Deep indigo-tinted dark theme. Editorial, near-monochrome, with one
+        // sparing warm accent (amber) as Samyak's signature.
         ink: {
-          DEFAULT: '#0A0B0D', // page background
-          2: '#0E1014', // panels
-          3: '#141820', // elevated surfaces
+          DEFAULT: '#09090F', // page background (indigo-black)
+          2: '#0D0D16', // panels
+          3: '#13131F', // elevated surfaces
         },
+        // Lilac-leaning neutrals (token name kept as `steel` across the codebase).
         steel: {
-          // neutral cool greys — the "structure" of the system
-          100: '#E7E9EC',
-          200: '#C3C8CF',
-          300: '#9BA1AA',
-          400: '#6B7280',
-          500: '#4A5058',
-          600: '#2A2E35',
+          100: '#ECEBF3',
+          200: '#C6C4D7',
+          300: '#9A98AF',
+          400: '#6C6A82',
+          500: '#48465E',
+          600: '#262532',
         },
         accent: {
-          DEFAULT: '#E6A84B', // warm gold — "the money running through the system"
+          DEFAULT: '#E6A84B', // warm gold, used sparingly
           strong: '#F4BB63',
           dim: 'rgba(230,168,75,0.12)',
         },
-        hairline: 'rgba(255,255,255,0.08)',
-        'hairline-strong': 'rgba(255,255,255,0.15)',
+        hairline: 'rgba(255,255,255,0.09)',
+        'hairline-strong': 'rgba(255,255,255,0.16)',
       },
       fontFamily: {
-        sans: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+        serif: ['Newsreader', 'Georgia', 'Cambria', 'serif'],
+        sans: ['"Hanken Grotesk"', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       maxWidth: {
-        content: '1200px',
+        content: '1320px',
       },
       letterSpacing: {
         label: '0.22em',
@@ -42,14 +44,19 @@ export default {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        'pulse-ring': {
-          '0%': { transform: 'scale(1)', opacity: '0.7' },
-          '100%': { transform: 'scale(2.4)', opacity: '0' },
+        'draw-x': {
+          '0%': { transform: 'scaleX(0)' },
+          '100%': { transform: 'scaleX(1)' },
+        },
+        'draw-y': {
+          '0%': { transform: 'scaleY(0)' },
+          '100%': { transform: 'scaleY(1)' },
         },
       },
       animation: {
         'fade-up': 'fade-up 0.7s cubic-bezier(0.16,1,0.3,1) both',
-        'pulse-ring': 'pulse-ring 2.4s cubic-bezier(0.16,1,0.3,1) infinite',
+        'draw-x': 'draw-x 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s both',
+        'draw-y': 'draw-y 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s both',
       },
     },
   },

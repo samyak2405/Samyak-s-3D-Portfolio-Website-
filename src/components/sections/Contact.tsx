@@ -1,49 +1,100 @@
 import { usePortfolio } from '../../hooks/usePortfolio'
+import type { Social } from '../../types/portfolio'
 import Reveal from '../ui/Reveal'
-import SocialLinks from '../ui/SocialLinks'
+
+const PAGES = [
+  { id: 'about', label: 'About' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'expertise', label: 'Expertise' },
+  { id: 'work', label: 'Work' },
+]
+
+const ELSEWHERE: Array<{ key: keyof Social; label: string }> = [
+  { key: 'github', label: 'GitHub' },
+  { key: 'linkedin', label: 'LinkedIn' },
+  { key: 'leetcode', label: 'LeetCode' },
+]
 
 export default function Contact() {
   const { profile } = usePortfolio()
   const { email, phone } = profile.social
+  const elsewhere = ELSEWHERE.filter((e) => profile.social[e.key])
 
   return (
-    <section id="contact" className="relative border-t border-hairline py-24 md:py-36">
+    <section id="contact" className="relative border-t border-hairline pb-24 pt-24 md:pt-36">
       <div className="container-edge">
-        <div className="mx-auto max-w-3xl text-center">
-          <Reveal>
-            <h2 className="display text-3xl text-steel-100 sm:text-4xl md:text-5xl">
-              Building something where correctness,
-              <br className="hidden sm:block" /> concurrency, and money all matter?
-            </h2>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <p className="mx-auto mt-6 max-w-[48ch] leading-relaxed text-steel-300">
-              I am open to backend and fintech roles, and to payments work that
-              needs to hold up under load. The fastest way to reach me is email.
-            </p>
-          </Reveal>
+        {/* The closing statement: a giant serif link. */}
+        <Reveal>
+          <a
+            href={`mailto:${email}`}
+            className="group block"
+            aria-label={`Email ${profile.name}`}
+          >
+            <span className="display block text-[clamp(3.25rem,15vw,13rem)] leading-[0.95] text-steel-100">
+              Get in{' '}
+              <span className="display-italic text-dim transition-colors duration-300 group-hover:text-accent">
+                touch.
+              </span>
+            </span>
+          </a>
+        </Reveal>
 
-          <Reveal delay={0.14}>
+        {/* Email + link columns */}
+        <div className="mt-20 grid gap-12 border-t border-hairline pt-12 lg:grid-cols-[1fr_auto]">
+          <Reveal>
+            <p className="display-italic display text-steel-400">Drop a line</p>
             <a
               href={`mailto:${email}`}
-              className="mt-10 inline-block font-mono text-xl text-steel-100 underline decoration-accent decoration-2 underline-offset-[6px] transition-colors duration-200 hover:text-accent sm:text-2xl md:text-3xl"
+              className="mt-2 block font-mono text-lg text-steel-100 transition-colors duration-200 hover:text-accent sm:text-2xl"
             >
               {email}
             </a>
+            {phone && (
+              <a
+                href={`tel:${phone}`}
+                className="mt-4 block font-mono text-sm text-steel-400 transition-colors hover:text-steel-200"
+              >
+                {phone}
+              </a>
+            )}
           </Reveal>
 
-          <Reveal delay={0.2}>
-            <div className="mt-10 flex flex-col items-center gap-5">
-              <SocialLinks social={profile.social} className="justify-center" />
-              {phone && (
-                <a
-                  href={`tel:${phone}`}
-                  className="font-mono text-sm text-steel-400 transition-colors hover:text-steel-200"
-                >
-                  {phone}
-                </a>
-              )}
-            </div>
+          <Reveal delay={0.08} className="flex gap-16 sm:gap-24">
+            <nav>
+              <p className="display-italic display mb-5 text-steel-400">Pages</p>
+              <ul className="space-y-2.5">
+                {PAGES.map((p) => (
+                  <li key={p.id}>
+                    <a
+                      href={`#${p.id}`}
+                      className="text-steel-200 transition-colors hover:text-steel-100"
+                    >
+                      {p.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            {elsewhere.length > 0 && (
+              <div>
+                <p className="display-italic display mb-5 text-steel-400">Elsewhere</p>
+                <ul className="space-y-2.5">
+                  {elsewhere.map((e) => (
+                    <li key={e.key}>
+                      <a
+                        href={profile.social[e.key]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-steel-200 transition-colors hover:text-steel-100"
+                      >
+                        {e.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </Reveal>
         </div>
       </div>

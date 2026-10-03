@@ -18,10 +18,11 @@ interface MagneticLinkProps {
 }
 
 const VARIANTS = {
+  // Outlined pills, editorial style. Primary inverts to light fill on hover.
   primary:
-    'bg-accent text-ink hover:bg-accent-strong font-medium shadow-[0_8px_30px_rgba(230,168,75,0.18)]',
+    'border border-steel-100/70 text-steel-100 hover:bg-steel-100 hover:text-ink',
   ghost:
-    'border border-hairline-strong text-steel-100 hover:border-steel-300 hover:bg-white/[0.03]',
+    'border border-hairline-strong text-steel-200 hover:border-steel-300 hover:text-steel-100',
 } as const
 
 /**
@@ -66,7 +67,7 @@ export default function MagneticLink({
       whileTap={{ scale: 0.97 }}
       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm',
+        'inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm',
         'transition-colors duration-300 will-change-transform',
         VARIANTS[variant],
         className,

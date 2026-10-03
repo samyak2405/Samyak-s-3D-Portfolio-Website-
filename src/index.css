@@ -3,18 +3,25 @@
 @tailwind utilities;
 
 /*
- * Single locked dark theme. Palette: cool-steel structure + one warm amber accent.
- * The site is intentionally dark-only — the aesthetic (an engineered, instrument-
- * panel feel around a live 3D system) does not have a meaningful light counterpart.
+ * Editorial dark theme (inspired by framed, serif-led portfolio work).
+ * Deep indigo-black canvas, lilac neutrals, a large editorial serif for display
+ * and a clean grotesk for UI/body. One sparing warm amber accent.
  */
 :root {
   color-scheme: dark;
   --accent: #e6a84b;
   --accent-strong: #f4bb63;
+  /* Inset of the fixed corner-bracket frame. */
+  --frame-inset: 18px;
+}
+@media (min-width: 768px) {
+  :root {
+    --frame-inset: 26px;
+  }
 }
 
 * {
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.09);
 }
 
 html {
@@ -29,121 +36,103 @@ html {
 }
 
 body {
-  background-color: #0a0b0d;
-  color: #e7e9ec;
-  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
-  font-optical-sizing: auto;
+  background-color: #09090f;
+  color: #ecebf3;
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
 
-/* Body copy should never break mid-word. */
 p {
   overflow-wrap: normal;
   word-break: normal;
 }
 
-/* Anchored sections clear the fixed navbar. */
 section[id] {
-  scroll-margin-top: 88px;
+  scroll-margin-top: 96px;
 }
 
-/* Visible focus for keyboard users, matching the accent. */
 :focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
   border-radius: 2px;
 }
 
 ::selection {
-  background: rgba(230, 168, 75, 0.28);
+  background: rgba(230, 168, 75, 0.26);
   color: #fff;
 }
 
-/* Thin, unobtrusive scrollbar that matches the surface. */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0b0d;
+  background: #09090f;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a2e35;
+  background: #262532;
   border-radius: 999px;
-  border: 2px solid #0a0b0d;
+  border: 2px solid #09090f;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a404a;
+  background: #37364a;
 }
 
 @layer components {
-  /* The one place a page-width container is defined. */
+  /* Page-width container, generous editorial gutters. */
   .container-edge {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1320px;
     margin-inline: auto;
-    padding-inline: 1.5rem;
+    padding-inline: 1.75rem;
   }
   @media (min-width: 768px) {
     .container-edge {
-      padding-inline: 2.5rem;
+      padding-inline: 3.5rem;
     }
   }
 
-  /* Small monospace technical label used for section + metadata annotations. */
+  /* Small grotesk technical label for eyebrows and metadata. */
   .mono-label {
     font-family: 'JetBrains Mono', ui-monospace, monospace;
     font-size: 0.6875rem;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: #6b7280;
+    color: #6c6a82;
   }
 
-  /* Display headline treatment: tight, controlled, never a screaming gradient. */
+  /* Editorial serif display: the signature voice of the page. */
   .display {
-    font-weight: 500;
-    line-height: 0.98;
-    letter-spacing: -0.02em;
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+  }
+  .display-italic {
+    font-style: italic;
   }
 
-  /* Hairline grid texture used behind structural sections — organizes content,
-     it is not decoration for its own sake. */
+  /* Hairline blueprint texture used sparingly behind technical surfaces. */
   .blueprint-grid {
     background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-    background-size: 64px 64px;
+      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 56px 56px;
   }
 
-  /* Cursor-following accent glow. The element sets --mx/--my on pointer move
-     (see lib/spotlight.ts); the glow only shows while hovered. */
-  .spotlight::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(
-      220px circle at var(--mx, 50%) var(--my, 50%),
-      rgba(230, 168, 75, 0.1),
-      transparent 60%
-    );
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    pointer-events: none;
-  }
-  .spotlight:hover::before {
-    opacity: 1;
-  }
 }
 
 @layer utilities {
   .text-accent {
     color: var(--accent);
   }
-  /* Thin top-highlight that reads as a machined edge on elevated surfaces. */
+  /* Dimmed editorial text, for brightness-contrast emphasis in serif headlines. */
+  .text-dim {
+    color: #56546b;
+  }
   .edge-highlight {
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 }

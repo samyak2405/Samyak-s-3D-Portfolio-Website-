@@ -4,13 +4,19 @@ import { useRef } from 'react'
 import { usePortfolio } from '../../hooks/usePortfolio'
 import CanvasMount from '../../three/CanvasMount'
 import MagneticLink from '../ui/MagneticLink'
+import { cn } from '../../lib/cn'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
-// The headline, split into words so each can rise in sequence.
-const HEADLINE: Array<{ text: string; accent?: boolean }>[] = [
+// Serif headline split into words so each can rise in sequence. Emphasis comes
+// from brightness + italic, with a single warm word as Samyak's signature.
+const HEADLINE: Array<{ text: string; cls?: string }>[] = [
   [{ text: 'I' }, { text: 'build' }, { text: 'the' }, { text: 'systems' }],
-  [{ text: 'that' }, { text: 'move' }, { text: 'money.', accent: true }],
+  [
+    { text: 'that', cls: 'display-italic text-dim' },
+    { text: 'move', cls: 'display-italic text-dim' },
+    { text: 'money.', cls: 'display-italic text-accent' },
+  ],
 ]
 
 export default function Hero() {
@@ -22,58 +28,52 @@ export default function Hero() {
     target: heroRef,
     offset: ['start start', 'end start'],
   })
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, 140])
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
-
-  const rise = (delay: number) => ({
-    initial: reduce ? false : { opacity: 0, y: 24 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.8, delay, ease: EASE },
-  })
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 120])
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0])
 
   let wordIndex = 0
 
   return (
     <section id="hero" ref={heroRef} className="relative min-h-[100dvh] overflow-hidden">
-      {/* Live 3D system behind the content */}
       <CanvasMount />
 
-      {/* Left-to-right scrim keeps headline contrast over the scene (WCAG AA) */}
+      {/* Scrims: keep the serif legible over the scene, fade base at the bottom. */}
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-transparent md:to-ink/10"
+        className="absolute inset-0 bg-gradient-to-r from-ink via-ink/80 to-transparent md:to-ink/5"
       />
       <div
         aria-hidden
-        className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-ink to-transparent"
+        className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink to-transparent"
       />
 
-      <div className="container-edge relative flex min-h-[100dvh] items-center pt-24 pb-20">
-        <motion.div
-          style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
-          className="max-w-2xl"
-        >
+      <motion.div
+        style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
+        className="container-edge relative flex min-h-[100dvh] flex-col justify-between pb-24 pt-32 md:pb-28"
+      >
+        {/* Top: eyebrow + serif headline */}
+        <div>
           <motion.p
-            {...rise(0)}
-            className="mono-label flex items-center gap-3 text-steel-300"
+            initial={reduce ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: EASE }}
+            className="mono-label text-steel-300"
           >
             {profile.role}
-            <span className="h-px w-8 bg-accent/60" aria-hidden />
-            {profile.location.split(',')[0]}
           </motion.p>
 
-          <h1 className="display mt-6 text-4xl text-steel-100 sm:text-6xl lg:text-7xl">
+          <h1 className="display mt-7 text-5xl text-steel-100 sm:text-7xl lg:text-[7.5rem]">
             {HEADLINE.map((line, li) => (
               <span key={li} className="flex flex-wrap gap-x-[0.28em]">
                 {line.map((word) => {
-                  const delay = 0.12 + wordIndex++ * 0.05
+                  const delay = 0.2 + wordIndex++ * 0.07
                   return (
                     <motion.span
                       key={word.text}
-                      initial={reduce ? false : { opacity: 0, y: '0.5em' }}
+                      initial={reduce ? false : { opacity: 0, y: '0.4em' }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.7, delay, ease: EASE }}
-                      className={`inline-block ${word.accent ? 'text-accent' : ''}`}
+                      transition={{ duration: 0.8, delay, ease: EASE }}
+                      className={cn('inline-block', word.cls)}
                     >
                       {word.text}
                     </motion.span>
@@ -82,15 +82,16 @@ export default function Hero() {
               </span>
             ))}
           </h1>
+        </div>
 
-          <motion.p
-            {...rise(0.55)}
-            className="mt-7 max-w-[46ch] text-lg leading-relaxed text-steel-300"
-          >
-            {profile.tagline}
-          </motion.p>
-
-          <motion.div {...rise(0.68)} className="mt-9 flex flex-wrap items-center gap-3">
+        {/* Bottom: CTAs (left) + justified blurb (right) */}
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.75, ease: EASE }}
+          className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between"
+        >
+          <div className="flex flex-wrap items-center gap-3">
             <MagneticLink href="#work" variant="primary">
               View my work
               <ArrowDown size={16} />
@@ -99,9 +100,13 @@ export default function Hero() {
               Get in touch
               <ArrowUpRight size={16} />
             </MagneticLink>
-          </motion.div>
+          </div>
+
+          <p className="max-w-sm text-sm leading-relaxed text-steel-300 md:text-right [text-wrap:pretty]">
+            {profile.tagline}
+          </p>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   )
 }

@@ -1,45 +1,55 @@
 import { usePortfolio } from '../../hooks/usePortfolio'
-import { serviceIcon } from '../../lib/icons'
-import { onSpotlightMove } from '../../lib/spotlight'
+import { cn } from '../../lib/cn'
 import Reveal from '../ui/Reveal'
-import SectionHeading from '../ui/SectionHeading'
+import Statement from '../ui/Statement'
 
 export default function Expertise() {
   const { services } = usePortfolio()
 
   return (
-    <section id="expertise" className="relative border-t border-hairline py-24 md:py-32">
+    <section id="expertise" className="relative border-t border-hairline py-24 md:py-36">
       <div className="container-edge">
-        <SectionHeading
-          title="What I work on"
-          lead="The problems I reach for are the ones where correctness, concurrency, and money all have to line up at scale."
-        />
+        {/* Asymmetric serif statement, set to the right. */}
+        <div className="flex justify-end">
+          <div className="max-w-2xl">
+            <Statement
+              align="right"
+              eyebrow="How I work"
+              className="text-3xl leading-[1.12] sm:text-4xl md:text-5xl"
+              segments={[
+                { text: 'From first principles' },
+                { text: 'to production,', className: 'text-dim display-italic' },
+                { text: 'I own the whole system.' },
+              ]}
+            />
+            <Reveal delay={0.1}>
+              <p className="ml-auto mt-7 max-w-md text-right text-steel-300 [text-wrap:pretty]">
+                Not a ticket inside someone else's design. I take problems where
+                correctness, concurrency, and money all matter, and carry them end to end.
+              </p>
+            </Reveal>
+          </div>
+        </div>
 
-        <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-hairline bg-hairline sm:grid-cols-2">
-          {services.map((service, i) => {
-            const Icon = serviceIcon(service.icon)
-            return (
-              <Reveal
-                key={service.title}
-                delay={(i % 2) * 0.08}
-                onPointerMove={onSpotlightMove}
-                className="group spotlight relative bg-ink-2 p-8 transition-colors duration-300 hover:bg-ink-3 md:p-10"
-              >
-                {/* Machined top edge that lights up on hover (feedback) */}
-                <span
-                  aria-hidden
-                  className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-accent/60 transition-transform duration-500 group-hover:scale-x-100"
-                />
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-hairline-strong bg-accent-dim text-accent">
-                  <Icon size={20} strokeWidth={1.5} />
-                </span>
-                <h3 className="mt-6 text-lg font-medium text-steel-100">{service.title}</h3>
-                <p className="mt-3 max-w-[48ch] leading-relaxed text-steel-300">
-                  {service.description}
-                </p>
-              </Reveal>
-            )
-          })}
+        {/* Capability columns, divided by hairlines. No cards, no icons. */}
+        <div className="mt-24 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+          {services.map((service, i) => (
+            <Reveal
+              key={service.title}
+              delay={(i % 4) * 0.08}
+              className={cn(
+                'border-t border-hairline pt-7',
+                i > 0 && 'lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0',
+              )}
+            >
+              <h3 className="font-mono text-[0.7rem] uppercase tracking-label text-steel-200">
+                {service.title}
+              </h3>
+              <p className="mt-5 text-sm leading-relaxed text-steel-300 [text-wrap:pretty]">
+                {service.description}
+              </p>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

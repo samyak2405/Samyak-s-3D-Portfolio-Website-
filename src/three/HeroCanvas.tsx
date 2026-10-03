@@ -21,7 +21,7 @@ export default function HeroCanvas({ reduced, active }: HeroCanvasProps) {
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
       className="!absolute inset-0"
     >
-      <fog attach="fog" args={['#0a0b0d', 5, 13]} />
+      <fog attach="fog" args={['#09090f', 5, 13]} />
       <ambientLight intensity={0.35} />
       <directionalLight position={[4, 6, 5]} intensity={1.4} color="#cdd6e2" />
       <directionalLight position={[-5, -3, -4]} intensity={0.5} color="#5b6472" />

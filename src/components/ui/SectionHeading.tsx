@@ -17,7 +17,7 @@ interface SectionHeadingProps {
  */
 export default function SectionHeading({ title, lead, index, className }: SectionHeadingProps) {
   return (
-    <div className={cn('max-w-2xl', className)}>
+    <div className={cn('max-w-3xl', className)}>
       {index && (
         <Reveal className="mb-4 flex items-center gap-3">
           <span className="mono-label">{index}</span>
@@ -25,11 +25,11 @@ export default function SectionHeading({ title, lead, index, className }: Sectio
         </Reveal>
       )}
       <Reveal delay={index ? 0.05 : 0}>
-        <h2 className="display text-3xl text-steel-100 sm:text-4xl md:text-[2.75rem]">{title}</h2>
+        <h2 className="display text-4xl text-steel-100 sm:text-5xl md:text-6xl">{title}</h2>
       </Reveal>
       {lead && (
         <Reveal delay={0.1}>
-          <p className="mt-5 max-w-[60ch] text-base leading-relaxed text-steel-300 md:text-lg">
+          <p className="mt-6 max-w-[58ch] text-base leading-relaxed text-steel-300 md:text-lg">
             {lead}
           </p>
         </Reveal>
