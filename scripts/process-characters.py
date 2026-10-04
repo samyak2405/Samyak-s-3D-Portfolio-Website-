@@ -19,12 +19,12 @@ os.makedirs(OUT, exist_ok=True)
 # source filename -> output basename
 JOBS = {
     "hero-wave.png": "hero-wave",
+    "hero-style.png": "hero-style",
     "about-arms-crossed.png": "about-arms-crossed",
     "work-laptop.png": "work-laptop",
     "projects-thinking.png": "projects-thinking",
     "contact-thumbsup.png": "contact-thumbsup",
-    "Gemini_Generated_Image_70maok70maok70ma.png": "skills-gesturing",
-    "Gemini_Generated_Image_c2q3r2c2q3r2c2q3.png": "neutral-stand",
+    "skills-gesturing.png": "skills-gesturing",
 }
 
 THRESH = 72      # distance from a corner's white that still counts as background
