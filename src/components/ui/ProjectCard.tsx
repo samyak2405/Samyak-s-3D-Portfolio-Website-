@@ -25,7 +25,7 @@ export default function ProjectCard({
     <motion.article
       whileHover={reduce ? undefined : { y: -3 }}
       transition={{ duration: 0.3, ease: EASE }}
-      className="group rounded-2xl border border-hairline bg-ink-3 shadow-soft transition-all duration-300 hover:border-accent/50 hover:shadow-glow-blue"
+      className="group glass rounded-2xl border border-white/10 shadow-soft transition-all duration-300 hover:border-accent/50 hover:shadow-glow-blue"
     >
       <button
         type="button"

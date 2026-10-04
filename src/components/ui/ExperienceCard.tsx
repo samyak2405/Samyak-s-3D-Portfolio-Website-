@@ -29,10 +29,10 @@ export default function ExperienceCard({
       whileHover={reduce ? undefined : { y: -2 }}
       transition={{ duration: 0.25, ease: EASE }}
       className={cn(
-        'group relative overflow-hidden rounded-2xl border bg-ink-3 transition-all duration-300 hover:shadow-glow-blue',
+        'group glass relative overflow-hidden rounded-2xl border transition-all duration-300 hover:shadow-glow-blue',
         exp.active
           ? 'border-accent/40 shadow-glow-blue'
-          : 'border-hairline shadow-soft hover:border-accent/40',
+          : 'border-white/10 shadow-soft hover:border-accent/40',
       )}
     >
       {/* Active "quest" highlight */}

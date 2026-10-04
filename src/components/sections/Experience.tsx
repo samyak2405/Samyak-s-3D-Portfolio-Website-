@@ -22,9 +22,18 @@ export default function Experience() {
   return (
     <section
       id="experience"
-      className="relative border-t border-hairline bg-ink-2/40 py-24 md:py-32"
+      className="relative overflow-hidden border-t border-hairline bg-ink-2/40 py-24 md:py-32"
     >
-      <div className="container-edge">
+      <div aria-hidden className="grid-bg absolute inset-0 opacity-40" />
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(38% 42% at 72% 28%, rgba(77,139,255,0.12), transparent 70%), radial-gradient(40% 44% at 18% 82%, rgba(198,92,255,0.10), transparent 72%)',
+        }}
+      />
+      <div className="container-edge relative">
         <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12">
           <SectionHeading
             label="experience"

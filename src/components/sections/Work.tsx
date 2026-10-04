@@ -12,8 +12,17 @@ export default function Work() {
   const sorted = [...projects].sort((a, b) => Number(b.highlight) - Number(a.highlight))
 
   return (
-    <section id="work" className="relative border-t border-hairline py-24 md:py-32">
-      <div className="container-edge">
+    <section id="work" className="relative overflow-hidden border-t border-hairline py-24 md:py-32">
+      <div aria-hidden className="grid-bg absolute inset-0 opacity-40" />
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(40% 42% at 25% 30%, rgba(77,139,255,0.10), transparent 70%), radial-gradient(38% 44% at 80% 80%, rgba(198,92,255,0.10), transparent 72%)',
+        }}
+      />
+      <div className="container-edge relative">
         <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12">
           <SectionHeading
             label="work"
