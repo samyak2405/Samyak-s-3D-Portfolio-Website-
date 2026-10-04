@@ -37,7 +37,7 @@ export default function DiagramPanel({
           <div className="mt-8 -mx-1 overflow-x-auto px-1 pb-2">
             <div className="min-w-[600px]">{children}</div>
           </div>
-          <figcaption className="mt-5 font-mono text-[0.7rem] text-steel-500">{caption}</figcaption>
+          <figcaption className="mt-5 font-mono text-[0.7rem] text-steel-400">{caption}</figcaption>
         </div>
       </figure>
     </Reveal>

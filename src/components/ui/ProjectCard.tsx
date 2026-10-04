@@ -35,7 +35,7 @@ export default function ProjectCard({
         className="flex w-full items-start justify-between gap-6 p-6 text-left md:p-9"
       >
         <div>
-          <p className="font-mono text-xs text-steel-500">
+          <p className="font-mono text-xs text-steel-400">
             {project.role} · {project.year}
           </p>
           <h3 className="display mt-3 text-3xl text-steel-100 md:text-4xl">{project.title}</h3>

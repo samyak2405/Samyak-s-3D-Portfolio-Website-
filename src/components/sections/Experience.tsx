@@ -119,7 +119,7 @@ export default function Experience() {
         <div className="mt-8 grid gap-6 border-t border-hairline pt-10 sm:grid-cols-2">
           {education.map((edu, i) => (
             <Reveal key={edu.degree} delay={i * 0.06}>
-              <p className="font-mono text-xs text-steel-500">{edu.period}</p>
+              <p className="font-mono text-xs text-steel-400">{edu.period}</p>
               <h4 className="mt-2 font-medium text-steel-100">{edu.degree}</h4>
               <p className="mt-1 text-sm text-steel-400">{edu.institution}</p>
             </Reveal>
