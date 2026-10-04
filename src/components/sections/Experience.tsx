@@ -33,8 +33,8 @@ export default function Experience() {
           />
           <Reveal className="flex justify-center lg:justify-end">
             <Character
-              pose="hero-style"
-              alt="Samyak Moon, a 3D cartoon gamer-coder character in a hoodie with headphones"
+              pose="work-laptop"
+              alt="Samyak Moon, a 3D cartoon gamer-coder character coding on a laptop with headphones on"
               className="h-[46vh] w-auto lg:h-[58vh]"
             />
           </Reveal>
