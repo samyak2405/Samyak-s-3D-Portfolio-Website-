@@ -19,7 +19,7 @@ interface CharacterProps {
  */
 export default function Character({ pose, alt, className, priority, shadow = true }: CharacterProps) {
   return (
-    <div className={cn('relative inline-flex', shadow && 'character-shadow', className)}>
+    <div className={cn('relative inline-flex', shadow && 'character-glow', className)}>
       <img
         src={asset(`/characters/${pose}.webp`)}
         alt={alt}

@@ -4,44 +4,43 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Warm, light "modern office" theme.
-        // `ink` = light surfaces (page/panels/cards). `steel` = text (dark -> muted).
+        // Gamer + coder dark theme. `ink` = dark surfaces, `steel` = light text.
         ink: {
-          DEFAULT: '#FAF7F2', // page background (warm off-white)
-          2: '#F2ECE1', // soft warm panel
-          3: '#FFFFFF', // elevated card
+          DEFAULT: '#0A0B0D', // page background (deep near-black)
+          2: '#14161A', // panel
+          3: '#1C1F24', // elevated card
         },
         steel: {
-          100: '#211D16', // primary text (warm near-black)
-          200: '#3C362C',
-          300: '#5C5547', // body / secondary
-          400: '#726A58', // muted (AA on paper)
-          500: '#8C8470', // faint / decorative
-          600: '#D8D0C2',
+          100: '#F4F5F7', // headings (near-white)
+          200: '#E8EAED', // body
+          300: '#AEB3BD', // secondary
+          400: '#878C98', // muted
+          500: '#656B78', // faint / decorative
+          600: '#2A2E36', // hairline-ish
         },
-        // Primary accent: deep blue, drawn from the character's suit.
+        // Primary neon: electric blue.
         accent: {
-          DEFAULT: '#2B4C8C',
-          strong: '#35599E',
-          soft: '#E7EDF8',
-          dim: 'rgba(43,76,140,0.10)',
+          DEFAULT: '#4D8BFF',
+          strong: '#6AA0FF',
+          soft: 'rgba(77,139,255,0.14)',
+          dim: 'rgba(77,139,255,0.10)',
         },
-        // Secondary warm accent.
+        // Secondary neon: magenta/violet (token kept as `amber` so existing
+        // usages become the secondary accent with no churn).
         amber: {
-          DEFAULT: '#DD8420',
-          strong: '#C9741A',
-          soft: '#FBEEDA',
+          DEFAULT: '#C65CFF',
+          strong: '#D583FF',
+          soft: 'rgba(198,92,255,0.14)',
         },
-        // Dark "focus" sections for rhythm/contrast.
         focus: {
-          DEFAULT: '#16233E',
-          2: '#1E2F50',
+          DEFAULT: '#0C0E14',
+          2: '#12151D',
         },
-        hairline: 'rgba(31,27,20,0.12)',
-        'hairline-strong': 'rgba(31,27,20,0.20)',
+        hairline: 'rgba(255,255,255,0.08)',
+        'hairline-strong': 'rgba(255,255,255,0.14)',
       },
       fontFamily: {
-        display: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+        display: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
         sans: ['"Hanken Grotesk"', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
@@ -52,9 +51,10 @@ export default {
         label: '0.2em',
       },
       boxShadow: {
-        soft: '0 1px 2px rgba(31,27,20,0.04), 0 8px 24px rgba(31,27,20,0.06)',
-        lift: '0 2px 4px rgba(31,27,20,0.05), 0 18px 40px rgba(31,27,20,0.10)',
-        character: '0 30px 40px -24px rgba(31,27,20,0.30)',
+        soft: '0 2px 8px rgba(0,0,0,0.4)',
+        lift: '0 10px 34px rgba(0,0,0,0.55)',
+        'glow-blue': '0 0 0 1px rgba(77,139,255,0.4), 0 0 22px rgba(77,139,255,0.28)',
+        'glow-magenta': '0 0 0 1px rgba(198,92,255,0.4), 0 0 22px rgba(198,92,255,0.24)',
       },
       keyframes: {
         'fade-up': {
@@ -62,13 +62,18 @@ export default {
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         'pulse-ring': {
-          '0%': { transform: 'scale(1)', opacity: '0.55' },
+          '0%': { transform: 'scale(1)', opacity: '0.6' },
           '100%': { transform: 'scale(2.6)', opacity: '0' },
+        },
+        blink: {
+          '0%,49%': { opacity: '1' },
+          '50%,100%': { opacity: '0' },
         },
       },
       animation: {
         'fade-up': 'fade-up 0.7s cubic-bezier(0.16,1,0.3,1) both',
         'pulse-ring': 'pulse-ring 2.4s cubic-bezier(0.16,1,0.3,1) infinite',
+        blink: 'blink 1.1s step-end infinite',
       },
     },
   },

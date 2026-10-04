@@ -3,25 +3,25 @@
 @tailwind utilities;
 
 /*
- * Warm "modern office" theme: soft off-white paper, deep-blue primary (from the
- * character's suit), amber secondary, warm near-black text. A friendly 3D
- * character guides the page; occasional dark "focus" sections add rhythm.
+ * Gamer + coder dark theme: deep near-black #0A0B0D, electric-blue primary and
+ * magenta/violet secondary neon used sparingly (most of the screen stays calm
+ * dark), mono headings for a coder identity, off-white body text. A friendly
+ * 3D gamer-coder character guides the page.
  */
 :root {
-  color-scheme: light;
-  --accent: #2b4c8c;
-  --accent-strong: #35599e;
-  --amber: #dd8420;
+  color-scheme: dark;
+  --accent: #4d8bff;
+  --accent-strong: #6aa0ff;
+  --magenta: #c65cff;
 }
 
 * {
-  border-color: rgba(31, 27, 20, 0.12);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 html {
   -webkit-text-size-adjust: 100%;
 }
-/* Native smooth-scroll is replaced by Lenis; keep a fallback for no-JS. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -44,8 +44,8 @@ html.lenis body {
 }
 
 body {
-  background-color: #faf7f2;
-  color: #211d16;
+  background-color: #0a0b0d;
+  color: #e8eaed;
   font-family: 'Hanken Grotesk', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -68,8 +68,8 @@ section[id] {
 }
 
 ::selection {
-  background: rgba(43, 76, 140, 0.18);
-  color: #16233e;
+  background: rgba(77, 139, 255, 0.3);
+  color: #fff;
 }
 
 ::-webkit-scrollbar {
@@ -77,15 +77,15 @@ section[id] {
   height: 11px;
 }
 ::-webkit-scrollbar-track {
-  background: #f2ece1;
+  background: #0a0b0d;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d4ccbd;
+  background: #2a2e36;
   border-radius: 999px;
-  border: 3px solid #f2ece1;
+  border: 3px solid #0a0b0d;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #c2b9a6;
+  background: #3a404a;
 }
 
 @layer components {
@@ -101,42 +101,67 @@ section[id] {
     }
   }
 
-  /* Small monospace label for section markers, stats and code-flavored meta. */
+  /* Mono label for section markers, stats and code-flavored meta. */
   .mono-label {
     font-family: 'JetBrains Mono', ui-monospace, monospace;
     font-size: 0.6875rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #726a58;
+    color: #878c98;
   }
 
-  /* Display headings: a warm grotesque, tight and confident. */
+  /* Display headings: mono, tight, confident (the coder identity). */
   .display {
-    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
-    font-weight: 600;
-    line-height: 1.02;
-    letter-spacing: -0.02em;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
   }
 
-  /* Faint dot-grid, like a sheet of workbook paper, behind technical surfaces. */
+  /* Faint grid, like an IDE / terminal backdrop. */
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
   .dot-grid {
-    background-image: radial-gradient(rgba(31, 27, 20, 0.07) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     background-size: 22px 22px;
   }
 
-  /* Soft contact shadow placed under a character cutout. */
-  .character-shadow::after {
+  /* Soft neon glow placed behind a character cutout, echoing its rim light. */
+  .character-glow::before {
     content: '';
     position: absolute;
-    left: 50%;
-    bottom: -2%;
-    width: 62%;
-    height: 7%;
-    transform: translateX(-50%);
-    background: radial-gradient(ellipse at center, rgba(31, 27, 20, 0.22), transparent 70%);
-    filter: blur(6px);
-    pointer-events: none;
+    inset: 8% 2% 2% 2%;
+    border-radius: 50%;
+    background: radial-gradient(
+      50% 55% at 50% 45%,
+      rgba(77, 139, 255, 0.22),
+      rgba(198, 92, 255, 0.14) 55%,
+      transparent 75%
+    );
+    filter: blur(28px);
     z-index: -1;
+    pointer-events: none;
+  }
+
+  /* Blinking terminal cursor (signature touch). */
+  .cursor {
+    display: inline-block;
+    width: 0.5em;
+    height: 1em;
+    margin-left: 0.08em;
+    translate: 0 0.08em;
+    background: var(--accent);
+    box-shadow: 0 0 10px rgba(77, 139, 255, 0.6);
+    animation: blink 1.1s step-end infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cursor {
+      animation: none;
+    }
   }
 }
 
@@ -144,10 +169,20 @@ section[id] {
   .text-accent {
     color: var(--accent);
   }
+  .text-magenta {
+    color: var(--magenta);
+  }
   .text-amber {
-    color: var(--amber);
+    color: var(--magenta);
   }
   .text-dim {
-    color: #8c8470;
+    color: #656b78;
+  }
+  /* Neon text glow, used sparingly on key words. */
+  .glow-blue {
+    text-shadow: 0 0 18px rgba(77, 139, 255, 0.5);
+  }
+  .glow-magenta {
+    text-shadow: 0 0 18px rgba(198, 92, 255, 0.45);
   }
 }
