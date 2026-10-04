@@ -113,13 +113,13 @@
       "icon": "Server"
     },
     {
-      "title": "Payments & Security",
-      "description": "Card and payment flows across Visa and RuPay: authorization, settlement, and reconciliation, with PCI-DSS-compliant crypto, HSM integration, JWT/RBAC auth, and OTP/2FA.",
+      "title": "Security & Reliability",
+      "description": "Secure, compliant systems: encryption and key management (HSM), JWT/RBAC auth, OTP/2FA, and data integrity, hardened for high-stakes domains like fintech and payments.",
       "icon": "ShieldCheck"
     },
     {
       "title": "Cloud & DevOps",
-      "description": "Shipping and operating services on AWS with Jenkins CI/CD, plus observability through the ELK stack and Grafana so systems stay debuggable and measurable in production.",
+      "description": "Shipping and operating services on AWS with Docker, Kubernetes, and Jenkins CI/CD, plus observability through the ELK stack and Grafana so systems stay debuggable and measurable in production.",
       "icon": "Cloud"
     },
     {
