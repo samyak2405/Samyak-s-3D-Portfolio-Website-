@@ -100,7 +100,7 @@ section[id] {
     font-size: 0.6875rem;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: #6c6a82;
+    color: #8a889e;
   }
 
   /* Editorial serif display: the signature voice of the page. */
@@ -130,7 +130,7 @@ section[id] {
   }
   /* Dimmed editorial text, for brightness-contrast emphasis in serif headlines. */
   .text-dim {
-    color: #56546b;
+    color: #6f6d86;
   }
   .edge-highlight {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);

@@ -1,6 +1,7 @@
 import { useReducedMotion } from 'framer-motion'
 import { Component, lazy, Suspense, useRef, type ReactNode } from 'react'
 import { useInView } from '../hooks/useInView'
+import { useMediaQuery } from '../hooks/useMediaQuery'
 
 const HeroCanvas = lazy(() => import('./HeroCanvas'))
 
@@ -37,15 +38,26 @@ class CanvasBoundary extends Component<{ children: ReactNode }, { failed: boolea
  */
 export default function CanvasMount() {
   const reduce = useReducedMotion()
+  // Skip WebGL entirely on small/touch screens and for reduced-motion: the
+  // static backdrop reads the same and keeps three.js off the critical path.
+  const isSmall = useMediaQuery('(max-width: 767px)')
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, '200px')
+
+  if (reduce || isSmall) {
+    return (
+      <div className="absolute inset-0">
+        <StaticBackdrop />
+      </div>
+    )
+  }
 
   return (
     <div ref={ref} className="absolute inset-0">
       <StaticBackdrop />
       <CanvasBoundary>
         <Suspense fallback={null}>
-          <HeroCanvas reduced={!!reduce} active={inView} />
+          <HeroCanvas reduced={false} active={inView} />
         </Suspense>
       </CanvasBoundary>
     </div>
