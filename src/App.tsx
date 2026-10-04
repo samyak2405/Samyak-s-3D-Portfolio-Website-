@@ -1,3 +1,5 @@
+import { useReducedMotion } from 'framer-motion'
+import { useSmoothScroll } from './hooks/useSmoothScroll'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import Hero from './components/sections/Hero'
@@ -11,6 +13,9 @@ import Work from './components/sections/Work'
 import Contact from './components/sections/Contact'
 
 export default function App() {
+  const reduce = useReducedMotion()
+  useSmoothScroll(!reduce)
+
   return (
     <div className="min-h-screen bg-ink text-steel-100">
       <a
