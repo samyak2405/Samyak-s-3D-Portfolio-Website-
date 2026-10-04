@@ -66,7 +66,7 @@ export default function Hero() {
           </p>
           <p className="hero-rise mt-6 text-lg text-steel-300">Hi, I'm Samyak Moon.</p>
           <h1 className="hero-rise display mt-2 text-[2.6rem] leading-[1.03] text-steel-100 sm:text-6xl lg:text-7xl">
-            I build the systems that move <span className="text-amber">money</span>.
+            I build the systems behind the <span className="text-amber">systems</span>.
           </h1>
           <p className="hero-rise mt-6 max-w-md text-base leading-relaxed text-steel-300 md:text-lg">
             {profile.tagline}
