@@ -2,6 +2,7 @@ import { useReducedMotion } from 'framer-motion'
 import { Component, lazy, Suspense, useRef, type ReactNode } from 'react'
 import { usePortfolio } from '../../hooks/usePortfolio'
 import { useInView } from '../../hooks/useInView'
+import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { cn } from '../../lib/cn'
 import type { SkillCategory } from '../../types/portfolio'
 import Reveal from '../ui/Reveal'
@@ -61,11 +62,14 @@ class CanvasBoundary extends Component<
 export default function Skills() {
   const { skills } = usePortfolio()
   const reduce = useReducedMotion()
+  // Touch / small screens can't hover the 3D nodes, so show the grid there.
+  const isSmall = useMediaQuery('(max-width: 767px)')
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, '200px')
 
   const categories = skills.categories
   const fallback = <SkillsFallback categories={categories} />
+  const useGrid = reduce || isSmall
 
   return (
     <section id="skills" className="relative border-t border-hairline py-24 md:py-36">
@@ -76,7 +80,7 @@ export default function Skills() {
         />
 
         <div ref={ref} className="relative mt-14">
-          {reduce ? (
+          {useGrid ? (
             fallback
           ) : (
             <>

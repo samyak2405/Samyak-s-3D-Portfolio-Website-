@@ -32,7 +32,11 @@ export default function DiagramPanel({
               {description}
             </p>
           </div>
-          <div className="mt-8">{children}</div>
+          {/* Keeps the schematic legible on phones: scroll it rather than
+              shrinking the labels to nothing. */}
+          <div className="mt-8 -mx-1 overflow-x-auto px-1 pb-2">
+            <div className="min-w-[600px]">{children}</div>
+          </div>
           <figcaption className="mt-5 font-mono text-[0.7rem] text-steel-500">{caption}</figcaption>
         </div>
       </figure>
