@@ -22,8 +22,8 @@ export default function DiagramPanel({
 }: DiagramPanelProps) {
   return (
     <Reveal>
-      <figure className="relative overflow-hidden rounded-2xl border border-hairline bg-ink-2 p-6 edge-highlight md:p-10">
-        <div className="blueprint-grid pointer-events-none absolute inset-0 opacity-40" aria-hidden />
+      <figure className="relative overflow-hidden rounded-2xl border border-hairline bg-ink-3 p-6 shadow-soft md:p-10">
+        <div className="dot-grid pointer-events-none absolute inset-0 opacity-50" aria-hidden />
         <div className="relative">
           <div className="max-w-xl">
             <span className="mono-label">{label}</span>

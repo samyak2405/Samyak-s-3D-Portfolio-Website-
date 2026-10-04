@@ -5,6 +5,7 @@ import { useInView } from '../../hooks/useInView'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { cn } from '../../lib/cn'
 import type { SkillCategory } from '../../types/portfolio'
+import Character from '../ui/Character'
 import Reveal from '../ui/Reveal'
 import SectionHeading from '../ui/SectionHeading'
 
@@ -79,24 +80,32 @@ export default function Skills() {
           lead="The tools I build with, grouped by where they live. The brighter nodes are what I've picked up most recently."
         />
 
-        <div ref={ref} className="relative mt-14">
+        <div ref={ref} className="relative mt-12">
           {useGrid ? (
             fallback
           ) : (
-            <>
-              <div className="relative h-[460px] md:h-[600px]">
-                <CanvasBoundary fallback={fallback}>
-                  <Suspense fallback={null}>
-                    <SkillsCanvas categories={categories} reduced={false} active={inView} />
-                  </Suspense>
-                </CanvasBoundary>
-              </div>
-              <Reveal>
-                <p className="mono-label mt-2 text-center">Hover a node to name it</p>
+            <div className="grid items-center gap-4 lg:grid-cols-[0.78fr_1.22fr] lg:gap-6">
+              {/* The guide presents the constellation to its right. */}
+              <Reveal className="flex justify-center lg:justify-start">
+                <Character
+                  pose="skills-gesturing"
+                  alt="Samyak Moon, a 3D cartoon character in a navy suit, presenting his skills"
+                  className="w-full max-w-xs lg:max-w-sm"
+                />
               </Reveal>
+              <div>
+                <div className="relative h-[440px] md:h-[560px]">
+                  <CanvasBoundary fallback={fallback}>
+                    <Suspense fallback={null}>
+                      <SkillsCanvas categories={categories} reduced={false} active={inView} />
+                    </Suspense>
+                  </CanvasBoundary>
+                </div>
+                <p className="mono-label mt-2 text-center">Hover a node to name it</p>
+              </div>
               {/* Kept in the DOM for search engines and screen readers. */}
               <SkillsFallback categories={categories} className="sr-only" />
-            </>
+            </div>
           )}
         </div>
       </div>

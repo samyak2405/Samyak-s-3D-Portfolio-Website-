@@ -5,8 +5,8 @@ import * as THREE from 'three'
 import type { SkillCategory } from '../types/portfolio'
 import { buildConstellation, type SkillNode } from './constellation'
 
-const ACCENT = new THREE.Color('#e6a84b')
-const STEEL = new THREE.Color('#aab2bd')
+const ACCENT = new THREE.Color('#dd8420')
+const STEEL = new THREE.Color('#5f78a8')
 
 interface SkillConstellationProps {
   categories: SkillCategory[]
@@ -52,7 +52,7 @@ export default function SkillConstellation({ categories, reduced }: SkillConstel
   return (
     <group ref={groupRef}>
       <lineSegments geometry={spokeGeometry}>
-        <lineBasicMaterial color="#ffffff" transparent opacity={0.1} depthWrite={false} />
+        <lineBasicMaterial color="#2b4c8c" transparent opacity={0.16} depthWrite={false} />
       </lineSegments>
 
       {/* Category labels */}

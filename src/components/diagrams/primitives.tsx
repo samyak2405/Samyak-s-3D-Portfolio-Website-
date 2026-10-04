@@ -70,7 +70,7 @@ interface PacketProps {
 export function Packet({ path, dur = 3, begin = 0, reduced, r = 3.5 }: PacketProps) {
   if (reduced) return null
   return (
-    <circle r={r} className="fill-accent" style={{ filter: 'drop-shadow(0 0 4px rgba(230,168,75,0.8))' }}>
+    <circle r={r} className="fill-amber" style={{ filter: 'drop-shadow(0 0 4px rgba(221,132,32,0.7))' }}>
       <animateMotion
         dur={`${dur}s`}
         begin={`${begin}s`}

@@ -1,7 +1,6 @@
 import { useReducedMotion } from 'framer-motion'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 import Navbar from './components/layout/Navbar'
-import Footer from './components/layout/Footer'
 import Hero from './components/sections/Hero'
 import Thesis from './components/sections/Thesis'
 import About from './components/sections/About'
@@ -36,7 +35,6 @@ export default function App() {
         <Work />
         <Contact />
       </main>
-      <Footer />
     </div>
   )
 }

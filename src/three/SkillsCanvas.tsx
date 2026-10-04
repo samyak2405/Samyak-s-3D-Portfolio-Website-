@@ -20,10 +20,10 @@ export default function SkillsCanvas({ categories, reduced, active }: SkillsCanv
       frameloop={reduced || !active ? 'demand' : 'always'}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
     >
-      <fog attach="fog" args={['#09090f', 7, 18]} />
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[4, 6, 5]} intensity={1.2} color="#cdd6e2" />
-      <pointLight position={[0, 0, 3]} intensity={5} distance={12} color="#e6a84b" />
+      <fog attach="fog" args={['#faf7f2', 8, 20]} />
+      <ambientLight intensity={0.85} />
+      <directionalLight position={[4, 6, 5]} intensity={1} color="#ffffff" />
+      <pointLight position={[0, 0, 3]} intensity={4} distance={12} color="#dd8420" />
       <SkillConstellation categories={categories} reduced={reduced} />
     </Canvas>
   )

@@ -1,6 +1,7 @@
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { usePortfolio } from '../../hooks/usePortfolio'
+import Character from '../ui/Character'
 import Reveal from '../ui/Reveal'
 import SectionHeading from '../ui/SectionHeading'
 
@@ -25,10 +26,19 @@ export default function Experience() {
       className="relative border-t border-hairline bg-ink-2/40 py-24 md:py-32"
     >
       <div className="container-edge">
-        <SectionHeading
-          title="What I've built at PayU"
-          lead="Payment, card, and authentication systems on a fintech platform serving 10+ enterprise clients, designed and owned from first principles to production."
-        />
+        <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12">
+          <SectionHeading
+            title="Where I've built things"
+            lead="From fintech at PayU to Walmart today: payment, card, authentication, and now AI systems, designed and owned from first principles to production."
+          />
+          <Reveal className="flex justify-center lg:justify-end">
+            <Character
+              pose="work-laptop"
+              alt="Samyak Moon, a 3D cartoon character in a navy suit, working on a laptop at a desk"
+              className="w-full max-w-sm lg:max-w-md"
+            />
+          </Reveal>
+        </div>
 
         <div ref={railRef} className="relative mt-16 border-l border-hairline">
           {/* Accent line drawn on scroll (static full line under reduced-motion) */}
