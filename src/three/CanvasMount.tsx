@@ -11,10 +11,10 @@ function StaticBackdrop() {
   return (
     <div
       aria-hidden
-      className="absolute inset-0 blueprint-grid"
+      className="absolute inset-0 dot-grid"
       style={{
         background:
-          'radial-gradient(60% 60% at 70% 45%, rgba(230,168,75,0.10), transparent 70%), radial-gradient(50% 50% at 50% 50%, rgba(120,140,170,0.08), transparent 70%)',
+          'radial-gradient(55% 55% at 72% 40%, rgba(221,132,32,0.10), transparent 70%), radial-gradient(50% 50% at 40% 55%, rgba(43,76,140,0.08), transparent 70%)',
       }}
     />
   )

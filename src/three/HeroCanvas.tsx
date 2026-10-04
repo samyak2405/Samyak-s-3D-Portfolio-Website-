@@ -21,12 +21,12 @@ export default function HeroCanvas({ reduced, active }: HeroCanvasProps) {
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
       className="!absolute inset-0"
     >
-      <fog attach="fog" args={['#09090f', 5, 13]} />
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[4, 6, 5]} intensity={1.4} color="#cdd6e2" />
-      <directionalLight position={[-5, -3, -4]} intensity={0.5} color="#5b6472" />
-      {/* Faint warm fill so the steel picks up a hint of the accent. */}
-      <pointLight position={[0, 0, 2]} intensity={6} distance={9} color="#e6a84b" />
+      <fog attach="fog" args={['#faf7f2', 6, 14]} />
+      <ambientLight intensity={0.75} />
+      <directionalLight position={[4, 6, 5]} intensity={1.1} color="#ffffff" />
+      <directionalLight position={[-5, -3, -4]} intensity={0.4} color="#9fb0cf" />
+      {/* Faint warm fill so the nodes pick up a hint of the amber accent. */}
+      <pointLight position={[0, 0, 2]} intensity={5} distance={9} color="#dd8420" />
       <SystemGraph reduced={reduced} />
     </Canvas>
   )

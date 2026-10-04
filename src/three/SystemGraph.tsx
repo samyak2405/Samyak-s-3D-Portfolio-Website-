@@ -3,9 +3,9 @@ import { useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { buildSystemGraph } from './graph'
 
-const ACCENT = new THREE.Color('#e6a84b')
-const STEEL = new THREE.Color('#aab2bd')
-const HUB = new THREE.Color('#dfe4ea')
+const ACCENT = new THREE.Color('#dd8420')
+const STEEL = new THREE.Color('#7e93be')
+const HUB = new THREE.Color('#2b4c8c')
 
 interface SystemGraphProps {
   /** When true, the scene is frozen into a single composed frame. */
@@ -92,9 +92,9 @@ export default function SystemGraph({ reduced }: SystemGraphProps) {
       {/* Connections */}
       <lineSegments geometry={edgeGeometry}>
         <lineBasicMaterial
-          color="#ffffff"
+          color="#2b4c8c"
           transparent
-          opacity={0.14}
+          opacity={0.16}
           depthWrite={false}
         />
       </lineSegments>

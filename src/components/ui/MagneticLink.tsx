@@ -18,11 +18,11 @@ interface MagneticLinkProps {
 }
 
 const VARIANTS = {
-  // Outlined pills, editorial style. Primary inverts to light fill on hover.
+  // Office theme: solid deep-blue primary, outlined secondary.
   primary:
-    'border border-steel-100/70 text-steel-100 hover:bg-steel-100 hover:text-ink',
+    'bg-accent text-white shadow-soft hover:bg-accent-strong hover:shadow-lift',
   ghost:
-    'border border-hairline-strong text-steel-200 hover:border-steel-300 hover:text-steel-100',
+    'border border-hairline-strong text-steel-100 hover:border-accent hover:text-accent',
 } as const
 
 /**
