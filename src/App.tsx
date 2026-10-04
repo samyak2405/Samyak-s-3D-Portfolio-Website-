@@ -2,7 +2,6 @@ import { useReducedMotion } from 'framer-motion'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 import Navbar from './components/layout/Navbar'
 import Hero from './components/sections/Hero'
-import Thesis from './components/sections/Thesis'
 import About from './components/sections/About'
 import Skills from './components/sections/Skills'
 import Experience from './components/sections/Experience'
@@ -26,7 +25,6 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
-        <Thesis />
         <About />
         <Skills />
         <Experience />

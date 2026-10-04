@@ -18,7 +18,7 @@ export default function Work() {
           <SectionHeading
             label="work"
             title="Things I've built on the side"
-            lead="Projects where I get to own the whole stack. Correctness, concurrency, and money, usually all at once."
+            lead="Projects where I get to own the whole stack. Correctness, concurrency, and scale, usually all at once."
           />
           <Reveal className="flex justify-center lg:justify-end">
             <Character

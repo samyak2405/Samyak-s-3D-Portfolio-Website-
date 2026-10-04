@@ -29,7 +29,7 @@ export default function Experience() {
           <SectionHeading
             label="experience"
             title="Where I've built things"
-            lead="From fintech at PayU to Walmart today: payment, card, authentication, and now AI systems, designed and owned from first principles to production."
+            lead="From fintech at PayU to Walmart today: backend, distributed, and now AI systems, designed and owned from first principles to production."
           />
           <Reveal className="flex justify-center lg:justify-end">
             <Character

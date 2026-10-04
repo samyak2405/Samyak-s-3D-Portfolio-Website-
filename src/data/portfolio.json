@@ -2,12 +2,12 @@
   "profile": {
     "name": "Samyak Moon",
     "shortName": "Samyak",
-    "tagline": "I design and build scalable, secure fintech systems: payments, cards, and the distributed plumbing behind them.",
+    "tagline": "I design and build scalable, secure backend and distributed systems in Java and Spring Boot, built for performance, reliability, and correctness at scale.",
     "role": "Backend Software Engineer",
-    "specialization": "Fintech · Distributed Systems · Payments",
+    "specialization": "Distributed Systems · Backend · AI",
     "location": "Bengaluru, Karnataka, India",
     "yearsOfExperience": "3+",
-    "bio": "Software engineer with 3+ years building scalable, secure systems in Java and Spring Boot. I came up on fintech, designing payment, card, and distributed platforms with a focus on performance, reliability, and system design. Now at Walmart I've grown into full-stack delivery and AI-driven services, from a RAG platform to owning containerization and deployment. I like problems where correctness, concurrency, and money all have to line up at scale.",
+    "bio": "Software engineer with 3+ years building scalable, secure systems in Java and Spring Boot. I came up building high-stakes distributed systems in fintech, with a focus on performance, reliability, and system design. Now at Walmart I've grown into full-stack delivery and AI-driven services, from a RAG platform to owning containerization and deployment. I like problems where correctness, concurrency, and scale all have to line up.",
     "avatar": "/avatar.png",
     "social": {
       "github": "https://github.com/samyak2405",

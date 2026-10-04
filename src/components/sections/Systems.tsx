@@ -10,7 +10,7 @@ export default function Systems() {
         <SectionHeading
           label="systems"
           title="Systems, drawn simply"
-          lead="The shape of a few things I've built at the payments layer. Schematic on purpose: the point is the thinking, not the wiring."
+          lead="The shape of a few things I've built. Schematic on purpose: the point is the thinking, not the wiring."
         />
 
         <div className="mt-14 space-y-6 md:space-y-8">
