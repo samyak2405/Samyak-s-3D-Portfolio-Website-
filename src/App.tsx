@@ -6,6 +6,7 @@ import Thesis from './components/sections/Thesis'
 import About from './components/sections/About'
 import Skills from './components/sections/Skills'
 import Experience from './components/sections/Experience'
+import Systems from './components/sections/Systems'
 import Expertise from './components/sections/Expertise'
 import Work from './components/sections/Work'
 import Contact from './components/sections/Contact'
@@ -27,6 +28,7 @@ export default function App() {
         <About />
         <Skills />
         <Experience />
+        <Systems />
         <Expertise />
         <Work />
         <Contact />
