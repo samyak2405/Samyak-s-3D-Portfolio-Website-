@@ -27,7 +27,7 @@ export default function Contact() {
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(50% 50% at 15% 10%, rgba(43,76,140,0.5), transparent 70%), radial-gradient(45% 45% at 88% 85%, rgba(221,132,32,0.16), transparent 70%)',
+            'radial-gradient(50% 50% at 12% 8%, rgba(77,139,255,0.28), transparent 68%), radial-gradient(48% 48% at 90% 88%, rgba(198,92,255,0.22), transparent 70%)',
         }}
       />
       <div className="container-edge relative py-24 md:py-32">
@@ -35,7 +35,9 @@ export default function Contact() {
           {/* CTA */}
           <div className="max-w-2xl">
             <Reveal>
-              <p className="mono-label !text-amber">Contact</p>
+              <p className="mono-label !text-amber">
+                <span className="text-white/40">// </span>contact
+              </p>
             </Reveal>
             <Reveal delay={0.05}>
               <h2 className="display mt-5 text-4xl leading-[1.05] sm:text-5xl md:text-6xl">

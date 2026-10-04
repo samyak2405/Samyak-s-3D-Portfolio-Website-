@@ -14,7 +14,7 @@ export default function Expertise() {
           <div className="max-w-2xl">
             <Statement
               align="right"
-              eyebrow="How I work"
+              eyebrow="// how I work"
               className="text-3xl leading-[1.12] sm:text-4xl md:text-5xl"
               segments={[
                 { text: 'From first principles' },
@@ -37,7 +37,7 @@ export default function Expertise() {
             const Icon = serviceIcon(service.icon)
             return (
               <Reveal key={service.title} delay={(i % 4) * 0.08} className="h-full">
-                <div className="group h-full rounded-2xl border border-hairline bg-ink-3 p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-lift">
+                <div className="group h-full rounded-2xl border border-hairline bg-ink-3 p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-glow-blue">
                   <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent transition-transform duration-300 group-hover:scale-110">
                     <Icon size={20} strokeWidth={1.75} />
                   </span>

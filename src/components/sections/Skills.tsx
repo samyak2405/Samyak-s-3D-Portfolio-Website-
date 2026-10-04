@@ -11,8 +11,8 @@ function chipClass(recent?: boolean) {
     'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition-all duration-200',
     'hover:-translate-y-0.5 focus-visible:-translate-y-0.5',
     recent
-      ? 'border-amber/40 bg-amber-soft text-amber-strong hover:shadow-soft'
-      : 'border-hairline bg-ink-3 text-steel-200 hover:border-accent/50 hover:text-accent hover:shadow-soft',
+      ? 'border-amber/40 bg-amber-soft text-amber-strong hover:shadow-glow-magenta'
+      : 'border-hairline bg-ink-3 text-steel-200 hover:border-accent/50 hover:text-accent hover:shadow-glow-blue',
   )
 }
 
@@ -23,8 +23,9 @@ export default function Skills() {
     <section id="skills" className="relative border-t border-hairline py-24 md:py-32">
       <div className="container-edge">
         <SectionHeading
+          label="skills"
           title="The stack, grouped"
-          lead="The tools I build with, organized by where they live in a system. Amber marks what I've picked up most recently."
+          lead="The tools I build with, organized by where they live in a system. The magenta tags are what I've picked up most recently."
         />
 
         <div className="mt-12 grid items-center gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:gap-12">

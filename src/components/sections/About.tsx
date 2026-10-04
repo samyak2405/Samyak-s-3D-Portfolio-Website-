@@ -46,7 +46,9 @@ export default function About() {
 
           {/* Copy */}
           <div className="about-copy order-1 max-w-xl lg:order-2">
-            <p className="about-reveal mono-label text-accent">About</p>
+            <p className="about-reveal mono-label text-accent">
+              <span className="text-steel-500">// </span>about
+            </p>
             <h2 className="about-reveal display mt-4 text-3xl text-steel-100 sm:text-4xl md:text-5xl">
               I own whole systems, not tickets.
             </h2>

@@ -8,6 +8,7 @@ export default function Systems() {
     <section id="systems" className="relative border-t border-hairline py-24 md:py-36">
       <div className="container-edge">
         <SectionHeading
+          label="systems"
           title="Systems, drawn simply"
           lead="The shape of a few things I've built at the payments layer. Schematic on purpose: the point is the thinking, not the wiring."
         />

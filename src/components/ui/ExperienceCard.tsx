@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
+import { cn } from '../../lib/cn'
 import type { Experience } from '../../types/portfolio'
 
 const EASE = [0.16, 1, 0.3, 1] as const
@@ -27,8 +28,20 @@ export default function ExperienceCard({
     <motion.article
       whileHover={reduce ? undefined : { y: -2 }}
       transition={{ duration: 0.25, ease: EASE }}
-      className="group overflow-hidden rounded-2xl border border-hairline bg-ink-3 shadow-soft transition-colors duration-300 hover:border-accent/40"
+      className={cn(
+        'group relative overflow-hidden rounded-2xl border bg-ink-3 transition-all duration-300 hover:shadow-glow-blue',
+        exp.active
+          ? 'border-accent/40 shadow-glow-blue'
+          : 'border-hairline shadow-soft hover:border-accent/40',
+      )}
     >
+      {/* Active "quest" highlight */}
+      {exp.active && (
+        <span
+          aria-hidden
+          className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-accent via-amber to-accent"
+        />
+      )}
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}

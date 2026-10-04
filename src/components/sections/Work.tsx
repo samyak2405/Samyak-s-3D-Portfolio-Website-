@@ -16,6 +16,7 @@ export default function Work() {
       <div className="container-edge">
         <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12">
           <SectionHeading
+            label="work"
             title="Things I've built on the side"
             lead="Projects where I get to own the whole stack. Correctness, concurrency, and money, usually all at once."
           />

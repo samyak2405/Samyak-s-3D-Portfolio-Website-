@@ -27,14 +27,15 @@ export default function Experience() {
       <div className="container-edge">
         <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12">
           <SectionHeading
+            label="experience"
             title="Where I've built things"
             lead="From fintech at PayU to Walmart today: payment, card, authentication, and now AI systems, designed and owned from first principles to production."
           />
           <Reveal className="flex justify-center lg:justify-end">
             <Character
-              pose="work-laptop"
-              alt="Samyak Moon, a 3D cartoon character in a navy suit, working on a laptop at a desk"
-              className="w-full max-w-sm lg:max-w-md"
+              pose="hero-style"
+              alt="Samyak Moon, a 3D cartoon gamer-coder character in a hoodie with headphones"
+              className="h-[46vh] w-auto lg:h-[58vh]"
             />
           </Reveal>
         </div>
