@@ -22,6 +22,8 @@ export default {
         accent: {
           DEFAULT: '#4D8BFF',
           strong: '#6AA0FF',
+          // Darker blue for solid fills behind white text (passes WCAG AA).
+          deep: '#2E6AE6',
           soft: 'rgba(77,139,255,0.14)',
           dim: 'rgba(77,139,255,0.10)',
         },

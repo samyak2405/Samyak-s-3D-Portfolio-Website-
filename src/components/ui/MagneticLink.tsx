@@ -21,7 +21,7 @@ const VARIANTS = {
   // Gamer/coder: solid electric-blue primary that glows on hover, neon-outlined
   // secondary.
   primary:
-    'bg-accent text-white font-medium shadow-soft hover:bg-accent-strong hover:shadow-glow-blue',
+    'bg-accent-deep text-white font-medium shadow-soft hover:shadow-glow-blue',
   ghost:
     'border border-hairline-strong text-steel-100 hover:border-accent/70 hover:text-accent hover:shadow-glow-blue',
 } as const
