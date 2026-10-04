@@ -2,10 +2,9 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion
 import { useRef } from 'react'
 import { usePortfolio } from '../../hooks/usePortfolio'
 import Character from '../ui/Character'
+import ExperienceCard from '../ui/ExperienceCard'
 import Reveal from '../ui/Reveal'
 import SectionHeading from '../ui/SectionHeading'
-
-const EASE = [0.16, 1, 0.3, 1] as const
 
 export default function Experience() {
   const { experience, education } = usePortfolio()
@@ -52,65 +51,24 @@ export default function Experience() {
             <Reveal
               key={`${exp.company}-${exp.period}`}
               delay={i * 0.05}
-              className="relative pb-16 pl-7 last:pb-0 md:pl-12"
+              className="relative pb-6 pl-7 last:pb-0 md:pl-10"
             >
               {/* Timeline marker — the current role gets a filled, pulsing node */}
               {exp.active ? (
-                <span aria-hidden className="absolute -left-[7.5px] top-1.5 h-3.5 w-3.5">
+                <span aria-hidden className="absolute -left-[7.5px] top-6 h-3.5 w-3.5">
                   {!reduce && (
                     <span className="absolute inset-0 rounded-full bg-accent/60 animate-pulse-ring" />
                   )}
-                  <span className="absolute inset-0 rounded-full bg-accent shadow-[0_0_14px_rgba(230,168,75,0.55)]" />
+                  <span className="absolute inset-0 rounded-full bg-accent shadow-[0_0_14px_rgba(43,76,140,0.5)]" />
                 </span>
               ) : (
                 <span
                   aria-hidden
-                  className="absolute -left-[6.5px] top-1.5 h-3 w-3 rounded-full border-2 border-accent bg-ink"
+                  className="absolute -left-[6.5px] top-6 h-3 w-3 rounded-full border-2 border-accent bg-ink"
                 />
               )}
 
-              <div className="grid gap-5 md:grid-cols-[190px_1fr] md:gap-10">
-                <div>
-                  <p className="flex items-center gap-2 font-mono text-xs text-accent">
-                    {exp.period}
-                    {exp.active && (
-                      <span className="rounded-full border border-accent/40 bg-accent-dim px-2 py-0.5 text-[0.6rem] tracking-wider">
-                        NOW
-                      </span>
-                    )}
-                  </p>
-                  <p className="mt-1.5 text-sm text-steel-400">{exp.location}</p>
-                </div>
-
-                <div>
-                  <h3 className="text-xl font-medium text-steel-100">
-                    {exp.role}
-                    <span className="text-steel-400"> · {exp.company}</span>
-                  </h3>
-                  <p className="mt-3 max-w-[65ch] leading-relaxed text-steel-300">
-                    {exp.summary}
-                  </p>
-
-                  <ul className="mt-6 divide-y divide-hairline border-t border-hairline">
-                    {exp.highlights.map((h, hi) => (
-                      <motion.li
-                        key={hi}
-                        initial={reduce ? false : { opacity: 0, x: -8 }}
-                        whileInView={reduce ? undefined : { opacity: 1, x: 0 }}
-                        viewport={{ once: true, amount: 0.4 }}
-                        transition={{ duration: 0.5, delay: hi * 0.08, ease: EASE }}
-                        className="group flex gap-4 py-4 text-sm leading-relaxed text-steel-300"
-                      >
-                        <span
-                          aria-hidden
-                          className="mt-2 h-px w-4 shrink-0 bg-accent/50 transition-all duration-300 group-hover:w-7 group-hover:bg-accent"
-                        />
-                        <span>{h}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              <ExperienceCard exp={exp} defaultOpen={i === 0} />
             </Reveal>
           ))}
         </div>
