@@ -1,4 +1,3 @@
-import CornerFrame from './components/layout/CornerFrame'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import Hero from './components/sections/Hero'
@@ -20,7 +19,6 @@ export default function App() {
       >
         Skip to content
       </a>
-      <CornerFrame />
       <Navbar />
       <main>
         <Hero />

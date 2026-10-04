@@ -3,32 +3,25 @@
 @tailwind utilities;
 
 /*
- * Editorial dark theme (inspired by framed, serif-led portfolio work).
- * Deep indigo-black canvas, lilac neutrals, a large editorial serif for display
- * and a clean grotesk for UI/body. One sparing warm amber accent.
+ * Warm "modern office" theme: soft off-white paper, deep-blue primary (from the
+ * character's suit), amber secondary, warm near-black text. A friendly 3D
+ * character guides the page; occasional dark "focus" sections add rhythm.
  */
 :root {
-  color-scheme: dark;
-  --accent: #e6a84b;
-  --accent-strong: #f4bb63;
-  /* Inset of the fixed corner-bracket frame. */
-  --frame-inset: 18px;
-}
-@media (min-width: 768px) {
-  :root {
-    --frame-inset: 26px;
-  }
+  color-scheme: light;
+  --accent: #2b4c8c;
+  --accent-strong: #35599e;
+  --amber: #dd8420;
 }
 
 * {
-  border-color: rgba(255, 255, 255, 0.09);
+  border-color: rgba(31, 27, 20, 0.12);
 }
 
 html {
-  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
-
+/* Native smooth-scroll is replaced by Lenis; keep a fallback for no-JS. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -36,8 +29,8 @@ html {
 }
 
 body {
-  background-color: #09090f;
-  color: #ecebf3;
+  background-color: #faf7f2;
+  color: #211d16;
   font-family: 'Hanken Grotesk', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -50,89 +43,96 @@ p {
 }
 
 section[id] {
-  scroll-margin-top: 96px;
+  scroll-margin-top: 90px;
 }
 
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 ::selection {
-  background: rgba(230, 168, 75, 0.26);
-  color: #fff;
+  background: rgba(43, 76, 140, 0.18);
+  color: #16233e;
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 11px;
+  height: 11px;
 }
 ::-webkit-scrollbar-track {
-  background: #09090f;
+  background: #f2ece1;
 }
 ::-webkit-scrollbar-thumb {
-  background: #262532;
+  background: #d4ccbd;
   border-radius: 999px;
-  border: 2px solid #09090f;
+  border: 3px solid #f2ece1;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #37364a;
+  background: #c2b9a6;
 }
 
 @layer components {
-  /* Page-width container, generous editorial gutters. */
   .container-edge {
     width: 100%;
-    max-width: 1320px;
+    max-width: 1240px;
     margin-inline: auto;
-    padding-inline: 1.75rem;
+    padding-inline: 1.5rem;
   }
   @media (min-width: 768px) {
     .container-edge {
-      padding-inline: 3.5rem;
+      padding-inline: 2.5rem;
     }
   }
 
-  /* Small grotesk technical label for eyebrows and metadata. */
+  /* Small monospace label for section markers, stats and code-flavored meta. */
   .mono-label {
     font-family: 'JetBrains Mono', ui-monospace, monospace;
     font-size: 0.6875rem;
-    letter-spacing: 0.24em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #8a889e;
+    color: #726a58;
   }
 
-  /* Editorial serif display: the signature voice of the page. */
+  /* Display headings: a warm grotesque, tight and confident. */
   .display {
-    font-family: 'Newsreader', Georgia, serif;
-    font-weight: 400;
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    font-weight: 600;
     line-height: 1.02;
-    letter-spacing: -0.01em;
-  }
-  .display-italic {
-    font-style: italic;
+    letter-spacing: -0.02em;
   }
 
-  /* Hairline blueprint texture used sparingly behind technical surfaces. */
-  .blueprint-grid {
-    background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 56px 56px;
+  /* Faint dot-grid, like a sheet of workbook paper, behind technical surfaces. */
+  .dot-grid {
+    background-image: radial-gradient(rgba(31, 27, 20, 0.07) 1px, transparent 1px);
+    background-size: 22px 22px;
   }
 
+  /* Soft contact shadow placed under a character cutout. */
+  .character-shadow::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -2%;
+    width: 62%;
+    height: 7%;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, rgba(31, 27, 20, 0.22), transparent 70%);
+    filter: blur(6px);
+    pointer-events: none;
+    z-index: -1;
+  }
 }
 
 @layer utilities {
   .text-accent {
     color: var(--accent);
   }
-  /* Dimmed editorial text, for brightness-contrast emphasis in serif headlines. */
-  .text-dim {
-    color: #6f6d86;
+  .text-amber {
+    color: var(--amber);
   }
-  .edge-highlight {
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  .text-dim {
+    color: #8c8470;
   }
 }
