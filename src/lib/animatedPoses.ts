@@ -11,5 +11,5 @@
  * adding a video is a one-line change once the files are in public/characters/.
  */
 export const ANIMATED_POSES = new Set<string>([
-  // 'hero-wave',
+  'hero-wave',
 ])
