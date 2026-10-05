@@ -17,13 +17,13 @@ export default function App() {
   return (
     <div className="min-h-screen bg-ink text-steel-100">
       <a
-        href="#about"
+        href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:text-ink"
       >
         Skip to content
       </a>
       <Navbar />
-      <main>
+      <main id="main">
         <Hero />
         <About />
         <Skills />
