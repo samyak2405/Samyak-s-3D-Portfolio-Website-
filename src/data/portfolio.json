@@ -3,7 +3,7 @@
     "name": "Samyak Moon",
     "shortName": "Samyak",
     "tagline": "I design and build scalable, secure backend and distributed systems in Java and Spring Boot, built for performance, reliability, and correctness at scale.",
-    "role": "Backend Software Engineer",
+    "role": "Backend & AI Engineer",
     "specialization": "Distributed Systems · Backend · AI",
     "location": "Bengaluru, Karnataka, India",
     "yearsOfExperience": "3+",
@@ -14,7 +14,7 @@
       "linkedin": "https://www.linkedin.com/in/samyakmoon/",
       "leetcode": "https://leetcode.com/u/Dr_moon_knight/",
       "email": "moon24samyak@gmail.com",
-      "phone": "+918551929114",
+      "phone": "",
       "instagram": "",
       "website": ""
     }
@@ -45,63 +45,132 @@
     "categories": [
       {
         "name": "Languages",
-        "items": [{ "name": "Java" }, { "name": "TypeScript" }, { "name": "Python" }]
+        "items": [
+          {
+            "name": "Java"
+          },
+          {
+            "name": "TypeScript"
+          },
+          {
+            "name": "Python"
+          }
+        ]
       },
       {
         "name": "Backend & Frameworks",
         "items": [
-          { "name": "Spring Boot" },
-          { "name": "REST APIs" },
-          { "name": "gRPC" },
-          { "name": "Microservices" },
-          { "name": "Multi-Tenancy" }
+          {
+            "name": "Spring Boot"
+          },
+          {
+            "name": "REST APIs"
+          },
+          {
+            "name": "gRPC"
+          },
+          {
+            "name": "Microservices"
+          },
+          {
+            "name": "Multi-Tenancy"
+          }
         ]
       },
       {
         "name": "AI / ML",
         "items": [
-          { "name": "RAG", "recent": true },
-          { "name": "LLM Integration" },
-          { "name": "AI Service Design" }
+          {
+            "name": "RAG",
+            "recent": true
+          },
+          {
+            "name": "LLM Integration"
+          },
+          {
+            "name": "AI Service Design"
+          }
         ]
       },
       {
         "name": "Databases",
         "items": [
-          { "name": "PostgreSQL", "recent": true },
-          { "name": "Azure SQL" },
-          { "name": "MySQL" },
-          { "name": "Redis" },
-          { "name": "Elasticsearch" }
+          {
+            "name": "PostgreSQL",
+            "recent": true
+          },
+          {
+            "name": "Azure SQL"
+          },
+          {
+            "name": "MySQL"
+          },
+          {
+            "name": "Redis"
+          },
+          {
+            "name": "Elasticsearch"
+          }
         ]
       },
       {
         "name": "DevOps & Infra",
         "items": [
-          { "name": "Docker", "recent": true },
-          { "name": "Kubernetes", "recent": true },
-          { "name": "CI/CD", "recent": true },
-          { "name": "AWS" },
-          { "name": "Jenkins" }
+          {
+            "name": "Docker",
+            "recent": true
+          },
+          {
+            "name": "Kubernetes",
+            "recent": true
+          },
+          {
+            "name": "CI/CD",
+            "recent": true
+          },
+          {
+            "name": "AWS"
+          },
+          {
+            "name": "Jenkins"
+          }
         ]
       },
       {
         "name": "Distributed Systems & Domain",
         "items": [
-          { "name": "Payments" },
-          { "name": "Card Systems" },
-          { "name": "HSM Integration" },
-          { "name": "Multi-Tenant Auth" },
-          { "name": "Distributed Systems Design" }
+          {
+            "name": "Payments"
+          },
+          {
+            "name": "Card Systems"
+          },
+          {
+            "name": "HSM Integration"
+          },
+          {
+            "name": "Multi-Tenant Auth"
+          },
+          {
+            "name": "Distributed Systems Design"
+          }
         ]
       },
       {
         "name": "Messaging & Observability",
         "items": [
-          { "name": "Kafka" },
-          { "name": "RabbitMQ" },
-          { "name": "ELK Stack" },
-          { "name": "Grafana" }
+          {
+            "name": "Kafka"
+          },
+          {
+            "name": "RabbitMQ"
+          },
+          {
+            "name": "ELK Stack"
+          },
+          {
+            "name": "Grafana"
+          }
         ]
       }
     ]
@@ -137,8 +206,8 @@
       "active": true,
       "summary": "Owning backend and full-stack delivery across infrastructure, AI services, and deployment.",
       "highlights": [
-        "Migrated the Number Generator Service from Azure SQL to PostgreSQL, driving a significant infrastructure cost reduction.",
-        "Designed and built a Retrieval-Augmented Generation (RAG) service powering an AI-driven ticket management system.",
+        "Migrated the Number Generator Service from Azure SQL to PostgreSQL. TODO(samyak): add the % / $ infrastructure cost-reduction figure.",
+        "Designed and built a Retrieval-Augmented Generation (RAG) service powering an AI-driven ticket management system. TODO(samyak): add a RAG metric (p95 latency / tickets handled / deflection rate).",
         "Grew from a backend-focused role into full-stack delivery, taking ownership of containerization and deployment with Docker, Kubernetes, and CI/CD."
       ]
     },
@@ -176,12 +245,67 @@
       "title": "Splitmoney",
       "subtitle": "Real-Time Expense Splitting WebApp",
       "description": "An event-driven expense-splitting platform with real-time debt resolution. Card/UPI payments settle debts via Hyperswitch with webhook-driven async processing, idempotent balance updates, and event-sourced reconciliation across microservices.",
-      "stack": ["Java", "Spring Boot", "gRPC", "Protobuf", "RabbitMQ", "Redis", "Hyperswitch", "Microservices"],
+      "stack": [
+        "Java",
+        "Spring Boot",
+        "gRPC",
+        "Protobuf",
+        "RabbitMQ",
+        "Redis",
+        "Hyperswitch",
+        "Microservices"
+      ],
       "role": "Designer & Backend Engineer",
       "year": "2024",
       "link": "https://github.com/samyak2405/Splitmoney-App-Backend",
       "image": "",
-      "highlight": true
+      "highlight": true,
+      "repo": "https://github.com/samyak2405/Splitmoney-App-Backend"
+    },
+    {
+      "id": "contract-scanner",
+      "title": "Smart Contract Vulnerability Scanner",
+      "subtitle": "AI + blockchain security analysis",
+      "description": "TODO(samyak): describe Smart Contract Vulnerability Scanner — the problem, your approach, and one headline metric.",
+      "stack": [
+        "TODO(samyak): stack"
+      ],
+      "role": "Creator",
+      "year": "TODO(samyak): year",
+      "repo": "",
+      "demo": "",
+      "media": "",
+      "highlight": false
+    },
+    {
+      "id": "systemforge",
+      "title": "SystemForge",
+      "subtitle": "HLD system-design simulator (drag-and-drop canvas)",
+      "description": "TODO(samyak): describe SystemForge — the problem, your approach, and one headline metric.",
+      "stack": [
+        "TODO(samyak): stack"
+      ],
+      "role": "Creator",
+      "year": "TODO(samyak): year",
+      "repo": "",
+      "demo": "",
+      "media": "",
+      "highlight": false
+    },
+    {
+      "id": "rag-financial-advice",
+      "title": "Production RAG for Financial Advice",
+      "subtitle": "Retrieval-augmented financial guidance",
+      "description": "TODO(samyak): describe Production RAG for Financial Advice — the problem, your approach, and one headline metric.",
+      "stack": [
+        "TODO(samyak): stack"
+      ],
+      "role": "Creator",
+      "year": "TODO(samyak): year",
+      "repo": "",
+      "demo": "",
+      "media": "",
+      "highlight": false
     }
   ],
   "education": [

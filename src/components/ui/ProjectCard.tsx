@@ -2,6 +2,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight, Plus } from 'lucide-react'
 import { useState } from 'react'
 import type { Project } from '../../types/portfolio'
+import { asset } from '../../lib/asset'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
@@ -20,6 +21,9 @@ export default function ProjectCard({
   const [open, setOpen] = useState(defaultOpen)
   const reduce = useReducedMotion()
   const panelId = `project-${project.id}`
+  const repoHref = project.repo || project.link
+  const media = project.media || project.image
+  const resolveSrc = (m: string) => (m.startsWith('http') ? m : asset(m))
 
   return (
     <motion.article
@@ -75,25 +79,55 @@ export default function ProjectCard({
             className="overflow-hidden"
           >
             <div className="border-t border-hairline px-6 pb-7 pt-6 md:px-9">
+              {media &&
+                (/\.(mp4|webm)$/.test(media) ? (
+                  <video
+                    src={resolveSrc(media)}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="mb-6 w-full rounded-xl border border-hairline"
+                  />
+                ) : (
+                  <img
+                    src={resolveSrc(media)}
+                    alt={`${project.title} preview`}
+                    loading="lazy"
+                    className="mb-6 w-full rounded-xl border border-hairline"
+                  />
+                ))}
               <p className="max-w-2xl leading-relaxed text-steel-300 [text-wrap:pretty]">
                 {project.description}
               </p>
-              {project.link && (
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group/link mt-6 inline-flex min-h-[44px] items-center gap-2 text-sm text-steel-100"
-                >
-                  <span className="border-b border-steel-500 pb-0.5 transition-colors group-hover/link:border-accent">
-                    View repository
-                  </span>
-                  <ArrowUpRight
-                    size={16}
-                    className="transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
-                  />
-                </a>
-              )}
+              <div className="mt-6 flex flex-wrap items-center gap-x-7 gap-y-2">
+                {project.demo && (
+                  <a
+                    href={project.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group/link inline-flex min-h-[44px] items-center gap-2 text-sm text-accent"
+                  >
+                    <span className="border-b border-accent/50 pb-0.5 transition-colors group-hover/link:border-accent">
+                      View demo
+                    </span>
+                    <ArrowUpRight size={16} className="transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
+                  </a>
+                )}
+                {repoHref && (
+                  <a
+                    href={repoHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group/link inline-flex min-h-[44px] items-center gap-2 text-sm text-steel-100"
+                  >
+                    <span className="border-b border-steel-500 pb-0.5 transition-colors group-hover/link:border-accent">
+                      View repository
+                    </span>
+                    <ArrowUpRight size={16} className="transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
+                  </a>
+                )}
+              </div>
             </div>
           </motion.div>
         )}

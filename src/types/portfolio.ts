@@ -68,8 +68,14 @@ export interface Project {
   stack: string[]
   role: string
   year: string
-  link: string
-  image: string
+  /** Source repository. `repo` is preferred; `link` is kept for back-compat. */
+  link?: string
+  repo?: string
+  /** Live demo / deployed app. Shown as the primary link when present. */
+  demo?: string
+  /** Optional screenshot / GIF / video (path or URL). */
+  media?: string
+  image?: string
   highlight: boolean
 }
 
