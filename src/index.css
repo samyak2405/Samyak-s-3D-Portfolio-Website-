@@ -227,27 +227,35 @@ section[id] {
     }
   }
 
-  /* Continuously-scrolling marquee of cards. Two identical sets sit side by side
-     and the track translates by one set (-50%) for a seamless loop. Pauses on
-     hover, on keyboard focus, and while a card is open (.is-paused). */
-  .marquee-track {
-    animation: marquee var(--marquee-dur, 44s) linear infinite;
+  /* 3D revolving carousel: cards sit on a cylinder that rotates around the Y
+     axis. Rotation pauses on hover, on keyboard focus, and while a card is open
+     (.is-paused). Back-facing cards are hidden so only the front arc shows. */
+  .ring3d {
+    position: absolute;
+    transform-style: preserve-3d;
+    animation: ring-spin var(--ring-dur, 30s) linear infinite;
   }
-  .marquee.is-paused .marquee-track,
-  .marquee:hover .marquee-track,
-  .marquee:focus-within .marquee-track {
+  .ring3d-scene:hover .ring3d,
+  .ring3d-scene:focus-within .ring3d,
+  .ring3d.is-paused {
     animation-play-state: paused;
   }
-  @keyframes marquee {
+  .ring3d-item {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  @keyframes ring-spin {
     from {
-      transform: translateX(0);
+      transform: rotateY(0);
     }
     to {
-      transform: translateX(-50%);
+      transform: rotateY(360deg);
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .marquee-track {
+    .ring3d {
       animation: none;
     }
   }
