@@ -163,28 +163,46 @@ section[id] {
     }
   }
 
-  /* Periodic-table skill tiles. The per-tile category colour is injected as the
-     --cat / --cat-glow / --cat-soft CSS variables, so one class skins every
-     element and the hover glow matches the category. */
-  .pt-tile {
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease,
-      background-color 0.2s ease;
+  /* Floating skill "atoms". The per-atom category colour is injected as the
+     --cat / --cat-glow / --cat-dim CSS variables; a physics loop drives each
+     atom's translate transform, while an orbiting electron spins on ::before. */
+  .atom {
+    touch-action: none;
+    cursor: grab;
+    will-change: transform;
+    background: rgba(18, 20, 24, 0.72);
+    border: 1.5px solid var(--cat-dim);
+    box-shadow: 0 8px 22px -10px var(--cat-glow);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
   }
-  @media (hover: hover) {
-    .pt-tile:hover {
-      transform: translateY(-3px);
-      border-color: var(--cat);
-      background-color: var(--cat-soft);
-      box-shadow: 0 0 0 1px var(--cat-glow), 0 12px 26px -12px var(--cat-glow);
+  .atom::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 0, var(--cat) 0 2.5px, transparent 3.5px);
+    opacity: 0.7;
+    animation: orbit 6s linear infinite;
+  }
+  .atom:hover,
+  .atom:active {
+    border-color: var(--cat);
+    box-shadow: 0 0 0 1px var(--cat-glow), 0 0 24px -2px var(--cat-glow);
+  }
+  .atom:active {
+    cursor: grabbing;
+  }
+  @keyframes orbit {
+    to {
+      transform: rotate(360deg);
     }
   }
-  .pt-tile:focus-within {
-    border-color: var(--cat);
-    box-shadow: 0 0 0 1px var(--cat-glow);
-  }
   @media (prefers-reduced-motion: reduce) {
-    .pt-tile:hover {
-      transform: none;
+    .atom {
+      cursor: default;
+    }
+    .atom::before {
+      animation: none;
     }
   }
 
