@@ -57,8 +57,9 @@ p {
   word-break: normal;
 }
 
+/* Clear the fixed header (h-16 mobile / h-20 desktop) on anchor jumps. */
 section[id] {
-  scroll-margin-top: 90px;
+  scroll-margin-top: 5.5rem;
 }
 
 :focus-visible {
