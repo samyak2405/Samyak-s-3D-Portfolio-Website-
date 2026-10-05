@@ -1,35 +1,46 @@
-# Samyak Moon — 3D Personal Portfolio
+# Samyak Moon — Portfolio
 
-A polished, fully responsive single-page portfolio for **Samyak Moon**, a Backend
-Software Engineer working in fintech, distributed systems, and payments.
+A personal portfolio for **Samyak Moon**, a backend / full-stack software engineer
+(Java, Spring Boot, distributed systems, and AI/RAG). A single-page site with a
+**gamer + coder** aesthetic: a dark, IDE-at-night feel with restrained neon, a
+friendly 3D cartoon character who guides each section, and buttery smooth scrolling.
 
-The "3D" is real WebGL: the hero renders a live **distributed-systems graph** — steel
-service nodes connected by hairline edges, with warm packets travelling the edges like
-payments and events moving through a platform. It is the one visual idea of the site and
-it maps directly to the work. The scene eases toward the cursor, idles when it scrolls
-off screen, and collapses to a static backdrop under reduced-motion or if WebGL is
-unavailable.
+**Live:** https://samyak2405.github.io/samyak-moon-portfolio/
 
-Everything else is calm and typographic: a single dark theme, cool-steel structure, and
-one locked **amber** accent. All content is read from a single typed JSON file, so
-updating the site never means touching a component.
+## Highlights
+
+- **Gamer/coder dark theme** — deep near-black surfaces, electric-blue + magenta
+  neon used sparingly (glows, active states, key words), monospace headings, and a
+  faint IDE grid. Signature touches: a blinking terminal cursor, `// code-comment`
+  section labels, and an "active quest" glow on the current role.
+- **A 3D character guide** — a rim-lit cartoon render per section (wave, presenting,
+  coding at the desk, thinking, thumbs-up) that enters on scroll and drifts with
+  parallax.
+- **Content as visuals** — an interactive skills grid (grouped, with the newest
+  skills flagged), an expandable **"play card"** timeline with glassmorphism, animated
+  count-up stats, schematic system diagrams, and expandable project cards.
+- **Smooth, cinematic scroll** — Lenis inertial scrolling driven through GSAP
+  ScrollTrigger, with scroll-reveals and light parallax.
+- **Fast and accessible** — mobile Lighthouse ≈ Performance 90+, Accessibility 100,
+  Best Practices 100, SEO 100. Everything respects `prefers-reduced-motion` and
+  `prefers-reduced-transparency`.
 
 ## Tech stack
 
 - **React 18** + **TypeScript**
 - **Vite 6** (dev server + build)
 - **Tailwind CSS 3** (design tokens)
-- **React Three Fiber** + **drei** + **three** (the hero 3D scene, code-split)
-- **Framer Motion** (scroll reveals, magnetic CTAs, 3D tilt — all motion-value based)
+- **Lenis** (smooth scroll) + **GSAP** / ScrollTrigger (scroll-driven animation)
+- **Framer Motion** (component micro-interactions, reveals, card expand/collapse)
 - **lucide-react** (icons)
-- Fonts: **Bricolage Grotesque** (display/UI) + **JetBrains Mono** (data/labels), Google Fonts
+- Fonts: **JetBrains Mono** (headings/labels/code) + **Hanken Grotesk** (body)
 
 ## Getting started
 
 ```bash
 npm install       # install dependencies
 npm run dev       # start the dev server (http://localhost:5173)
-npm run build     # typecheck + production build to dist/
+npm run build     # type-check + production build to dist/
 npm run preview   # serve the production build locally
 npm run typecheck # type-check only (tsc --noEmit)
 ```
@@ -38,86 +49,88 @@ Requires Node 18+.
 
 ## Editing content — one file
 
-**All** profile, metrics, skills, experience, project, service, and education content
-lives in [`src/data/portfolio.json`](src/data/portfolio.json). Components never hardcode
-copy — they read the JSON through the typed [`usePortfolio()`](src/hooks/usePortfolio.ts)
-hook, shaped by [`src/types/portfolio.ts`](src/types/portfolio.ts).
+**All** profile, metrics, skills, experience, service, and project content lives in
+[`src/data/portfolio.json`](src/data/portfolio.json), typed by
+[`src/types/portfolio.ts`](src/types/portfolio.ts) and read through the
+[`usePortfolio()`](src/hooks/usePortfolio.ts) hook. Components never hardcode copy —
+to change anything on the site, edit `portfolio.json`.
 
-To change anything on the site, **edit `portfolio.json`**. A few behaviors to know:
+A few behaviors to know:
 
-- **Empty data hides its UI.** Empty social links (`instagram`/`website`) don't render;
-  an empty `projects: []` array hides the Work section entirely.
-- **Projects**: the project with `"highlight": true` is featured; the "View repository"
-  button only appears when `link` is non-empty.
-- **Metrics**: the `metrics` array drives the figures in the About section.
+- **Empty data hides its UI.** Empty social links aren't rendered; an empty
+  `projects: []` array hides the Work section.
+- **Experience**: the entry with `"active": true` becomes the top, glowing "NOW" node
+  and opens by default.
+- **Skills**: items with `"recent": true` get the magenta "new" treatment.
 
-## The 3D scene
+## Character art
 
-The hero scene lives in [`src/three/`](src/three) and is lazy-loaded, so three.js never
-blocks first paint:
+The guide is a set of pre-rendered 3D images on a dark spotlight backdrop that
+matches the theme. They are **not** cut out — the backdrop is kept and the edges are
+feathered so each image blends into the page with no visible box.
 
-- [`graph.ts`](src/three/graph.ts) — pure, seeded generator for the node/edge/packet
-  geometry (no magic numbers in the components).
-- [`SystemGraph.tsx`](src/three/SystemGraph.tsx) — instanced nodes, edges, and animated
-  packets; pointer-eased rotation; freezes to one frame under reduced-motion.
-- [`HeroCanvas.tsx`](src/three/HeroCanvas.tsx) — the R3F `<Canvas>`: capped DPR, depth
-  fog, lighting, and a render loop that idles when the hero is off screen.
-- [`CanvasMount.tsx`](src/three/CanvasMount.tsx) — lazy load, in-view pausing, and an
-  error boundary that falls back to a static backdrop.
+- Source PNGs live in `characters-src/` (gitignored; not shipped).
+- [`scripts/process-characters.py`](scripts/process-characters.py) paints out the
+  watermark, crops a head-centered portrait, resizes, feathers the edges, and encodes
+  WebP into `public/characters/` (what the site ships, ~260 KB total). Requires
+  Pillow (`pip install Pillow`); re-run after adding or replacing a pose.
 
 ## Project structure
 
 ```
-index.html                 # entry HTML, fonts, meta/OG tags
+index.html                 # entry HTML, fonts, meta/OG tags, theme-color
 vercel.json                # Vercel: vite framework + SPA rewrite
-public/favicon.svg         # brand monogram favicon
+public/
+  characters/*.webp        # optimized character art (shipped)
+  favicon.svg  robots.txt
+scripts/process-characters.py
 src/
   main.tsx                 # React entry
-  App.tsx                  # section composition + skip link
-  index.css                # design tokens, base styles, utilities
+  App.tsx                  # section composition + smooth scroll
+  index.css                # theme tokens, ambiance, glass, cursor, neon helpers
   types/portfolio.ts       # TypeScript interfaces for the JSON
   data/portfolio.json      # ALL site content
   hooks/
     usePortfolio.ts        # typed content accessor
-    useScrollSpy.ts        # IntersectionObserver-based nav highlighting
-    useInView.ts           # pauses the 3D loop when the hero is off screen
+    useSmoothScroll.ts     # Lenis + GSAP ticker/ScrollTrigger wiring
+    useGsap.ts             # scoped, reduced-motion-aware GSAP helper
+    useScrollSpy.ts        # IntersectionObserver nav highlighting
   lib/
-    asset.ts               # base-path-aware public asset resolver
-    cn.ts                  # class-name join helper
-    icons.ts               # maps service icon names -> lucide components
-  three/                   # the hero 3D scene (see above)
+    asset.ts  cn.ts  gsap.ts  icons.ts
   components/
-    layout/   Navbar.tsx  Footer.tsx
-    ui/       Reveal.tsx  SectionHeading.tsx  MagneticLink.tsx  TiltCard.tsx  SocialLinks.tsx
-    sections/ Hero.tsx  About.tsx  Experience.tsx  Expertise.tsx  Work.tsx  Contact.tsx
+    layout/   Navbar.tsx
+    ui/       Character.tsx  Counter.tsx  ExperienceCard.tsx  ProjectCard.tsx
+              MagneticLink.tsx  Reveal.tsx  SectionHeading.tsx  Statement.tsx
+    diagrams/ DiagramPanel.tsx  primitives.tsx  PaymentFlowDiagram.tsx
+              CardSecurityDiagram.tsx  TopologyDiagram.tsx
+    sections/ Hero.tsx  About.tsx  Skills.tsx  Experience.tsx  Systems.tsx
+              Expertise.tsx  Work.tsx  Contact.tsx
 ```
 
-## Accessibility & responsiveness
+## Accessibility & performance
 
-- Single dark theme; responsive from small phones to large desktops.
-- Respects `prefers-reduced-motion`: the 3D scene, scroll reveals, magnetic CTAs, and the
-  card tilt all stand down to static.
-- Semantic landmarks, a skip link, `aria-label`s on icon-only controls, visible focus
-  rings, and keyboard-reachable navigation.
+- Single dark theme with WCAG AA contrast (verified for neon-on-dark).
+- `prefers-reduced-motion`: smooth scroll, GSAP/Framer reveals, the cursor, and
+  parallax all stand down to static. `prefers-reduced-transparency`: glass surfaces
+  fall back to solid.
+- Semantic landmarks, a skip link, `aria-expanded` on the interactive cards, visible
+  focus rings, meaningful alt text on the character images, and keyboard-reachable
+  navigation.
+- Character art ships as small WebP; off-screen poses load lazily.
 
 ## Deployment
 
-The app is a static SPA — no server runtime needed. It builds from root (`base: /`)
-for local, preview, and Vercel; the Pages workflow overrides `base` to the repo
-subpath via the `BASE_PATH` env var.
+Static SPA — no server runtime. Builds from root (`base: /`) for local, preview, and
+Vercel; the GitHub Pages workflow overrides `base` to the repo subpath via `BASE_PATH`.
 
 ### GitHub Pages (automated)
 
-A workflow at [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) type-checks,
-builds, and publishes to GitHub Pages on every push to `main` (and on manual dispatch).
-
-One-time setup: in **Settings → Pages**, set **Source** to **GitHub Actions**. The site
-then publishes to `https://<user>.github.io/<repo>/`.
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) type-checks, builds,
+and publishes to GitHub Pages on every push to `main`. One-time setup: **Settings →
+Pages → Source → GitHub Actions**. Publishes to `https://<user>.github.io/<repo>/`.
 
 ### Vercel
 
-1. Import the repo in Vercel (it auto-detects Vite via `vercel.json`).
-2. Build command `npm run build`, output directory `dist` — already configured.
-3. The SPA rewrite in `vercel.json` routes all paths to `index.html`.
-
-Any static host works too: run `npm run build` and serve the `dist/` folder.
+Import the repo (auto-detected via `vercel.json`); build `npm run build`, output
+`dist`, with an SPA rewrite to `index.html`. Any static host works: run
+`npm run build` and serve `dist/`.
