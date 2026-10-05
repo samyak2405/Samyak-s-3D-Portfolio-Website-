@@ -54,12 +54,9 @@ function atomStyle(color: string): CSSProperties {
   } as CSSProperties
 }
 
-function AtomInner({ el, num }: { el: Element; num: number }) {
+function AtomInner({ el }: { el: Element }) {
   return (
     <>
-      <span className="pointer-events-none absolute left-2 top-1.5 font-mono text-[0.55rem] leading-none text-steel-500">
-        {num}
-      </span>
       {el.recent && (
         <span
           aria-hidden
@@ -251,9 +248,8 @@ function AtomField({ elements }: { elements: Element[] }) {
     <div
       ref={container}
       aria-hidden
-      className="relative mt-6 h-[64vh] min-h-[420px] w-full overflow-hidden rounded-2xl border border-hairline bg-ink-2/30"
+      className="relative mt-6 h-[64vh] min-h-[420px] w-full"
     >
-      <div aria-hidden className="grid-bg absolute inset-0 opacity-30" />
       {elements.map((el, i) => (
         <div
           key={`${el.category}-${el.name}`}
@@ -263,7 +259,7 @@ function AtomField({ elements }: { elements: Element[] }) {
           style={atomStyle(el.color)}
           className="atom absolute left-0 top-0 flex flex-col items-center justify-center rounded-full text-center"
         >
-          <AtomInner el={el} num={i + 1} />
+          <AtomInner el={el} />
         </div>
       ))}
     </div>
@@ -274,14 +270,14 @@ function AtomField({ elements }: { elements: Element[] }) {
 function StaticAtoms({ elements }: { elements: Element[] }) {
   return (
     <div className="mt-6 flex flex-wrap justify-center gap-3">
-      {elements.map((el, i) => (
+      {elements.map((el) => (
         <div
           key={`${el.category}-${el.name}`}
           title={`${el.name} · ${el.category}`}
           style={atomStyle(el.color)}
           className="atom relative flex flex-col items-center justify-center rounded-full text-center"
         >
-          <AtomInner el={el} num={i + 1} />
+          <AtomInner el={el} />
         </div>
       ))}
     </div>
