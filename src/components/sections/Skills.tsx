@@ -293,7 +293,7 @@ function SkillsList({ categories }: { categories: SkillCategory[] }) {
                   >
                     {item.name}
                     {item.recent && (
-                      <span className="text-[0.62rem] font-semibold uppercase tracking-wide text-amber">
+                      <span className="text-xs font-semibold uppercase tracking-wide text-amber">
                         new
                       </span>
                     )}

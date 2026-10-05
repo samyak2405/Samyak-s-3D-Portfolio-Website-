@@ -110,7 +110,7 @@ export default function Hero() {
           <p className="hero-rise mt-6 text-lg text-steel-300">Hi, I'm Samyak Moon.</p>
           <h1
             aria-label={HEAD_FULL}
-            className="hero-rise display mt-3 text-[1.9rem] leading-[1.1] text-steel-100 sm:text-4xl lg:text-[2.9rem]"
+            className="hero-rise headline h-fluid-1 mt-3 text-steel-100"
           >
             <TypedHeadline />
           </h1>

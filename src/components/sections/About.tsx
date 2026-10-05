@@ -30,7 +30,7 @@ export default function About() {
           <p className="about-reveal mono-label text-accent">
             <span className="text-steel-500">// </span>about
           </p>
-          <h2 className="about-reveal display mt-4 text-3xl text-steel-100 sm:text-4xl md:text-5xl">
+          <h2 className="about-reveal display h-fluid-2 mt-4 text-steel-100">
             I own whole systems, not tickets.
           </h2>
           <p className="about-reveal mt-6 text-base leading-relaxed text-steel-300 md:text-lg [text-wrap:pretty]">

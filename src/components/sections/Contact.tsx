@@ -40,7 +40,7 @@ export default function Contact() {
               </p>
             </Reveal>
             <Reveal delay={0.05}>
-              <h2 className="display mt-5 text-4xl leading-[1.05] sm:text-5xl md:text-6xl">
+              <h2 className="display h-fluid-2 mt-5">
                 Let's build something
                 <br className="hidden sm:block" /> that has to be correct.
               </h2>

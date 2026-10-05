@@ -13,6 +13,9 @@
   --accent: #4d8bff;
   --accent-strong: #6aa0ff;
   --magenta: #c65cff;
+  /* Swap font families in one place. */
+  --font-sans: 'Geist Variable', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, monospace;
 }
 
 * {
@@ -46,7 +49,7 @@ html.lenis body {
 body {
   background-color: #0a0b0d;
   color: #e8eaed;
-  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -103,19 +106,37 @@ section[id] {
 
   /* Mono label for section markers, stats and code-flavored meta. */
   .mono-label {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 0.6875rem;
-    letter-spacing: 0.2em;
+    font-family: var(--font-mono);
+    font-size: 0.75rem; /* 12px minimum */
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #878c98;
+    color: #9aa0a6; /* AA on #0a0b0d */
   }
 
   /* Display headings: mono, tight, confident (the coder identity). */
+  /* Section headings: Geist, tight. */
   .display {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-weight: 700;
-    line-height: 1.04;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    line-height: 1.05;
     letter-spacing: -0.03em;
+  }
+
+  /* Hero headline keeps the mono "signature" look. */
+  .headline {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  /* Fluid type scale. h1 is tuned a touch tighter than the generic scale
+     because the mono hero glyphs are wider and share a narrow column. */
+  .h-fluid-1 {
+    font-size: clamp(2rem, 4vw + 0.75rem, 3.25rem);
+  }
+  .h-fluid-2 {
+    font-size: clamp(1.875rem, 3vw + 1rem, 3rem);
   }
 
   /* Faint grid, like an IDE / terminal backdrop. */

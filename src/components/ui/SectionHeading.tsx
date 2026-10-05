@@ -23,9 +23,7 @@ export default function SectionHeading({ title, lead, label, className }: Sectio
         </Reveal>
       )}
       <Reveal delay={label ? 0.05 : 0}>
-        <h2 className="display mt-4 text-2xl text-steel-100 sm:text-3xl md:text-[2.4rem]">
-          {title}
-        </h2>
+        <h2 className="display h-fluid-2 mt-4 text-steel-100">{title}</h2>
       </Reveal>
       {lead && (
         <Reveal delay={0.1}>

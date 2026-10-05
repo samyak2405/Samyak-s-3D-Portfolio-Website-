@@ -41,10 +41,12 @@ export default {
         hairline: 'rgba(255,255,255,0.08)',
         'hairline-strong': 'rgba(255,255,255,0.14)',
       },
+      // Families resolve through CSS variables (defined in index.css) so the
+      // whole site can be re-skinned from one place.
       fontFamily: {
-        display: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
-        sans: ['"Hanken Grotesk"', 'system-ui', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        display: ['var(--font-sans)'],
+        sans: ['var(--font-sans)'],
+        mono: ['var(--font-mono)'],
       },
       maxWidth: {
         content: '1240px',

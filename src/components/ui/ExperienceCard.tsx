@@ -53,7 +53,7 @@ export default function ExperienceCard({
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-mono text-xs text-accent">{exp.period}</span>
             {exp.active && (
-              <span className="rounded-full border border-accent/40 bg-accent-dim px-2 py-0.5 font-mono text-[0.6rem] tracking-wider text-accent">
+              <span className="rounded-full border border-accent/40 bg-accent-dim px-2 py-0.5 font-mono text-xs tracking-wider text-accent">
                 NOW
               </span>
             )}
