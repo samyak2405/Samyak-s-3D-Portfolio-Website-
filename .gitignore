@@ -48,3 +48,6 @@ skills-lock.json
 
 # Character image source (large PNGs; only the optimized WebP in public/ ship)
 characters-src/
+
+# Local verification artifacts
+screenshots/
