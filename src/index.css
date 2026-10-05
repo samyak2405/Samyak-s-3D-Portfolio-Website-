@@ -163,6 +163,31 @@ section[id] {
     }
   }
 
+  /* Periodic-table skill tiles. The per-tile category colour is injected as the
+     --cat / --cat-glow / --cat-soft CSS variables, so one class skins every
+     element and the hover glow matches the category. */
+  .pt-tile {
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease,
+      background-color 0.2s ease;
+  }
+  @media (hover: hover) {
+    .pt-tile:hover {
+      transform: translateY(-3px);
+      border-color: var(--cat);
+      background-color: var(--cat-soft);
+      box-shadow: 0 0 0 1px var(--cat-glow), 0 12px 26px -12px var(--cat-glow);
+    }
+  }
+  .pt-tile:focus-within {
+    border-color: var(--cat);
+    box-shadow: 0 0 0 1px var(--cat-glow);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pt-tile:hover {
+      transform: none;
+    }
+  }
+
   /* Blinking terminal cursor (signature touch). */
   .cursor {
     display: inline-block;
