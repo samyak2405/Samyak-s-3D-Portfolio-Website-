@@ -3,7 +3,6 @@ import { ArrowUpRight, Menu, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { usePortfolio } from '../../hooks/usePortfolio'
 import { useScrollSpy } from '../../hooks/useScrollSpy'
-import { asset } from '../../lib/asset'
 import { cn } from '../../lib/cn'
 
 const LINKS = [
@@ -15,8 +14,8 @@ const LINKS = [
   { id: 'contact', label: 'Contact' },
 ]
 
-// TODO(samyak): add resume.pdf to public/ (the nav + mobile menu link to it).
-const RESUME_HREF = asset('/resume.pdf')
+// Résumé (hosted on Google Drive so it can be updated without a redeploy).
+const RESUME_HREF = 'https://drive.google.com/file/d/1cSZYen95FkxBLyH9gXPjErrijZ74luh7/view'
 
 export default function Navbar() {
   const { profile } = usePortfolio()
