@@ -1,8 +1,73 @@
+import { useReducedMotion } from 'framer-motion'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { usePortfolio } from '../../hooks/usePortfolio'
 import { useGsap } from '../../hooks/useGsap'
 import Character from '../ui/Character'
 import MagneticLink from '../ui/MagneticLink'
+
+// The headline, split so the second "systems" keeps its magenta glow.
+const HEAD_A = 'I build the systems behind the '
+const HEAD_B = 'systems'
+const HEAD_C = '.'
+const HEAD_FULL = HEAD_A + HEAD_B + HEAD_C
+
+/**
+ * Types the headline out character by character. The full text is always in the
+ * DOM (untyped chars are transparent) so layout never shifts and the heading
+ * stays readable to search engines and screen readers. A caret blinks at the
+ * typing position and is removed once typing finishes. Under reduced-motion the
+ * whole headline shows instantly with no caret.
+ */
+function TypedHeadline() {
+  const reduce = useReducedMotion()
+  const [count, setCount] = useState(reduce ? HEAD_FULL.length : 0)
+
+  useEffect(() => {
+    if (reduce) {
+      setCount(HEAD_FULL.length)
+      return
+    }
+    let i = 0
+    let interval: ReturnType<typeof setInterval>
+    // Start just after the heading has risen in.
+    const delay = setTimeout(() => {
+      interval = setInterval(() => {
+        i += 1
+        setCount(i)
+        if (i >= HEAD_FULL.length) clearInterval(interval)
+      }, 48)
+    }, 450)
+    return () => {
+      clearTimeout(delay)
+      clearInterval(interval)
+    }
+  }, [reduce])
+
+  const done = count >= HEAD_FULL.length
+
+  const part = (text: string, start: number, className = '') => {
+    const n = Math.max(0, Math.min(text.length, count - start))
+    const caretHere = !reduce && !done && count >= start && count < start + text.length
+    return (
+      <>
+        <span className={className}>{text.slice(0, n)}</span>
+        {caretHere && <span className="cursor" aria-hidden />}
+        <span className="text-transparent">{text.slice(n)}</span>
+      </>
+    )
+  }
+
+  return (
+    <span aria-hidden>
+      {part(HEAD_A, 0)}
+      <span className="whitespace-nowrap">
+        {part(HEAD_B, HEAD_A.length, 'text-magenta glow-magenta')}
+        {part(HEAD_C, HEAD_A.length + HEAD_B.length)}
+      </span>
+    </span>
+  )
+}
 
 export default function Hero() {
   const { profile } = usePortfolio()
@@ -43,12 +108,11 @@ export default function Hero() {
         <div className="order-2 max-w-xl lg:order-1">
           <p className="hero-rise mono-label text-accent">// {profile.role}</p>
           <p className="hero-rise mt-6 text-lg text-steel-300">Hi, I'm Samyak Moon.</p>
-          <h1 className="hero-rise display mt-3 text-[1.9rem] leading-[1.1] text-steel-100 sm:text-4xl lg:text-[2.9rem]">
-            I build the systems behind the{' '}
-            <span className="whitespace-nowrap">
-              <span className="text-magenta glow-magenta">systems</span>.
-              <span className="cursor" aria-hidden />
-            </span>
+          <h1
+            aria-label={HEAD_FULL}
+            className="hero-rise display mt-3 text-[1.9rem] leading-[1.1] text-steel-100 sm:text-4xl lg:text-[2.9rem]"
+          >
+            <TypedHeadline />
           </h1>
           <p className="hero-rise mt-6 max-w-md leading-relaxed text-steel-300 md:text-lg">
             {profile.tagline}
