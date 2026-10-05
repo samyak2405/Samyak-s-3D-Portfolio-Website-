@@ -45,8 +45,8 @@ def paint_out_watermark(img: Image.Image) -> Image.Image:
     return img
 
 
-def feather_edges(img: Image.Image, fx: float = 0.13, fy_top: float = 0.04,
-                  fy_bot: float = 0.06) -> Image.Image:
+def feather_edges(img: Image.Image, fx: float = 0.22, fy_top: float = 0.05,
+                  fy_bot: float = 0.10) -> Image.Image:
     """Fade the outer edges to transparent so the dark backdrop melts into the
     page instead of showing as a rectangle. Keeps the centre (character) opaque."""
     img = img.convert("RGBA")
