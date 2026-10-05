@@ -137,12 +137,12 @@ section[id] {
     inset: 8% 2% 2% 2%;
     border-radius: 50%;
     background: radial-gradient(
-      52% 58% at 50% 42%,
-      rgba(77, 139, 255, 0.34),
-      rgba(198, 92, 255, 0.22) 55%,
-      transparent 76%
+      58% 62% at 50% 44%,
+      rgba(77, 139, 255, 0.20),
+      rgba(198, 92, 255, 0.13) 55%,
+      transparent 78%
     );
-    filter: blur(30px);
+    filter: blur(40px);
     z-index: -1;
     pointer-events: none;
   }

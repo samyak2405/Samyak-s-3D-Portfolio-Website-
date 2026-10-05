@@ -11,7 +11,7 @@ Put the sources in `characters-src/` (gitignored) and run:
 Outputs go to `public/characters/*.webp`.
 """
 import os
-from PIL import Image, ImageChops, ImageDraw
+from PIL import Image, ImageChops, ImageDraw, ImageFilter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "characters-src")
@@ -45,32 +45,22 @@ def paint_out_watermark(img: Image.Image) -> Image.Image:
     return img
 
 
-def feather_edges(img: Image.Image, fx: float = 0.22, fy_top: float = 0.05,
-                  fy_bot: float = 0.10) -> Image.Image:
-    """Fade the outer edges to transparent so the dark backdrop melts into the
-    page instead of showing as a rectangle. Keeps the centre (character) opaque."""
+def feather_edges(img: Image.Image, rx: float = 0.40, ry: float = 0.58,
+                  cx: float = 0.5, cy: float = 0.47, blur: float = 0.085) -> Image.Image:
+    """Vignette the backdrop to transparency with a SOFT ELLIPSE centred on the
+    character, so the render's own spotlight fades outward into the page as a
+    radial glow instead of a rectangular box. A rectangular feather would leave a
+    boxy opaque core (the spotlight has the same brightness as the dark clothing,
+    so it can't be keyed out per-pixel); a radial fade has no straight edges, so
+    the figure reads as part of the dark background."""
     img = img.convert("RGBA")
     w, h = img.size
-
-    def ramp(n, lo, hi):
-        row = Image.new("L", (n, 1))
-        px = row.load()
-        a = max(1, int(n * lo))
-        b = n - max(1, int(n * hi))
-        for i in range(n):
-            if i < a:
-                v = int(255 * i / a)
-            elif i > b:
-                v = int(255 * (n - i) / max(1, n - b))
-            else:
-                v = 255
-            px[i, 0] = max(0, min(255, v))
-        return row
-
-    hgrad = ramp(w, fx, fx).resize((w, h))
-    vgrad = ramp(h, fy_top, fy_bot).transpose(Image.ROTATE_90).resize((w, h))
-    alpha = ImageChops.darker(hgrad, vgrad)
-    img.putalpha(alpha)
+    mask = Image.new("L", (w, h), 0)
+    ImageDraw.Draw(mask).ellipse(
+        [(cx - rx) * w, (cy - ry) * h, (cx + rx) * w, (cy + ry) * h], fill=255
+    )
+    mask = mask.filter(ImageFilter.GaussianBlur(max(1, int(w * blur))))
+    img.putalpha(mask)
     return img
 
 
