@@ -51,6 +51,15 @@ export default function Contact() {
                 that has to hold up under load. The fastest way to reach me is email.
               </p>
             </Reveal>
+            {/* Avatar sits above the email on mobile; the desktop copy shows it on the right */}
+            <Reveal delay={0.12} className="mt-8 flex justify-center lg:hidden">
+              <Character
+                pose="contact-thumbsup"
+                alt="Samyak Moon, a 3D cartoon character in a navy suit, giving a friendly thumbs up"
+                shadow={false}
+                className="h-[220px] w-auto"
+              />
+            </Reveal>
             <Reveal delay={0.15}>
               <a
                 href={`mailto:${email}`}
@@ -70,13 +79,16 @@ export default function Contact() {
                     href={profile.social[l.key]}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-white/70 transition-colors hover:text-white"
+                    className="inline-flex min-h-[44px] items-center text-sm text-white/70 transition-colors hover:text-white"
                   >
                     {l.label}
                   </a>
                 ))}
                 {phone && (
-                  <a href={`tel:${phone}`} className="font-mono text-sm text-white/50 transition-colors hover:text-white/80">
+                  <a
+                    href={`tel:${phone}`}
+                    className="inline-flex min-h-[44px] items-center font-mono text-sm text-white/50 transition-colors hover:text-white/80"
+                  >
                     {phone}
                   </a>
                 )}
@@ -84,8 +96,8 @@ export default function Contact() {
             </Reveal>
           </div>
 
-          {/* Character */}
-          <div className="flex justify-center lg:justify-end">
+          {/* Character — desktop only (mobile shows it above the email) */}
+          <div className="hidden lg:flex lg:justify-end">
             <Character
               pose="contact-thumbsup"
               alt="Samyak Moon, a 3D cartoon character in a navy suit, giving a friendly thumbs up"
@@ -102,7 +114,10 @@ export default function Contact() {
           </p>
           <div className="flex items-center gap-6 font-mono text-xs">
             <span>© {year}</span>
-            <a href="#hero" className="transition-colors hover:text-white">
+            <a
+              href="#hero"
+              className="inline-flex min-h-[44px] items-center transition-colors hover:text-white"
+            >
               Back to top ↑
             </a>
           </div>

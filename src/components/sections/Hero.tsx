@@ -103,9 +103,9 @@ export default function Hero() {
         className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-ink to-transparent"
       />
 
-      <div className="container-edge relative grid min-h-[100dvh] items-center gap-8 pt-28 pb-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-6 lg:pt-20">
-        {/* Text */}
-        <div className="order-2 max-w-xl lg:order-1">
+      <div className="container-edge relative grid min-h-[100dvh] items-center gap-8 pt-24 pb-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-6 lg:pt-20">
+        {/* Text — first on mobile so the headline and CTAs are above the fold */}
+        <div className="order-1 max-w-xl">
           <p className="hero-rise mono-label text-accent">// {profile.role}</p>
           <p className="hero-rise mt-6 text-lg text-steel-300">Hi, I'm Samyak Moon.</p>
           <h1
@@ -129,13 +129,13 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Character */}
-        <div className="order-1 flex justify-center lg:order-2 lg:justify-end">
+        {/* Character — smaller on mobile, under the CTAs */}
+        <div className="order-2 flex justify-center lg:justify-end">
           <Character
             pose="hero-wave"
             alt="Samyak Moon, a 3D cartoon gamer-coder character in a hoodie with headphones, waving hello"
             priority
-            className="hero-character h-[44vh] w-auto sm:h-[52vh] lg:h-[82vh]"
+            className="hero-character h-[13.5rem] w-auto sm:h-[17rem] lg:h-[82vh]"
           />
         </div>
       </div>

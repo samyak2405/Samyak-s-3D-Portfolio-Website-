@@ -1,7 +1,8 @@
 import { useReducedMotion } from 'framer-motion'
-import { useLayoutEffect, useMemo, useRef, type CSSProperties, type PointerEvent } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent } from 'react'
 import { usePortfolio } from '../../hooks/usePortfolio'
-import Character from '../ui/Character'
+import type { SkillCategory } from '../../types/portfolio'
+import { cn } from '../../lib/cn'
 import Reveal from '../ui/Reveal'
 import SectionHeading from '../ui/SectionHeading'
 
@@ -18,7 +19,6 @@ const CATEGORY_COLORS: Record<string, string> = {
 }
 const FALLBACK_COLOR = '#4D8BFF'
 
-// Two-letter "element symbol" per skill (presentation only, so it lives here).
 const SYMBOLS: Record<string, string> = {
   Java: 'Jv', TypeScript: 'Ts', Python: 'Py', 'Spring Boot': 'Sb', 'REST APIs': 'Re',
   gRPC: 'gR', Microservices: 'Ms', 'Multi-Tenancy': 'Mt', RAG: 'Rg', 'LLM Integration': 'Ll',
@@ -91,9 +91,8 @@ function AtomField({ elements }: { elements: Element[] }) {
     const n = elements.length
     let w = box.clientWidth
     let h = box.clientHeight
-    const r = first.offsetWidth / 2
+    let r = first.offsetWidth / 2
 
-    // Loose grid placement so nothing starts badly overlapped.
     const cols = Math.max(1, Math.floor(w / (r * 2.3)))
     atoms.current = elements.map((_, i) => {
       const col = i % cols
@@ -116,7 +115,7 @@ function AtomField({ elements }: { elements: Element[] }) {
         if (el) el.style.transform = `translate3d(${a.cx - a.r}px, ${a.cy - a.r}px, 0)`
       }
     }
-    write() // position before first paint to avoid a flash
+    write()
 
     let raf = 0
     let running = true
@@ -126,7 +125,6 @@ function AtomField({ elements }: { elements: Element[] }) {
       for (let i = 0; i < n; i++) {
         if (i === dragged.current) continue
         const a = A[i]
-        // Flee the cursor
         if (p.active && dragged.current === -1) {
           const dx = a.cx - p.x
           const dy = a.cy - p.y
@@ -143,7 +141,6 @@ function AtomField({ elements }: { elements: Element[] }) {
         a.cy += a.vy
         a.vx *= 0.992
         a.vy *= 0.992
-        // keep gently alive
         const sp = Math.hypot(a.vx, a.vy)
         if (sp < 0.12) {
           const ang = Math.random() * Math.PI * 2
@@ -153,13 +150,11 @@ function AtomField({ elements }: { elements: Element[] }) {
           a.vx *= 4.5 / sp
           a.vy *= 4.5 / sp
         }
-        // walls
         if (a.cx < a.r) { a.cx = a.r; a.vx = Math.abs(a.vx) }
         else if (a.cx > w - a.r) { a.cx = w - a.r; a.vx = -Math.abs(a.vx) }
         if (a.cy < a.r) { a.cy = a.r; a.vy = Math.abs(a.vy) }
         else if (a.cy > h - a.r) { a.cy = h - a.r; a.vy = -Math.abs(a.vy) }
       }
-      // collisions (equal mass; a dragged atom shoves the others)
       for (let i = 0; i < n; i++) {
         for (let j = i + 1; j < n; j++) {
           const a = A[i]
@@ -210,15 +205,23 @@ function AtomField({ elements }: { elements: Element[] }) {
       }
     }
     const onUp = () => { dragged.current = -1 }
-    const onResize = () => {
-      w = box.clientWidth
-      h = box.clientHeight
-      for (const a of atoms.current) { a.cx = clamp(a.cx, a.r, w - a.r); a.cy = clamp(a.cy, a.r, h - a.r) }
-    }
     window.addEventListener('pointermove', onMove)
     window.addEventListener('pointerup', onUp)
-    window.addEventListener('resize', onResize)
-    // Pause when the field is off-screen.
+
+    // Size the bounds from the container's real width, and re-clamp on resize /
+    // rotation so no atom is ever left outside.
+    const ro = new ResizeObserver(() => {
+      w = box.clientWidth
+      h = box.clientHeight
+      r = (nodes.current[0]?.offsetWidth ?? r * 2) / 2
+      for (const a of atoms.current) {
+        a.r = r
+        a.cx = clamp(a.cx, a.r, w - a.r)
+        a.cy = clamp(a.cy, a.r, h - a.r)
+      }
+    })
+    ro.observe(box)
+
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !running) { running = true; raf = requestAnimationFrame(step) }
@@ -233,7 +236,7 @@ function AtomField({ elements }: { elements: Element[] }) {
       cancelAnimationFrame(raf)
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('pointerup', onUp)
-      window.removeEventListener('resize', onResize)
+      ro.disconnect()
       io.disconnect()
     }
   }, [elements])
@@ -245,11 +248,7 @@ function AtomField({ elements }: { elements: Element[] }) {
   }
 
   return (
-    <div
-      ref={container}
-      aria-hidden
-      className="relative mt-6 h-[64vh] min-h-[420px] w-full"
-    >
+    <div ref={container} aria-hidden className="relative mt-6 h-[64vh] min-h-[420px] w-full">
       {elements.map((el, i) => (
         <div
           key={`${el.category}-${el.name}`}
@@ -266,20 +265,45 @@ function AtomField({ elements }: { elements: Element[] }) {
   )
 }
 
-/** Calm static layout for reduced-motion / no-JS. */
-function StaticAtoms({ elements }: { elements: Element[] }) {
+/** Plain grouped rows of chips — the default on mobile and under reduced-motion. */
+function SkillsList({ categories }: { categories: SkillCategory[] }) {
   return (
-    <div className="mt-6 flex flex-wrap justify-center gap-3">
-      {elements.map((el) => (
-        <div
-          key={`${el.category}-${el.name}`}
-          title={`${el.name} · ${el.category}`}
-          style={atomStyle(el.color)}
-          className="atom relative flex flex-col items-center justify-center rounded-full text-center"
-        >
-          <AtomInner el={el} />
-        </div>
-      ))}
+    <div className="mt-8 grid gap-x-10 gap-y-9 sm:grid-cols-2">
+      {categories.map((category) => {
+        const color = CATEGORY_COLORS[category.name] ?? FALLBACK_COLOR
+        return (
+          <Reveal key={category.name} className="border-t border-hairline pt-5">
+            <h3 className="flex items-center gap-2 text-sm font-semibold text-steel-100">
+              <span
+                aria-hidden
+                className="h-2 w-2 rounded-full"
+                style={{ background: color, boxShadow: `0 0 8px ${rgba(color, 0.55)}` }}
+              />
+              {category.name}
+            </h3>
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {category.items.map((item) => (
+                <li key={item.name}>
+                  <span
+                    className={cn(
+                      'inline-flex items-center gap-1.5 rounded-full border bg-ink-2 px-3 py-1.5 font-mono text-sm',
+                      item.recent ? 'text-amber-strong' : 'text-steel-200',
+                    )}
+                    style={{ borderColor: rgba(color, item.recent ? 0.5 : 0.28) }}
+                  >
+                    {item.name}
+                    {item.recent && (
+                      <span className="text-[0.62rem] font-semibold uppercase tracking-wide text-amber">
+                        new
+                      </span>
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        )
+      })}
     </div>
   )
 }
@@ -302,49 +326,71 @@ export default function Skills() {
     [skills],
   )
 
+  // Default to the calm list on mobile and under reduced-motion; the physics
+  // playground ("atoms") is opt-in there and the default on desktop.
+  const [view, setView] = useState<'atoms' | 'list'>(() => {
+    if (typeof window === 'undefined') return 'list'
+    return window.matchMedia('(min-width: 768px)').matches ? 'atoms' : 'list'
+  })
+  const activeView = reduce ? 'list' : view
+
   return (
     <section id="skills" className="relative border-t border-hairline py-24 md:py-32">
       <div className="container-edge">
-        <div className="grid items-center gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:gap-12">
-          <Reveal className="order-2 flex justify-center lg:order-1 lg:justify-start">
-            <Character
-              pose="skills-gesturing"
-              alt="Samyak Moon, a 3D cartoon character in a hoodie, presenting his skills"
-              className="w-full max-w-[13rem] lg:max-w-xs"
-            />
-          </Reveal>
-          <Reveal className="order-1 lg:order-2">
-            <SectionHeading
-              label="skills"
-              title="The periodic table of my stack"
-              lead="Every tool I build with, as a floating element — drag one and toss it around, or just watch them drift. The magenta-dotted elements are what I've picked up most recently."
-            />
-          </Reveal>
+        <SectionHeading
+          label="skills"
+          title="The periodic table of my stack"
+          lead="Every tool I build with, grouped by where it lives in a system. The magenta-tagged skills are what I've picked up most recently."
+        />
+
+        {/* View toggle + (atoms) legend */}
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+          {!reduce && (
+            <div
+              role="group"
+              aria-label="Skills view"
+              className="inline-flex rounded-full border border-hairline p-1 font-mono text-xs"
+            >
+              {(['atoms', 'list'] as const).map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => setView(v)}
+                  aria-pressed={view === v}
+                  className={cn(
+                    'min-h-[36px] rounded-full px-4 transition-colors',
+                    view === v ? 'bg-accent-deep text-white' : 'text-steel-400 hover:text-steel-200',
+                  )}
+                >
+                  {v === 'atoms' ? 'Atoms' : 'List'}
+                </button>
+              ))}
+            </div>
+          )}
+          {activeView === 'atoms' && (
+            <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
+              {skills.categories.map((category) => {
+                const color = CATEGORY_COLORS[category.name] ?? FALLBACK_COLOR
+                return (
+                  <li key={category.name} className="flex items-center gap-2 font-mono text-xs text-steel-400">
+                    <span
+                      aria-hidden
+                      className="h-2.5 w-2.5 rounded-full"
+                      style={{ background: color, boxShadow: `0 0 8px ${rgba(color, 0.55)}` }}
+                    />
+                    {category.name}
+                  </li>
+                )
+              })}
+            </ul>
+          )}
         </div>
 
-        {/* Legend + hint */}
-        <Reveal className="mt-14 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
-          <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
-            {skills.categories.map((category) => {
-              const color = CATEGORY_COLORS[category.name] ?? FALLBACK_COLOR
-              return (
-                <li key={category.name} className="flex items-center gap-2 font-mono text-xs text-steel-400">
-                  <span
-                    aria-hidden
-                    className="h-2.5 w-2.5 rounded-full"
-                    style={{ background: color, boxShadow: `0 0 8px ${rgba(color, 0.55)}` }}
-                  />
-                  {category.name}
-                </li>
-              )
-            })}
-          </ul>
-          {!reduce && (
-            <p className="font-mono text-xs text-steel-500">drag · toss · scatter →</p>
-          )}
-        </Reveal>
-
-        {reduce ? <StaticAtoms elements={elements} /> : <AtomField elements={elements} />}
+        {activeView === 'atoms' ? (
+          <AtomField elements={elements} />
+        ) : (
+          <SkillsList categories={skills.categories} />
+        )}
 
         {/* Accessible, crawlable list of the same content */}
         <ul className="sr-only">

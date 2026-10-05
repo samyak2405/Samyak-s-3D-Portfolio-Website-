@@ -29,7 +29,7 @@ export default function Work() {
             title="Things I've built on the side"
             lead="Projects where I get to own the whole stack. Correctness, concurrency, and scale, usually all at once."
           />
-          <Reveal className="flex justify-center lg:justify-end">
+          <Reveal className="hidden justify-center lg:flex lg:justify-end">
             <Character
               pose="projects-thinking"
               alt="Samyak Moon, a 3D cartoon character in a navy suit, thinking with a hand on his chin"

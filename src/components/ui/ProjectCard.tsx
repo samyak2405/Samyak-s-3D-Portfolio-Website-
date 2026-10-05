@@ -83,7 +83,7 @@ export default function ProjectCard({
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group/link mt-6 inline-flex items-center gap-2 text-sm text-steel-100"
+                  className="group/link mt-6 inline-flex min-h-[44px] items-center gap-2 text-sm text-steel-100"
                 >
                   <span className="border-b border-steel-500 pb-0.5 transition-colors group-hover/link:border-accent">
                     View repository

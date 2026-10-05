@@ -38,7 +38,7 @@ export function Node({ x, y, w, h, label, sub, accent, delay = 0, reduced }: Nod
         y={sub ? y + h / 2 - 6 : y + h / 2}
         textAnchor="middle"
         dominantBaseline="middle"
-        className={cn('font-mono text-[11px]', accent ? 'fill-accent' : 'fill-steel-100')}
+        className={cn('font-mono text-[13px]', accent ? 'fill-accent' : 'fill-steel-100')}
       >
         {label}
       </text>
@@ -48,7 +48,7 @@ export function Node({ x, y, w, h, label, sub, accent, delay = 0, reduced }: Nod
           y={y + h / 2 + 10}
           textAnchor="middle"
           dominantBaseline="middle"
-          className="fill-steel-400 font-mono text-[8px]"
+          className="fill-steel-400 font-mono text-[11px]"
         >
           {sub}
         </text>
