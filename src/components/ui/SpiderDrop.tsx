@@ -13,6 +13,14 @@ const TOP_GAP = 92
 const BOTTOM_GAP = 28
 // The CSS thread runs a few px into the image so it meets the painted thread.
 const THREAD_OVERLAP = 4
+// Where the speech bubble's tail sits, as a fraction of his height (his head
+// is at the bottom: he hangs upside down).
+const SAY_AT = 0.84
+
+/** What he says beside each section, keyed by section id. */
+const LINES: Record<string, string> = {
+  skills: 'Hover a group to spin its web!',
+}
 
 /**
  * Spider-Man hanging on a web thread in the right-hand gutter. He drops down as
@@ -29,13 +37,17 @@ export default function SpiderDrop() {
   const rigRef = useRef<HTMLDivElement>(null)
   const threadRef = useRef<HTMLSpanElement>(null)
   const spideyRef = useRef<HTMLAnchorElement>(null)
+  const sayRef = useRef<HTMLSpanElement>(null)
+  const sayTextRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
     const layer = layerRef.current
     const rig = rigRef.current
     const thread = threadRef.current
     const spidey = spideyRef.current
-    if (!layer || !rig || !thread || !spidey) return
+    const say = sayRef.current
+    const sayText = sayTextRef.current
+    if (!layer || !rig || !thread || !spidey || !say || !sayText) return
 
     const mm = gsap.matchMedia()
 
@@ -54,8 +66,50 @@ export default function SpiderDrop() {
         }
 
         const setY = gsap.quickSetter(spidey, 'y', 'px')
+        const setSayY = gsap.quickSetter(say, 'y', 'px')
         const setThread = gsap.quickSetter(thread, 'scaleY')
         const setAngle = gsap.quickSetter(rig, 'rotation', 'deg')
+
+        // Speech bubble: shown while a section with a line is in view. The
+        // skills line retires once the visitor has picked a group.
+        const done = new Set<string>()
+        const showing = new Set<string>()
+        const refreshSay = () => {
+          const id = [...showing].find((s) => !done.has(s))
+          if (id) sayText.textContent = LINES[id]
+          say.toggleAttribute('data-show', !!id)
+        }
+        const sayTriggers = Object.keys(LINES).flatMap((id) => {
+          const el = document.getElementById(id)
+          if (!el) return []
+          return [
+            ScrollTrigger.create({
+              trigger: el,
+              start: 'top 55%',
+              end: 'bottom 45%',
+              onToggle: (self) => {
+                if (self.isActive) showing.add(id)
+                else showing.delete(id)
+                refreshSay()
+              },
+            }),
+          ]
+        })
+        let retire: number | undefined
+        const onEngaged = () => {
+          window.clearTimeout(retire)
+          retire = window.setTimeout(() => {
+            done.add('skills')
+            refreshSay()
+          }, 1200)
+        }
+        window.addEventListener('skills:engaged', onEngaged)
+        const sayCleanup = () => {
+          sayTriggers.forEach((t) => t.kill())
+          window.removeEventListener('skills:engaged', onEngaged)
+          window.clearTimeout(retire)
+          say.removeAttribute('data-show')
+        }
 
         const dropFor = (p: number) => {
           const top = TOP_GAP
@@ -64,6 +118,7 @@ export default function SpiderDrop() {
         }
         const render = (y: number, angle: number) => {
           setY(y)
+          setSayY(y + figH * SAY_AT)
           setThread(Math.max(0, y + THREAD_OVERLAP) / viewH)
           setAngle(angle)
         }
@@ -75,7 +130,10 @@ export default function SpiderDrop() {
           }
           park()
           window.addEventListener('resize', park)
-          return () => window.removeEventListener('resize', park)
+          return () => {
+            window.removeEventListener('resize', park)
+            sayCleanup()
+          }
         }
 
         // `intro` drops him in from above the viewport on load (elastic, like
@@ -139,6 +197,7 @@ export default function SpiderDrop() {
           window.removeEventListener('resize', measure)
           intro.kill()
           st.kill()
+          sayCleanup()
         }
       },
     )
@@ -156,6 +215,9 @@ export default function SpiderDrop() {
         className="spidey-rig absolute top-0 h-full origin-top will-change-transform"
       >
         <span ref={threadRef} aria-hidden className="spidey-thread" />
+        <span ref={sayRef} aria-hidden className="spidey-say">
+          <span ref={sayTextRef} />
+        </span>
         <a
           ref={spideyRef}
           href="#hero"
