@@ -89,9 +89,9 @@ export default function Navbar() {
       )}
     >
       <nav className="container-edge flex h-16 items-center justify-between md:h-20">
-        <a href="#hero" className="-m-2 p-2 text-base tracking-tight text-steel-100">
-          <span className="font-semibold">{first}</span>{' '}
-          <span className="text-steel-300">{rest.join(' ')}</span>
+        <a href="#hero" className="-m-2 p-2 font-display text-[1.45rem] font-bold leading-none tracking-[0.01em] text-[color:var(--moonlight)]">
+          <span>{first}</span>{' '}
+          <span className="text-steel-400">{rest.join(' ')}</span>
         </a>
 
         {/* Desktop nav — single line */}

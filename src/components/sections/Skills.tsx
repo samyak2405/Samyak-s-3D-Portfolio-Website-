@@ -65,12 +65,12 @@ function AtomInner({ el }: { el: Element }) {
         />
       )}
       <span
-        className="pointer-events-none font-mono text-xl font-semibold leading-none md:text-2xl"
+        className="pointer-events-none font-display text-2xl font-extrabold leading-none md:text-[1.7rem]"
         style={{ color: el.color }}
       >
         {el.symbol}
       </span>
-      <span className="pointer-events-none mt-0.5 max-w-[88%] truncate font-mono text-[0.5rem] leading-none text-steel-400">
+      <span className="pointer-events-none mt-0.5 max-w-[88%] truncate text-[0.55rem] leading-none text-steel-400">
         {el.name}
       </span>
     </>
@@ -287,7 +287,7 @@ function SkillsList({ categories }: { categories: SkillCategory[] }) {
                 <li key={item.name}>
                   <span
                     className={cn(
-                      'inline-flex items-center gap-1.5 rounded-full border bg-ink-2 px-3 py-1.5 font-mono text-sm',
+                      'inline-flex items-center gap-1.5 rounded-full border bg-ink-2 px-3 py-1.5 text-sm',
                       item.recent ? 'text-amber-strong' : 'text-steel-200',
                     )}
                     style={{ borderColor: rgba(color, item.recent ? 0.5 : 0.28) }}
@@ -351,7 +351,7 @@ export default function Skills() {
             <div
               role="group"
               aria-label="Skills view"
-              className="inline-flex rounded-full border border-hairline p-1 font-mono text-xs"
+              className="inline-flex rounded-full border border-hairline p-1 text-xs"
             >
               {(['atoms', 'list'] as const).map((v) => (
                 <button
@@ -374,7 +374,7 @@ export default function Skills() {
               {skills.categories.map((category) => {
                 const color = CATEGORY_COLORS[category.name] ?? FALLBACK_COLOR
                 return (
-                  <li key={category.name} className="flex items-center gap-2 font-mono text-xs text-steel-400">
+                  <li key={category.name} className="flex items-center gap-2 text-xs text-steel-400">
                     <span
                       aria-hidden
                       className="h-2.5 w-2.5 rounded-full"

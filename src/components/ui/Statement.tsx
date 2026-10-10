@@ -42,7 +42,7 @@ export default function Statement({ segments, eyebrow, className, align = 'cente
           whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
           transition={{ duration: 0.5, ease: EASE }}
-          className="mono-label mb-7"
+          className="meta-label mb-7"
         >
           {eyebrow}
         </motion.p>

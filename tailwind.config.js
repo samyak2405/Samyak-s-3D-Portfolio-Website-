@@ -44,7 +44,7 @@ export default {
       // Families resolve through CSS variables (defined in index.css) so the
       // whole site can be re-skinned from one place.
       fontFamily: {
-        display: ['var(--font-sans)'],
+        display: ['var(--font-display)'],
         sans: ['var(--font-sans)'],
         mono: ['var(--font-mono)'],
       },

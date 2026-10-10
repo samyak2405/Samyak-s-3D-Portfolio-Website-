@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import Tilt from '../ui/Tilt'
 import Reveal from '../ui/Reveal'
 
 interface DiagramPanelProps {
@@ -22,12 +23,13 @@ export default function DiagramPanel({
 }: DiagramPanelProps) {
   return (
     <Reveal>
-      <figure className="relative overflow-hidden rounded-2xl border border-hairline bg-ink-3 p-6 shadow-soft md:p-10">
+      <Tilt max={2.5} lift={8}>
+      <figure className="panel relative overflow-hidden rounded-2xl p-6 md:p-10">
         <div className="dot-grid pointer-events-none absolute inset-0 opacity-50" aria-hidden />
         <div className="relative">
           <div className="max-w-xl">
-            <span className="mono-label">{label}</span>
-            <h3 className="mt-3 text-xl font-medium text-steel-100">{title}</h3>
+            <span className="meta-label">{label}</span>
+            <h3 className="mt-2 font-display text-3xl font-bold leading-none text-[color:var(--moonlight)]">{title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-steel-300 [text-wrap:pretty]">
               {description}
             </p>
@@ -35,9 +37,10 @@ export default function DiagramPanel({
           {/* Scales to fit the panel (viewBox + width:100%) so it never needs a
               sideways scroll and nothing runs off-canvas. */}
           <div className="mt-8">{children}</div>
-          <figcaption className="mt-5 font-mono text-xs text-steel-400">{caption}</figcaption>
+          <figcaption className="mt-5 text-xs text-steel-400">{caption}</figcaption>
         </div>
       </figure>
+      </Tilt>
     </Reveal>
   )
 }

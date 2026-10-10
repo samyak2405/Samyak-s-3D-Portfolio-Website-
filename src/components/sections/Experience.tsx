@@ -17,38 +17,38 @@ export default function Experience() {
         />
       )}
       <span className="flex flex-wrap items-center gap-2">
-        <span className="font-mono text-xs text-accent">{exp.period}</span>
+        <span className="text-xs font-medium tabular-nums text-accent">{exp.period}</span>
         {exp.active && (
-          <span className="rounded-full border border-accent/40 bg-accent-dim px-2 py-0.5 font-mono text-xs tracking-wider text-accent">
-            NOW
+          <span className="rounded-full border border-accent/40 bg-accent-dim px-2 py-0.5 text-xs font-medium text-accent">
+            Now
           </span>
         )}
       </span>
       <span className="mt-3 block text-lg font-semibold text-steel-100">
         {exp.role}
-        <span className="font-normal text-steel-400"> · {exp.company}</span>
+        <span className="font-normal text-steel-400"> at {exp.company}</span>
       </span>
       <span className="mt-1 block text-sm text-steel-400">{exp.location}</span>
       <span className="mt-4 block text-sm leading-relaxed text-steel-300 [display:-webkit-box] [overflow:hidden] [-webkit-box-orient:vertical] [-webkit-line-clamp:4]">
         {exp.summary}
       </span>
-      <span className="mt-auto pt-4 font-mono text-xs text-steel-500">click for details</span>
+      <span className="mt-auto pt-4 text-xs text-steel-500">Open for details</span>
     </>
   )
 
   const detail = (exp: Exp) => (
     <div>
       <div className="flex flex-wrap items-center gap-2">
-        <span className="font-mono text-xs text-accent">{exp.period}</span>
+        <span className="text-xs font-medium tabular-nums text-accent">{exp.period}</span>
         {exp.active && (
-          <span className="rounded-full border border-accent/40 bg-accent-dim px-2 py-0.5 font-mono text-xs tracking-wider text-accent">
-            NOW
+          <span className="rounded-full border border-accent/40 bg-accent-dim px-2 py-0.5 text-xs font-medium text-accent">
+            Now
           </span>
         )}
       </div>
       <h3 className="mt-3 text-xl font-semibold text-steel-100">
         {exp.role}
-        <span className="font-normal text-steel-400"> · {exp.company}</span>
+        <span className="font-normal text-steel-400"> at {exp.company}</span>
       </h3>
       <p className="mt-1 text-sm text-steel-400">{exp.location}</p>
       <p className="mt-4 text-sm leading-relaxed text-steel-300">{exp.summary}</p>
@@ -103,7 +103,7 @@ export default function Experience() {
         <div className="mt-14 grid gap-6 border-t border-hairline pt-10 sm:grid-cols-2">
           {education.map((edu, i) => (
             <Reveal key={edu.degree} delay={i * 0.06}>
-              <p className="font-mono text-xs text-steel-400">{edu.period}</p>
+              <p className="text-xs tabular-nums text-steel-400">{edu.period}</p>
               <h4 className="mt-2 font-medium text-steel-100">{edu.degree}</h4>
               <p className="mt-1 text-sm text-steel-400">{edu.institution}</p>
             </Reveal>
