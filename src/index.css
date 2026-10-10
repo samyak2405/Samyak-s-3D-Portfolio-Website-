@@ -227,7 +227,8 @@ section[id] {
   }
 
   /* Skills index (Skills.tsx): a silk thread down the left edge, a knot per
-     row that lights when the thread reaches it, and hover focus on one row. */
+     row that lights when the thread reaches it, and a web that spins off the
+     thread when a row opens. */
   .skill-index {
     --thread-x: 15px;
   }
@@ -246,71 +247,129 @@ section[id] {
     background: rgba(255, 255, 255, 0.07);
   }
   .skill-thread-spun {
-    background: linear-gradient(to bottom, rgba(236, 238, 244, 0.25), rgba(236, 238, 244, 0.9) 18%);
+    background: linear-gradient(to bottom, rgba(236, 238, 244, 0.25), rgba(236, 238, 244, 0.9) 12%);
     box-shadow: 0 0 6px rgba(77, 139, 255, 0.45);
     transform: scaleY(0);
     transform-origin: 50% 0;
   }
   .skill-row {
     position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     transition: opacity 0.35s ease;
   }
-  .skill-row::before {
-    content: '';
+  .skill-head {
+    cursor: pointer;
+  }
+  .skill-head > span:nth-child(2) {
+    transition: color 0.3s ease;
+  }
+  .skill-knot {
     position: absolute;
     left: calc(var(--thread-x) - 6px);
-    top: calc(1.75rem + 0.62rem);
+    top: 50%;
     width: 12px;
     height: 12px;
+    margin-top: -6px;
     border-radius: 50%;
     border: 1.5px solid rgba(255, 255, 255, 0.22);
     background: #07080f;
     transition: background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
   }
-  @media (min-width: 768px) {
-    .skill-row::before {
-      top: calc(2.25rem + 0.85rem);
-    }
-  }
-  .skill-row.is-reached::before {
+  .skill-row.is-reached .skill-knot {
     background: #ff3b4a;
     border-color: #ff3b4a;
     box-shadow: 0 0 0 4px rgba(255, 59, 74, 0.14), 0 0 16px rgba(255, 59, 74, 0.6);
   }
-  .skill-row dt,
-  .skill-row dd {
-    transition: color 0.3s ease;
+  .skill-preview {
+    transition: opacity 0.3s ease;
   }
+  .skill-row.is-open .skill-preview {
+    opacity: 0;
+  }
+  .skill-toggle {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, color 0.3s ease;
+  }
+  .skill-row.is-open .skill-toggle {
+    transform: rotate(45deg);
+    border-color: rgba(255, 59, 74, 0.6);
+    color: #ff3b4a;
+  }
+
+  /* The open web. Panel height comes from the layout (--panel-h). */
+  .skill-panel {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .skill-row.is-open .skill-panel {
+    height: var(--panel-h);
+  }
+  .skill-panel > div {
+    transition: opacity 0.3s ease;
+  }
+  .skill-row:not(.is-open) .skill-panel > div {
+    opacity: 0;
+  }
+  .web-spoke,
+  .web-ring {
+    fill: none;
+    stroke-linecap: round;
+    transition: stroke 0.25s ease;
+  }
+  .web-spoke {
+    stroke: rgba(236, 238, 244, 0.22);
+    stroke-width: 1.1;
+  }
+  .web-spoke.is-skill {
+    stroke: rgba(236, 238, 244, 0.5);
+  }
+  .web-spoke.is-hot {
+    stroke: #ff3b4a;
+  }
+  .web-ring {
+    stroke: rgba(236, 238, 244, 0.14);
+    stroke-width: 1;
+  }
+  .web-hub {
+    fill: #ff3b4a;
+    filter: drop-shadow(0 0 6px rgba(255, 59, 74, 0.75));
+  }
+  .web-node {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ecebf4;
+    box-shadow: 0 0 0 3px rgba(236, 235, 244, 0.08);
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .web-node.is-recent {
+    background: #4d8bff;
+    box-shadow: 0 0 0 3px rgba(77, 139, 255, 0.15), 0 0 10px rgba(77, 139, 255, 0.9);
+  }
+  li:hover > .web-label .web-node {
+    background: #ff3b4a;
+    box-shadow: 0 0 0 3px rgba(255, 59, 74, 0.18), 0 0 12px rgba(255, 59, 74, 0.8);
+  }
+
   @media (hover: hover) {
     .skill-index:hover .skill-row:not(:hover) {
-      opacity: 0.36;
+      opacity: 0.5;
     }
-    .skill-row:hover dt {
+    .skill-head:hover > span:nth-child(2) {
       color: #fff;
     }
-    .skill-row:hover dd {
-      color: #e8eaed;
-    }
-    .skill-row:hover::before {
+    .skill-head:hover .skill-knot {
       transform: scale(1.25);
     }
   }
-  /* Recently added skill: a small suit-blue dot riding the end of the word. */
-  .skill-new {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    margin-left: 5px;
-    border-radius: 50%;
-    background: #4d8bff;
-    box-shadow: 0 0 8px rgba(77, 139, 255, 0.85);
-    transform: translateY(-0.55em);
-  }
   @media (prefers-reduced-motion: reduce) {
     .skill-row,
-    .skill-row::before,
-    .skill-row dt,
-    .skill-row dd {
+    .skill-knot,
+    .skill-panel,
+    .skill-panel > div,
+    .skill-toggle,
+    .skill-preview {
       transition: none;
     }
   }
