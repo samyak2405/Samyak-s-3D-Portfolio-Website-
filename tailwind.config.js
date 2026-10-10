@@ -4,11 +4,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Gamer + coder dark theme. `ink` = dark surfaces, `steel` = light text.
+        // Spider-Man night theme. `ink` = navy-black night surfaces, `steel` = light text.
         ink: {
-          DEFAULT: '#0A0B0D', // page background (deep near-black)
-          2: '#14161A', // panel
-          3: '#1C1F24', // elevated card
+          DEFAULT: '#07080F', // page background (night sky, a touch of navy)
+          2: '#0F121C', // panel
+          3: '#161A26', // elevated card
         },
         steel: {
           100: '#F4F5F7', // headings (near-white)
@@ -18,25 +18,25 @@ export default {
           500: '#656B78', // faint / decorative
           600: '#2A2E36', // hairline-ish
         },
-        // Primary neon: electric blue.
+        // Primary: suit red.
         accent: {
+          DEFAULT: '#FF3B4A',
+          strong: '#FF5C69',
+          // Darker red for solid fills behind white text (passes WCAG AA).
+          deep: '#D0102A',
+          soft: 'rgba(255,59,74,0.14)',
+          dim: 'rgba(255,59,74,0.10)',
+        },
+        // Secondary: suit blue (token kept as `amber` so existing usages
+        // become the secondary accent with no churn).
+        amber: {
           DEFAULT: '#4D8BFF',
           strong: '#6AA0FF',
-          // Darker blue for solid fills behind white text (passes WCAG AA).
-          deep: '#2E6AE6',
           soft: 'rgba(77,139,255,0.14)',
-          dim: 'rgba(77,139,255,0.10)',
-        },
-        // Secondary neon: magenta/violet (token kept as `amber` so existing
-        // usages become the secondary accent with no churn).
-        amber: {
-          DEFAULT: '#C65CFF',
-          strong: '#D583FF',
-          soft: 'rgba(198,92,255,0.14)',
         },
         focus: {
-          DEFAULT: '#0C0E14',
-          2: '#12151D',
+          DEFAULT: '#0A0D18',
+          2: '#101421',
         },
         hairline: 'rgba(255,255,255,0.08)',
         'hairline-strong': 'rgba(255,255,255,0.14)',
@@ -57,8 +57,8 @@ export default {
       boxShadow: {
         soft: '0 2px 8px rgba(0,0,0,0.4)',
         lift: '0 10px 34px rgba(0,0,0,0.55)',
-        'glow-blue': '0 0 0 1px rgba(77,139,255,0.4), 0 0 22px rgba(77,139,255,0.28)',
-        'glow-magenta': '0 0 0 1px rgba(198,92,255,0.4), 0 0 22px rgba(198,92,255,0.24)',
+        'glow-primary': '0 0 0 1px rgba(255,59,74,0.45), 0 0 22px rgba(255,59,74,0.3)',
+        'glow-secondary': '0 0 0 1px rgba(77,139,255,0.4), 0 0 22px rgba(77,139,255,0.26)',
       },
       keyframes: {
         'fade-up': {

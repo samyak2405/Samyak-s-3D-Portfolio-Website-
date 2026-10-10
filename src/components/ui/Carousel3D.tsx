@@ -156,7 +156,7 @@ export default function Carousel3D<T>({
               exit={{ scale: 0.95, y: 8, opacity: 0 }}
               transition={{ duration: 0.28, ease: EASE }}
               className={cn(
-                'relative z-10 max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl border p-7 glass shadow-glow-blue md:p-8',
+                'relative z-10 max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl border p-7 glass shadow-glow-primary md:p-8',
                 cardClass?.(open),
               )}
             >

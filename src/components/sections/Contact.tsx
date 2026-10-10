@@ -1,7 +1,8 @@
 import { ArrowUpRight } from 'lucide-react'
 import { usePortfolio } from '../../hooks/usePortfolio'
 import type { Social } from '../../types/portfolio'
-import Character from '../ui/Character'
+import Skyline from '../fx/Skyline'
+import WebBackdrop from '../fx/WebBackdrop'
 import Reveal from '../ui/Reveal'
 
 const LINKS: Array<{ key: keyof Social; label: string }> = [
@@ -21,19 +22,21 @@ export default function Contact() {
       id="contact"
       className="relative overflow-hidden bg-focus text-white"
     >
-      {/* Warm ambiance on the dark focus section */}
+      {/* Night city under a web: horizon glow, halftone, web, skyline */}
       <div
         aria-hidden
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(50% 50% at 12% 8%, rgba(77,139,255,0.28), transparent 68%), radial-gradient(48% 48% at 90% 88%, rgba(198,92,255,0.22), transparent 70%)',
+            'radial-gradient(50% 50% at 12% 8%, rgba(77,139,255,0.22), transparent 68%), radial-gradient(70% 45% at 70% 100%, rgba(255,59,74,0.30), transparent 70%)',
         }}
       />
-      <div className="container-edge relative py-24 md:py-32">
-        <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_0.85fr]">
-          {/* CTA */}
-          <div className="max-w-2xl">
+      <div aria-hidden className="halftone absolute inset-0 opacity-70" />
+      <WebBackdrop corner="tr" seed={5} strength={0.14} size="min(110vw, 900px)" />
+      <Skyline className="h-[24vh] min-h-[140px] max-h-[240px]" seed={29} />
+      <div className="container-edge relative pt-24 pb-44 md:pt-32 md:pb-56">
+        {/* CTA */}
+        <div className="max-w-2xl">
             <Reveal>
               <p className="mono-label !text-amber">
                 <span className="text-white/40">// </span>contact
@@ -50,15 +53,6 @@ export default function Contact() {
                 I'm open to backend, full-stack, and fintech roles, and to payments work
                 that has to hold up under load. The fastest way to reach me is email.
               </p>
-            </Reveal>
-            {/* Avatar sits above the email on mobile; the desktop copy shows it on the right */}
-            <Reveal delay={0.12} className="mt-8 flex justify-center lg:hidden">
-              <Character
-                pose="contact-thumbsup"
-                alt="Samyak Moon, a 3D cartoon character in a navy suit, giving a friendly thumbs up"
-                shadow={false}
-                className="h-[220px] w-auto"
-              />
             </Reveal>
             <Reveal delay={0.15}>
               <a
@@ -94,17 +88,6 @@ export default function Contact() {
                 )}
               </div>
             </Reveal>
-          </div>
-
-          {/* Character — desktop only (mobile shows it above the email) */}
-          <div className="hidden lg:flex lg:justify-end">
-            <Character
-              pose="contact-thumbsup"
-              alt="Samyak Moon, a 3D cartoon character in a navy suit, giving a friendly thumbs up"
-              shadow={false}
-              className="h-[40vh] w-auto lg:h-[56vh]"
-            />
-          </div>
         </div>
 
         {/* Footer line */}

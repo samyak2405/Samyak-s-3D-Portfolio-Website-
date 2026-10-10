@@ -5,19 +5,20 @@ import type { SkillCategory } from '../../types/portfolio'
 import { cn } from '../../lib/cn'
 import Reveal from '../ui/Reveal'
 import SectionHeading from '../ui/SectionHeading'
+import WebBackdrop from '../fx/WebBackdrop'
 
 // Category -> accent hue. Each family gets its own colour so the field reads as
 // one labelled set (decoded by the legend), harmonised at a similar lightness.
 const CATEGORY_COLORS: Record<string, string> = {
-  Languages: '#4D8BFF',
+  Languages: '#FF3B4A',
   'Backend & Frameworks': '#38BDF8',
   'AI / ML': '#A78BFA',
   Databases: '#2DD4BF',
   'DevOps & Infra': '#F2B55C',
-  'Distributed Systems & Domain': '#C65CFF',
+  'Distributed Systems & Domain': '#4D8BFF',
   'Messaging & Observability': '#FB7185',
 }
-const FALLBACK_COLOR = '#4D8BFF'
+const FALLBACK_COLOR = '#FF3B4A'
 
 const SYMBOLS: Record<string, string> = {
   Java: 'Jv', TypeScript: 'Ts', Python: 'Py', 'Spring Boot': 'Sb', 'REST APIs': 'Re',
@@ -60,7 +61,7 @@ function AtomInner({ el }: { el: Element }) {
       {el.recent && (
         <span
           aria-hidden
-          className="pointer-events-none absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-amber shadow-glow-magenta"
+          className="pointer-events-none absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-amber shadow-glow-secondary"
         />
       )}
       <span
@@ -336,11 +337,12 @@ export default function Skills() {
 
   return (
     <section id="skills" className="relative border-t border-hairline py-24 md:py-32">
-      <div className="container-edge">
+      <WebBackdrop corner="tr" seed={17} strength={0.08} size="min(85vw, 640px)" />
+      <div className="container-edge relative">
         <SectionHeading
           label="skills"
           title="The periodic table of my stack"
-          lead="Every tool I build with, grouped by where it lives in a system. The magenta-tagged skills are what I've picked up most recently."
+          lead="Every tool I build with, grouped by where it lives in a system. The blue-tagged skills are what I've picked up most recently."
         />
 
         {/* View toggle + (atoms) legend */}

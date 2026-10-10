@@ -3,6 +3,7 @@ import type { Experience as Exp } from '../../types/portfolio'
 import Carousel3D from '../ui/Carousel3D'
 import Reveal from '../ui/Reveal'
 import SectionHeading from '../ui/SectionHeading'
+import WebBackdrop from '../fx/WebBackdrop'
 
 export default function Experience() {
   const { experience, education } = usePortfolio()
@@ -67,13 +68,14 @@ export default function Experience() {
       id="experience"
       className="relative overflow-hidden border-t border-hairline bg-ink-2/40 py-24 md:py-32"
     >
-      <div aria-hidden className="grid-bg absolute inset-0 opacity-40" />
+      <div aria-hidden className="halftone halftone-blue absolute inset-0 opacity-70" />
+      <WebBackdrop corner="bl" seed={14} size="min(90vw, 720px)" />
       <div
         aria-hidden
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(38% 42% at 72% 28%, rgba(77,139,255,0.12), transparent 70%), radial-gradient(40% 44% at 18% 82%, rgba(198,92,255,0.10), transparent 72%)',
+            'radial-gradient(38% 42% at 72% 28%, rgba(255,59,74,0.12), transparent 70%), radial-gradient(40% 44% at 18% 82%, rgba(77,139,255,0.10), transparent 72%)',
         }}
       />
       <div className="container-edge relative">
@@ -89,7 +91,7 @@ export default function Experience() {
             items={experience}
             getId={(e) => `${e.company}-${e.period}`}
             cardClass={(e) =>
-              e.active ? 'border-accent/40 shadow-glow-blue' : 'border-white/10'
+              e.active ? 'border-accent/40 shadow-glow-primary' : 'border-white/10'
             }
             renderFace={face}
             renderDetail={detail}
