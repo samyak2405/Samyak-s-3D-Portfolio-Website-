@@ -13,13 +13,14 @@ const TOP_GAP = 92
 const BOTTOM_GAP = 28
 // The CSS thread runs a few px into the image so it meets the painted thread.
 const THREAD_OVERLAP = 4
-// Where the speech bubble's tail sits, as a fraction of his height (his head
-// is at the bottom: he hangs upside down).
-const SAY_AT = 0.84
+// Where the speech bubble hangs, as a fraction of his height: just under his
+// head (he hangs upside down), with its tail pointing up at him.
+const SAY_AT = 0.97
 
 /** What he says beside each section, keyed by section id. */
 const LINES: Record<string, string> = {
   skills: 'Hover a group to spin its web!',
+  experience: 'Hover a role to see the details!',
 }
 
 /**
@@ -70,8 +71,8 @@ export default function SpiderDrop() {
         const setThread = gsap.quickSetter(thread, 'scaleY')
         const setAngle = gsap.quickSetter(rig, 'rotation', 'deg')
 
-        // Speech bubble: shown while a section with a line is in view. The
-        // skills line retires once the visitor has picked a group.
+        // Speech bubble: shown while a section with a line is in view. A line
+        // retires once the visitor has used that section ('spidey:engaged').
         const done = new Set<string>()
         const showing = new Set<string>()
         const refreshSay = () => {
@@ -95,19 +96,22 @@ export default function SpiderDrop() {
             }),
           ]
         })
-        let retire: number | undefined
-        const onEngaged = () => {
-          window.clearTimeout(retire)
-          retire = window.setTimeout(() => {
-            done.add('skills')
+        const retiring = new Set<number>()
+        const onEngaged = (e: Event) => {
+          const id = (e as CustomEvent<{ id?: string }>).detail?.id
+          if (!id || done.has(id)) return
+          const t = window.setTimeout(() => {
+            retiring.delete(t)
+            done.add(id)
             refreshSay()
           }, 1200)
+          retiring.add(t)
         }
-        window.addEventListener('skills:engaged', onEngaged)
+        window.addEventListener('spidey:engaged', onEngaged)
         const sayCleanup = () => {
           sayTriggers.forEach((t) => t.kill())
-          window.removeEventListener('skills:engaged', onEngaged)
-          window.clearTimeout(retire)
+          window.removeEventListener('spidey:engaged', onEngaged)
+          retiring.forEach((t) => window.clearTimeout(t))
           say.removeAttribute('data-show')
         }
 

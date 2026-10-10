@@ -10,6 +10,7 @@ import {
 } from 'react'
 import { usePortfolio } from '../../hooks/usePortfolio'
 import { useGsap } from '../../hooks/useGsap'
+import { useMatch } from '../../hooks/useMatch'
 import { gsap, ScrollTrigger } from '../../lib/gsap'
 import { cn } from '../../lib/cn'
 import type { SkillCategory } from '../../types/portfolio'
@@ -36,18 +37,6 @@ const MD = '(min-width: 768px)'
 
 type Pt = { x: number; y: number }
 type Place = 'right' | 'left' | 'top' | 'bottom'
-
-function useMatch(query: string) {
-  const [match, setMatch] = useState(() => typeof window !== 'undefined' && window.matchMedia(query).matches)
-  useEffect(() => {
-    const mq = window.matchMedia(query)
-    const on = () => setMatch(mq.matches)
-    on()
-    mq.addEventListener('change', on)
-    return () => mq.removeEventListener('change', on)
-  }, [query])
-  return match
-}
 
 const r1 = (n: number) => Math.round(n * 10) / 10
 
@@ -639,7 +628,7 @@ export default function Skills() {
 
   const hoverTimer = useRef<number>()
   const choose = (i: number) => {
-    if (!touched.current) window.dispatchEvent(new CustomEvent('skills:engaged'))
+    if (!touched.current) window.dispatchEvent(new CustomEvent('spidey:engaged', { detail: { id: 'skills' } }))
     touched.current = true
     setArmed(true)
     setActive(i)
