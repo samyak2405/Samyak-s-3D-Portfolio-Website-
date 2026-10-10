@@ -476,6 +476,135 @@ section[id] {
     }
   }
 
+  /* Experience (Experience.tsx). The list reuses the Skills thread classes;
+     on desktop the chosen role's file sits at the front of a 3D deck. */
+  .exp-stage {
+    perspective: 1600px;
+    perspective-origin: 50% 0;
+  }
+  /* The rig is a flat plane at the front of the 3D scene; letting clicks pass
+     through it is what lets the files stacked behind be picked. */
+  .exp-rig {
+    transform-style: preserve-3d;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .exp-stage:not(.is-armed) .exp-rig {
+    opacity: 0;
+  }
+  .exp-card {
+    position: absolute;
+    left: 0;
+    right: 0;
+    pointer-events: auto;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    padding: 2.1rem 2.4rem 2.2rem;
+    transform-origin: 50% 0;
+    backface-visibility: hidden;
+    cursor: pointer;
+    will-change: transform;
+  }
+  .exp-card.is-flat {
+    position: relative;
+    cursor: auto;
+    will-change: auto;
+  }
+  .exp-card[data-front] {
+    cursor: auto;
+  }
+  /* Files behind the front one show as quiet sheets; hovering one hints that
+     it can be pulled forward. */
+  .exp-card .exp-body {
+    transition: opacity 0.45s ease;
+  }
+  .exp-card:not([data-front]):not(.is-flat) .exp-body {
+    opacity: 0.16;
+  }
+  .exp-card:not([data-front]):not(.is-flat):hover .exp-body {
+    opacity: 0.4;
+  }
+  .exp-card:not([data-front]):not(.is-flat):hover {
+    border-color: rgba(255, 59, 74, 0.35);
+  }
+  /* The current role's file carries a red edge. */
+  .exp-card[data-current] {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.07),
+      0 0 0 1px rgba(255, 59, 74, 0.32),
+      0 30px 70px -36px rgba(255, 59, 74, 0.45),
+      0 24px 48px -28px rgba(0, 0, 0, 0.9);
+  }
+  .exp-corner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px;
+    height: 120px;
+    stroke: rgba(236, 238, 244, 0.1);
+    stroke-width: 1;
+    pointer-events: none;
+  }
+  .exp-now {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.15rem 0.6rem;
+    border: 1px solid rgba(255, 59, 74, 0.45);
+    border-radius: 999px;
+    background: rgba(255, 59, 74, 0.1);
+    color: #ff5c69;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .exp-now::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ff3b4a;
+    box-shadow: 0 0 8px rgba(255, 59, 74, 0.9);
+  }
+  .exp-now.is-small {
+    padding: 0.05rem 0.45rem;
+    font-size: 0.68rem;
+  }
+  .exp-metric {
+    color: #fff;
+    font-weight: 600;
+  }
+  .exp-bullet {
+    flex: none;
+    width: 7px;
+    height: 7px;
+    margin-top: 0.62em;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 59, 74, 0.85);
+  }
+  .exp-fold {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .skill-row[data-open] .exp-fold {
+    grid-template-rows: 1fr;
+  }
+  .exp-edu {
+    cursor: default;
+  }
+  .exp-edu .skill-knot {
+    width: 9px;
+    height: 9px;
+    margin-top: -4.5px;
+    left: calc(var(--thread-x) - 4.5px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .exp-fold,
+    .exp-card .exp-body {
+      transition: none;
+    }
+  }
+
   /* 3D revolving carousel: cards sit on a cylinder that rotates around the Y
      axis. Rotation pauses on hover, on keyboard focus, and while a card is open
      (.is-paused). Back-facing cards are hidden so only the front arc shows. */
@@ -546,14 +675,14 @@ section[id] {
   .spidey-say {
     position: absolute;
     top: 0;
-    right: calc(100% + 4px);
+    right: -4px;
     pointer-events: none;
   }
   .spidey-say > span {
     position: relative;
     display: block;
     width: max-content;
-    max-width: 10.5rem;
+    max-width: 9.25rem;
     padding: 0.6rem 0.85rem 0.55rem;
     border-radius: 1.1rem;
     background: #f4f3f8;
@@ -564,24 +693,24 @@ section[id] {
     line-height: 1.02;
     box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.7), 0 0 0 3px rgba(255, 59, 74, 0.9);
     opacity: 0;
-    transform: translateY(-100%) scale(0.5);
-    transform-origin: 100% 100%;
+    transform: translateY(14px) scale(0.5);
+    transform-origin: calc(100% - var(--spidey-w) / 2 - 4px) 0;
     transition: opacity 0.2s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-  /* Tail: a little wedge from the bubble's lower right toward his head. */
+  /* Tail: a wedge on top of the bubble, pointing up at his head. */
   .spidey-say > span::after {
     content: '';
     position: absolute;
-    right: -11px;
-    bottom: 6px;
+    top: -11px;
+    right: calc(var(--spidey-w) / 2 - 5px);
     width: 18px;
-    height: 16px;
+    height: 12px;
     background: inherit;
-    clip-path: polygon(0 0, 100% 100%, 0 70%);
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
   }
   .spidey-say[data-show] > span {
     opacity: 1;
-    transform: translateY(-100%) scale(1);
+    transform: translateY(14px) scale(1);
   }
   .spidey-rig:has(.spidey:hover) .spidey-say > span {
     opacity: 0;
@@ -589,7 +718,7 @@ section[id] {
   @media (prefers-reduced-motion: reduce) {
     .spidey-say > span {
       transition: none;
-      transform: translateY(-100%);
+      transform: translateY(14px);
     }
   }
 
