@@ -9,6 +9,7 @@ import Systems from './components/sections/Systems'
 import Expertise from './components/sections/Expertise'
 import Work from './components/sections/Work'
 import Contact from './components/sections/Contact'
+import SpiderDrop from './components/ui/SpiderDrop'
 
 export default function App() {
   const reduce = useReducedMotion()
@@ -33,6 +34,7 @@ export default function App() {
         <Work />
         <Contact />
       </main>
+      <SpiderDrop />
     </div>
   )
 }

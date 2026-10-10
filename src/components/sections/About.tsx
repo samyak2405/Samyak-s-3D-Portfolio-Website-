@@ -1,5 +1,6 @@
 import { usePortfolio } from '../../hooks/usePortfolio'
 import { useGsap } from '../../hooks/useGsap'
+import WebBackdrop from '../fx/WebBackdrop'
 import Counter from '../ui/Counter'
 
 export default function About() {
@@ -25,7 +26,8 @@ export default function About() {
 
   return (
     <section ref={scope} id="about" className="relative py-24 md:py-32">
-      <div className="container-edge">
+      <WebBackdrop corner="bl" seed={9} size="min(85vw, 640px)" />
+      <div className="container-edge relative">
         <div className="about-copy max-w-3xl">
           <p className="about-reveal mono-label text-accent">
             <span className="text-steel-500">// </span>about

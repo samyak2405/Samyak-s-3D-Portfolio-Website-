@@ -2,13 +2,16 @@ import { usePortfolio } from '../../hooks/usePortfolio'
 import { serviceIcon } from '../../lib/icons'
 import Reveal from '../ui/Reveal'
 import Statement from '../ui/Statement'
+import WebBackdrop from '../fx/WebBackdrop'
 
 export default function Expertise() {
   const { services } = usePortfolio()
 
   return (
     <section id="expertise" className="relative border-t border-hairline py-24 md:py-32">
-      <div className="container-edge">
+      <div aria-hidden className="halftone halftone-blue absolute inset-0 opacity-60 [--ht-at:0%_100%]" />
+      <WebBackdrop corner="br" seed={41} size="min(85vw, 680px)" />
+      <div className="container-edge relative">
         {/* Headline (kept) + broadened subtext */}
         <div className="flex justify-end">
           <div className="max-w-2xl">
@@ -37,7 +40,7 @@ export default function Expertise() {
             const Icon = serviceIcon(service.icon)
             return (
               <Reveal key={service.title} delay={(i % 4) * 0.08} className="h-full">
-                <div className="group h-full rounded-2xl border border-hairline bg-ink-3 p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-glow-blue">
+                <div className="group h-full rounded-2xl border border-hairline bg-ink-3 p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-glow-primary">
                   <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent transition-transform duration-300 group-hover:scale-110">
                     <Icon size={20} strokeWidth={1.75} />
                   </span>

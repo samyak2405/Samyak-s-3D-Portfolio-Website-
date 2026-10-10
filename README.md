@@ -2,20 +2,23 @@
 
 A personal portfolio for **Samyak Moon**, a backend / full-stack software engineer
 (Java, Spring Boot, distributed systems, and AI/RAG). A single-page site with a
-**gamer + coder** aesthetic: a dark, IDE-at-night feel with restrained neon, a
-friendly 3D cartoon character who guides each section, and buttery smooth scrolling.
+**Spider-Man night** theme: a navy-black night sky, suit-red and suit-blue accents,
+spider-web strands, comic-print halftone and a night-city skyline, with Spider-Man
+hanging from a web thread who drops down the page as you scroll.
 
 **Live:** https://samyak2405.github.io/samyak-moon-portfolio/
 
 ## Highlights
 
-- **Gamer/coder dark theme** — deep near-black surfaces, electric-blue + magenta
-  neon used sparingly (glows, active states, key words), monospace headings, and a
-  faint IDE grid. Signature touches: a blinking terminal cursor, `// code-comment`
-  section labels, and an "active quest" glow on the current role.
-- **A 3D character guide** — a rim-lit cartoon render per section (wave, presenting,
-  coding at the desk, thinking, thumbs-up) that enters on scroll and drifts with
-  parallax.
+- **Spider-Man night theme** — navy-black surfaces with suit-red (primary) and
+  suit-blue (secondary) accents used sparingly, monospace headings, and original
+  backdrop art: corner spider webs that spin themselves in as each section enters,
+  comic halftone, a moon, and a generated night-city skyline. Signature touches: a
+  blinking terminal cursor, `// code-comment` section labels, and an "active quest"
+  glow on the current role.
+- **Scroll-driven Spider-Man** — he hangs on a web thread in the right gutter and
+  descends with page progress, swings like a pendulum when the scroll speed changes,
+  and zips you back to the top on click (desktop, `lg`+; parked under reduced motion).
 - **Content as visuals** — an interactive skills grid (grouped, with the newest
   skills flagged), an expandable **"play card"** timeline with glassmorphism, animated
   count-up stats, schematic system diagrams, and expandable project cards.
@@ -61,19 +64,18 @@ A few behaviors to know:
   `projects: []` array hides the Work section.
 - **Experience**: the entry with `"active": true` becomes the top, glowing "NOW" node
   and opens by default.
-- **Skills**: items with `"recent": true` get the magenta "new" treatment.
+- **Skills**: items with `"recent": true` get the blue "new" treatment.
 
-## Character art
+## Background art
 
-The guide is a set of pre-rendered 3D images on a dark spotlight backdrop that
-matches the theme. They are **not** cut out — the backdrop is kept and the edges are
-feathered so each image blends into the page with no visible box.
-
-- Source PNGs live in `characters-src/` (gitignored; not shipped).
-- [`scripts/process-characters.py`](scripts/process-characters.py) paints out the
-  watermark, crops a head-centered portrait, resizes, feathers the edges, and encodes
-  WebP into `public/characters/` (what the site ships, ~260 KB total). Requires
-  Pillow (`pip install Pillow`); re-run after adding or replacing a pose.
+- **Webs** — [`WebBackdrop`](src/components/fx/WebBackdrop.tsx) generates an orb web
+  (spokes + sagging rings) from a seed and strings it from a section corner. Pick the
+  corner, size, strength and seed per section.
+- **Skyline** — [`Skyline`](src/components/fx/Skyline.tsx) generates a night city
+  (far haze, near silhouettes with setbacks/spires/water tanks, sparse lit windows)
+  as a handful of SVG paths.
+- **Spider-Man** — [`SpiderDrop`](src/components/ui/SpiderDrop.tsx) plus
+  `public/spidey.webp` (a transparent cutout, ~22 KB).
 
 ## Project structure
 
@@ -81,9 +83,8 @@ feathered so each image blends into the page with no visible box.
 index.html                 # entry HTML, fonts, meta/OG tags, theme-color
 vercel.json                # Vercel: vite framework + SPA rewrite
 public/
-  characters/*.webp        # optimized character art (shipped)
+  spidey.webp              # Spider-Man cutout for the scroll descent
   favicon.svg  robots.txt
-scripts/process-characters.py
 src/
   main.tsx                 # React entry
   App.tsx                  # section composition + smooth scroll
@@ -96,10 +97,11 @@ src/
     useGsap.ts             # scoped, reduced-motion-aware GSAP helper
     useScrollSpy.ts        # IntersectionObserver nav highlighting
   lib/
-    asset.ts  cn.ts  gsap.ts  icons.ts
+    asset.ts  cn.ts  gsap.ts  icons.ts  rng.ts
   components/
     layout/   Navbar.tsx
-    ui/       Character.tsx  Counter.tsx  ExperienceCard.tsx  ProjectCard.tsx
+    fx/       WebBackdrop.tsx  Skyline.tsx
+    ui/       SpiderDrop.tsx  Counter.tsx  ExperienceCard.tsx  ProjectCard.tsx
               MagneticLink.tsx  Reveal.tsx  SectionHeading.tsx  Statement.tsx
     diagrams/ DiagramPanel.tsx  primitives.tsx  PaymentFlowDiagram.tsx
               CardSecurityDiagram.tsx  TopologyDiagram.tsx
@@ -114,9 +116,10 @@ src/
   parallax all stand down to static. `prefers-reduced-transparency`: glass surfaces
   fall back to solid.
 - Semantic landmarks, a skip link, `aria-expanded` on the interactive cards, visible
-  focus rings, meaningful alt text on the character images, and keyboard-reachable
+  focus rings, decorative art marked `aria-hidden`, and keyboard-reachable
   navigation.
-- Character art ships as small WebP; off-screen poses load lazily.
+- Background art is generated SVG (no image requests); the only bitmap is the
+  22 KB Spider-Man cutout.
 
 ## Deployment
 

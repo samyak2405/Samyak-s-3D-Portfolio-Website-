@@ -3,10 +3,11 @@ import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { usePortfolio } from '../../hooks/usePortfolio'
 import { useGsap } from '../../hooks/useGsap'
-import Character from '../ui/Character'
+import Skyline from '../fx/Skyline'
+import WebBackdrop from '../fx/WebBackdrop'
 import MagneticLink from '../ui/MagneticLink'
 
-// The headline, split so the second "systems" keeps its magenta glow.
+// The headline, split so the second "systems" keeps its suit-red glow.
 const HEAD_A = 'I build the systems behind the '
 const HEAD_B = 'systems'
 const HEAD_C = '.'
@@ -62,7 +63,7 @@ function TypedHeadline() {
     <span aria-hidden>
       {part(HEAD_A, 0)}
       <span className="whitespace-nowrap">
-        {part(HEAD_B, HEAD_A.length, 'text-magenta glow-magenta')}
+        {part(HEAD_B, HEAD_A.length, 'text-accent glow-primary')}
         {part(HEAD_C, HEAD_A.length + HEAD_B.length)}
       </span>
     </span>
@@ -77,40 +78,56 @@ export default function Hero() {
     gsap
       .timeline({ defaults: { ease: 'power3.out' } })
       .from('.hero-rise', { y: 24, opacity: 0, duration: 0.7, stagger: 0.12 })
-      .from('.hero-character', { yPercent: 6, opacity: 0, duration: 1 }, '-=0.9')
+      .from('.hero-moon', { yPercent: 14, opacity: 0, duration: 1.6 }, '-=0.9')
+      .from('.hero-city', { yPercent: 18, opacity: 0, duration: 1.2 }, '<0.2')
 
-    gsap.to('.hero-character', {
-      yPercent: -10,
-      ease: 'none',
-      scrollTrigger: { trigger: scope.current, start: 'top top', end: 'bottom top', scrub: true },
-    })
+    // Night-sky parallax: the moon drifts slower than the page, the city a
+    // little slower still, so the hero has depth as you leave it.
+    const st = { trigger: scope.current, start: 'top top', end: 'bottom top', scrub: true }
+    gsap.to('.hero-moon', { yPercent: 35, ease: 'none', scrollTrigger: st })
+    gsap.to('.hero-city', { yPercent: 12, ease: 'none', scrollTrigger: st })
   })
 
   return (
     <section ref={scope} id="hero" className="relative min-h-[100dvh] overflow-hidden bg-ink">
-      {/* IDE-dark ambiance: faint grid + neon radial glows */}
-      <div aria-hidden className="grid-bg absolute inset-0 opacity-50" />
+      {/* Night sky: suit-blue up top, a red city glow on the horizon */}
       <div
         aria-hidden
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(52% 50% at 16% 8%, rgba(77,139,255,0.16), transparent 60%), radial-gradient(48% 52% at 88% 88%, rgba(198,92,255,0.14), transparent 62%)',
+            'radial-gradient(55% 45% at 12% 0%, rgba(77,139,255,0.16), transparent 62%), radial-gradient(70% 38% at 55% 100%, rgba(255,59,74,0.22), transparent 70%), linear-gradient(to bottom, #07080f 0%, #0b0e1c 60%, #140b16 100%)',
         }}
       />
+      <div aria-hidden className="halftone absolute inset-0 opacity-70 [--ht-at:0%_100%]" />
+
+      {/* The moon (a nod to the surname), framed by the web */}
       <div
         aria-hidden
-        className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-ink to-transparent"
+        className="hero-moon absolute right-[-36px] top-16 aspect-square w-[150px] rounded-full opacity-80 sm:right-[4%] sm:top-[9%] sm:w-[260px] lg:right-[10%] lg:top-[16%] lg:w-[min(26vw,380px)]"
+        style={{
+          background:
+            'radial-gradient(circle at 30% 64%, rgba(70,68,98,0.30), transparent 10%), radial-gradient(circle at 63% 31%, rgba(70,68,98,0.24), transparent 13%), radial-gradient(circle at 71% 69%, rgba(70,68,98,0.2), transparent 7%), radial-gradient(circle at 45% 47%, rgba(70,68,98,0.12), transparent 22%), radial-gradient(circle at 34% 30%, #e6e4ee 0%, #c4c1d4 38%, #8b88a2 76%, #5a5772 100%)',
+          boxShadow:
+            'inset -26px -20px 60px rgba(7,8,15,0.5), 0 0 60px 4px rgba(225,225,255,0.10), 0 0 200px 40px rgba(77,139,255,0.10)',
+        }}
       />
 
-      <div className="container-edge relative grid min-h-[100dvh] items-center gap-8 pt-24 pb-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-6 lg:pt-20">
-        {/* Text — first on mobile so the headline and CTAs are above the fold */}
-        <div className="order-1 max-w-xl">
+      <WebBackdrop corner="tr" draw="load" delay={0.5} strength={0.2} seed={3} size="min(130vw, 980px)" />
+
+      <Skyline className="hero-city h-[22vh] min-h-[130px] max-h-[260px]" seed={11} />
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-ink to-transparent"
+      />
+
+      <div className="container-edge relative flex min-h-[100dvh] items-center pt-24 pb-40 lg:pt-20 lg:pb-44">
+        <div className="max-w-xl">
           <p className="hero-rise mono-label text-accent">// {profile.role}</p>
           <p className="hero-rise mt-6 text-lg text-steel-300">Hi, I'm Samyak Moon.</p>
           <h1
             aria-label={HEAD_FULL}
-            className="hero-rise headline h-fluid-1 mt-3 text-steel-100"
+            className="hero-rise headline h-fluid-1 mt-3 text-steel-100 [text-shadow:0_2px_24px_rgba(7,8,15,0.9)]"
           >
             <TypedHeadline />
           </h1>
@@ -127,16 +144,6 @@ export default function Hero() {
               <ArrowUpRight size={16} />
             </MagneticLink>
           </div>
-        </div>
-
-        {/* Character — smaller on mobile, under the CTAs */}
-        <div className="order-2 flex justify-center lg:justify-end">
-          <Character
-            pose="hero-wave"
-            alt="Samyak Moon, a 3D cartoon gamer-coder character in a hoodie with headphones, waving hello"
-            priority
-            className="hero-character h-[13.5rem] w-auto sm:h-[17rem] lg:h-[82vh]"
-          />
         </div>
       </div>
     </section>
