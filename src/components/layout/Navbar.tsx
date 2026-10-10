@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { usePortfolio } from '../../hooks/usePortfolio'
 import { useScrollSpy } from '../../hooks/useScrollSpy'
 import { cn } from '../../lib/cn'
+import { RESUME_HREF } from '../../lib/links'
 
 const LINKS = [
   { id: 'about', label: 'About' },
@@ -14,8 +15,6 @@ const LINKS = [
   { id: 'contact', label: 'Contact' },
 ]
 
-// Résumé (hosted on Google Drive so it can be updated without a redeploy).
-const RESUME_HREF = 'https://drive.google.com/file/d/1cSZYen95FkxBLyH9gXPjErrijZ74luh7/view'
 
 export default function Navbar() {
   const { profile } = usePortfolio()
