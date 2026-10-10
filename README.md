@@ -10,12 +10,21 @@ hanging from a web thread who drops down the page as you scroll.
 
 ## Highlights
 
+- **3D night-city hero** — a lazy-loaded three.js scene: an avenue of instanced
+  towers whose windows are lit in the shader (and re-roll every ~30s), traffic
+  light-trails, street lamps, stars and the moon. The camera glides in on load,
+  leans toward the pointer and dives down the avenue as you scroll. Falls back to
+  the SVG skyline without WebGL2, on Save-Data, or under reduced motion (which
+  renders one still frame). Pauses off-screen.
+- **3D tilt** — cards and diagram panels lean toward the cursor in perspective with
+  a following glare (mouse only; flat under reduced motion).
+- **Type** — Big Shoulders Display (condensed civic-signage letters that echo the
+  skyline) for headings, Schibsted Grotesk (a newspaper grotesk) for text, and
+  IBM Plex Mono only for code-like diagram labels.
 - **Spider-Man night theme** — navy-black surfaces with suit-red (primary) and
-  suit-blue (secondary) accents used sparingly, monospace headings, and original
-  backdrop art: corner spider webs that spin themselves in as each section enters,
-  comic halftone, a moon, and a generated night-city skyline. Signature touches: a
-  blinking terminal cursor, `// code-comment` section labels, and an "active quest"
-  glow on the current role.
+  suit-blue (secondary) accents used sparingly, top-lit panels, film grain, and
+  original backdrop art: corner spider webs that spin themselves in as each section
+  enters, comic halftone, a moon, and a generated night-city skyline.
 - **Scroll-driven Spider-Man** — he hangs on a web thread in the right gutter and
   descends with page progress, swings like a pendulum when the scroll speed changes,
   and zips you back to the top on click (desktop, `lg`+; parked under reduced motion).
@@ -36,7 +45,9 @@ hanging from a web thread who drops down the page as you scroll.
 - **Lenis** (smooth scroll) + **GSAP** / ScrollTrigger (scroll-driven animation)
 - **Framer Motion** (component micro-interactions, reveals, card expand/collapse)
 - **lucide-react** (icons)
-- Fonts: **JetBrains Mono** (headings/labels/code) + **Hanken Grotesk** (body)
+- **three.js** (hero city, lazy chunk)
+- Fonts: **Big Shoulders Display** (headings) + **Schibsted Grotesk** (text) +
+  **IBM Plex Mono** (diagram labels), self-hosted via Fontsource
 
 ## Getting started
 
@@ -100,8 +111,8 @@ src/
     asset.ts  cn.ts  gsap.ts  icons.ts  rng.ts
   components/
     layout/   Navbar.tsx
-    fx/       WebBackdrop.tsx  Skyline.tsx
-    ui/       SpiderDrop.tsx  Counter.tsx  ExperienceCard.tsx  ProjectCard.tsx
+    fx/       CityScene.ts  WebBackdrop.tsx  Skyline.tsx
+    ui/       SpiderDrop.tsx  Tilt.tsx  Counter.tsx  ExperienceCard.tsx  ProjectCard.tsx
               MagneticLink.tsx  Reveal.tsx  SectionHeading.tsx  Statement.tsx
     diagrams/ DiagramPanel.tsx  primitives.tsx  PaymentFlowDiagram.tsx
               CardSecurityDiagram.tsx  TopologyDiagram.tsx

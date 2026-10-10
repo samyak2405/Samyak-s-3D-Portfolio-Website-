@@ -35,6 +35,7 @@ export default function App() {
         <Contact />
       </main>
       <SpiderDrop />
+      <div aria-hidden className="grain" />
     </div>
   )
 }

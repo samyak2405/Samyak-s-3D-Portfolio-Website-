@@ -15,8 +15,10 @@
   --accent-strong: #ff5c69;
   --secondary: #4d8bff;
   /* Swap font families in one place. */
-  --font-sans: 'Geist Variable', system-ui, -apple-system, sans-serif;
-  --font-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, monospace;
+  --font-display: 'Big Shoulders Display Variable', 'Arial Narrow', sans-serif;
+  --font-sans: 'Schibsted Grotesk Variable', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  --moonlight: #ecebf4;
 }
 
 * {
@@ -105,39 +107,89 @@ section[id] {
     }
   }
 
-  /* Mono label for section markers, stats and code-flavored meta. */
-  .mono-label {
-    font-family: var(--font-mono);
-    font-size: 0.75rem; /* 12px minimum */
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+  /* Quiet caption for small meta text (diagram titles, hints). Sentence case,
+     body face, no tracking — labels inform, they don't shout. */
+  .meta-label {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0;
     color: #9aa0a6; /* AA on #07080f */
   }
 
-  /* Display headings: mono, tight, confident (the coder identity). */
-  /* Section headings: Geist, tight. */
+  /* Section headings: condensed display, heavy, tight. The letterforms are
+     tall and narrow like the towers behind them, so they set large. */
   .display {
-    font-family: var(--font-sans);
-    font-weight: 600;
-    line-height: 1.05;
-    letter-spacing: -0.03em;
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: 0.004em;
+    color: var(--moonlight);
+    text-wrap: balance;
   }
 
-  /* Hero headline keeps the mono "signature" look. */
+  /* Hero headline: the same face, pushed to poster size. */
   .headline {
-    font-family: var(--font-mono);
-    font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: 0.88;
+    letter-spacing: 0;
+    color: var(--moonlight);
   }
 
-  /* Fluid type scale. h1 is tuned a touch tighter than the generic scale
-     because the mono hero glyphs are wider and share a narrow column. */
+  /* Fluid type scale (display face is condensed, so it can run large). */
   .h-fluid-1 {
-    font-size: clamp(2rem, 4vw + 0.75rem, 3.25rem);
+    font-size: clamp(3.4rem, 6.6vw, 7.75rem);
   }
   .h-fluid-2 {
-    font-size: clamp(1.875rem, 3vw + 1rem, 3rem);
+    font-size: clamp(2.9rem, 4.6vw + 1rem, 5.25rem);
+  }
+
+  /* Raised surface for cards and panels: a faint top-lit gradient and a hairline
+     that catches light along the top edge, instead of a flat fill + grey shadow. */
+  .panel {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012) 40%, rgba(255, 255, 255, 0) 100%),
+      #11141f;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.07),
+      0 24px 48px -28px rgba(0, 0, 0, 0.9);
+  }
+
+  /* 3D tilt (Tilt.tsx): glare that follows the pointer while the card leans. */
+  .tilt-card {
+    border-radius: 1rem;
+  }
+  .tilt-glare {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    background: radial-gradient(
+      420px circle at var(--gx, 50%) var(--gy, 0%),
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 59, 74, 0.05) 35%,
+      transparent 60%
+    );
+    mix-blend-mode: screen;
+  }
+  .tilt-card[data-tilting] .tilt-glare {
+    opacity: 1;
+  }
+
+  /* Film grain over the whole page: a static, faint print texture that takes
+     the digital flatness off the dark fills. */
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 35;
+    pointer-events: none;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
   }
 
   /* Comic-print halftone: dots that fade out from one corner, like the shaded
@@ -281,7 +333,7 @@ section[id] {
       drop-shadow(0 0 16px rgba(255, 59, 74, 0.45));
     transform: translateY(-4px);
   }
-  /* "Back to top" hint beside his head, in the site's mono-label voice. */
+  /* "Back to top" hint beside his head. */
   .spidey-tip {
     position: absolute;
     right: calc(100% + 10px);
@@ -315,22 +367,6 @@ section[id] {
     }
   }
 
-  /* Blinking terminal cursor (signature touch). */
-  .cursor {
-    display: inline-block;
-    width: 0.32em;
-    height: 0.82em;
-    margin-left: 0.06em;
-    translate: 0 0.1em;
-    background: var(--accent);
-    box-shadow: 0 0 10px rgba(255, 59, 74, 0.6);
-    animation: blink 1.1s step-end infinite;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .cursor {
-      animation: none;
-    }
-  }
 }
 
 @layer utilities {

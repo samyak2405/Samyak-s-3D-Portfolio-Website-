@@ -14,12 +14,12 @@ export default function Work() {
 
   const face = (project: Project) => (
     <>
-      <span className="font-mono text-xs text-steel-400">
-        {project.role} · {project.year}
+      <span className="text-xs text-steel-400">
+        {project.role}, {project.year}
       </span>
       <span className="mt-3 block text-xl font-semibold text-steel-100">{project.title}</span>
       <span className="mt-2 block text-sm text-accent">{project.subtitle}</span>
-      <span className="mt-auto pt-4 font-mono text-xs text-steel-500">click for details</span>
+      <span className="mt-auto pt-4 text-xs text-steel-500">Open for details</span>
     </>
   )
 
@@ -27,8 +27,8 @@ export default function Work() {
     const repoHref = project.repo || project.link
     return (
       <div>
-        <p className="font-mono text-xs text-steel-400">
-          {project.role} · {project.year}
+        <p className="text-xs text-steel-400">
+          {project.role}, {project.year}
         </p>
         <h3 className="mt-2 text-xl font-semibold text-steel-100">{project.title}</h3>
         <p className="mt-1 text-sm text-accent">{project.subtitle}</p>
