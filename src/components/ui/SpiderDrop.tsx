@@ -16,11 +16,14 @@ const THREAD_OVERLAP = 4
 // Where the speech bubble hangs, as a fraction of his height: just under his
 // head (he hangs upside down), with its tail pointing up at him.
 const SAY_AT = 0.97
+// Height the bubble needs below his head before it moves beside him.
+const SAY_ROOM = 110
 
 /** What he says beside each section, keyed by section id. */
 const LINES: Record<string, string> = {
   skills: 'Hover a group to spin its web!',
   experience: 'Hover a role to see the details!',
+  work: 'Click a project to flip it!',
 }
 
 /**
@@ -120,9 +123,17 @@ export default function SpiderDrop() {
           const bottom = Math.max(top, viewH - figH - BOTTOM_GAP)
           return top + (bottom - top) * p
         }
+        // The bubble hangs under his head; when he's low on the screen and
+        // there's no room below, it moves up beside his head instead.
+        let sayBeside = false
         const render = (y: number, angle: number) => {
           setY(y)
-          setSayY(y + figH * SAY_AT)
+          const beside = y + figH * SAY_AT + SAY_ROOM > viewH
+          if (beside !== sayBeside) {
+            sayBeside = beside
+            say.toggleAttribute('data-beside', beside)
+          }
+          setSayY(beside ? y + figH * 0.86 : y + figH * SAY_AT)
           setThread(Math.max(0, y + THREAD_OVERLAP) / viewH)
           setAngle(angle)
         }
