@@ -260,7 +260,8 @@ section[id] {
   .skill-head {
     cursor: pointer;
   }
-  .skill-head > span:nth-child(2) {
+  .skill-name {
+    color: var(--moonlight);
     transition: color 0.3s ease;
   }
   .skill-knot {
@@ -280,19 +281,117 @@ section[id] {
     border-color: #ff3b4a;
     box-shadow: 0 0 0 4px rgba(255, 59, 74, 0.14), 0 0 16px rgba(255, 59, 74, 0.6);
   }
-  .skill-preview {
-    transition: opacity 0.3s ease;
+  /* Desktop tabs: quiet until chosen; the chosen group gets a red strand
+     running from its name toward the web. */
+  [role='tablist'] .skill-name {
+    color: #878c98;
   }
-  .skill-row.is-open .skill-preview {
+  [role='tablist'] .skill-row[data-active] .skill-name {
+    color: #fff;
+  }
+  [role='tablist'] .skill-head::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    margin-left: 1.25rem;
+    background: linear-gradient(90deg, rgba(255, 59, 74, 0.85), rgba(255, 59, 74, 0));
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  [role='tablist'] .skill-row[data-active] .skill-head::after {
+    transform: scaleX(1);
+  }
+  [role='tablist'] .skill-row[data-active] .skill-knot {
+    transform: scale(1.35);
+  }
+
+  /* Desktop web stage. */
+  .skill-stage {
+    background: radial-gradient(closest-side, rgba(255, 59, 74, 0.06), rgba(77, 139, 255, 0.03) 55%, transparent 80%);
+  }
+  .orb-spoke,
+  .orb-ring {
+    fill: none;
+    stroke-linecap: round;
+    transition: stroke 0.25s ease;
+  }
+  .orb-spoke {
+    stroke: rgba(236, 238, 244, 0.16);
+    stroke-width: 1;
+  }
+  .orb-spoke.is-skill {
+    stroke: rgba(236, 238, 244, 0.42);
+  }
+  .orb-spoke.is-hot {
+    stroke: #ff3b4a;
+  }
+  .orb-ring {
+    stroke: rgba(236, 238, 244, 0.12);
+    stroke-width: 1;
+  }
+  .orb-hub {
+    fill: #ff3b4a;
+    filter: drop-shadow(0 0 8px rgba(255, 59, 74, 0.8));
+  }
+  .skill-stage:not(.is-armed) .orb-strand,
+  .skill-stage:not(.is-armed) .orb-hub,
+  .skill-stage:not(.is-armed) .orb-label {
     opacity: 0;
   }
-  .skill-toggle {
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, color 0.3s ease;
+  /* Long names wrap onto two lines rather than reaching past the web. */
+  .orb-pin {
+    width: max-content;
+    max-width: 9.75rem;
   }
-  .skill-row.is-open .skill-toggle {
-    transform: rotate(45deg);
-    border-color: rgba(255, 59, 74, 0.6);
-    color: #ff3b4a;
+  .orb-pin.is-right {
+    transform: translate(-5px, -50%);
+  }
+  .orb-pin.is-left {
+    transform: translate(calc(-100% + 5px), -50%);
+  }
+  .orb-pin.is-top {
+    transform: translate(-50%, calc(-100% + 5px));
+  }
+  .orb-pin.is-bottom {
+    transform: translate(-50%, -5px);
+  }
+  .orb-label {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .is-left > .orb-label {
+    flex-direction: row-reverse;
+  }
+  .is-top > .orb-label {
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+  .is-bottom > .orb-label {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .orb-text {
+    font-size: 1.08rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #e8eaed;
+    transition: color 0.25s ease;
+  }
+  .is-left .orb-text {
+    text-align: right;
+  }
+  .is-top .orb-text,
+  .is-bottom .orb-text {
+    text-align: center;
+  }
+  .orb-pin:hover .orb-text {
+    color: #fff;
+  }
+  .orb-pin:hover .web-node {
+    background: #ff3b4a;
+    box-shadow: 0 0 0 3px rgba(255, 59, 74, 0.18), 0 0 12px rgba(255, 59, 74, 0.8);
   }
 
   /* The open web. Panel height comes from the layout (--panel-h). */
@@ -301,13 +400,13 @@ section[id] {
     overflow: hidden;
     transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .skill-row.is-open .skill-panel {
+  .skill-row[data-open] .skill-panel {
     height: var(--panel-h);
   }
   .skill-panel > div {
     transition: opacity 0.3s ease;
   }
-  .skill-row:not(.is-open) .skill-panel > div {
+  .skill-row:not([data-open]) .skill-panel > div {
     opacity: 0;
   }
   .web-spoke,
@@ -356,7 +455,7 @@ section[id] {
     .skill-index:hover .skill-row:not(:hover) {
       opacity: 0.5;
     }
-    .skill-head:hover > span:nth-child(2) {
+    .skill-head:hover .skill-name {
       color: #fff;
     }
     .skill-head:hover .skill-knot {
@@ -368,8 +467,7 @@ section[id] {
     .skill-knot,
     .skill-panel,
     .skill-panel > div,
-    .skill-toggle,
-    .skill-preview {
+    [role='tablist'] .skill-head::after {
       transition: none;
     }
   }
