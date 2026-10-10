@@ -605,6 +605,242 @@ section[id] {
     }
   }
 
+  /* Contact (Contact.tsx): a rooftop searchlight projecting a web emblem onto
+     drifting clouds. Cloud layers lean with --cloud-x / --cloud-y (set per
+     frame) by depth; each drifts on its own loop. */
+  .contact {
+    background: #07080f;
+  }
+  .cloud-layer {
+    position: absolute;
+    left: -8%;
+    right: -8%;
+    top: -4%;
+    height: 66%;
+    pointer-events: none;
+    filter: blur(16px);
+  }
+  .cloud-layer > div {
+    position: absolute;
+    inset: 0;
+    width: 200%;
+    background-size: 50% 100%;
+    background-repeat: repeat-x;
+    animation: cloud-drift 120s linear infinite;
+  }
+  .cloud-layer.is-far {
+    transform: translate3d(calc(var(--cloud-x, 0) * -12px), calc(var(--cloud-y, 0) * -6px), 0);
+  }
+  .cloud-layer.is-far > div {
+    background-image:
+      radial-gradient(18% 14% at 12% 30%, rgba(92, 104, 160, 0.2), transparent 70%),
+      radial-gradient(22% 12% at 46% 18%, rgba(92, 104, 160, 0.16), transparent 70%),
+      radial-gradient(16% 10% at 78% 40%, rgba(92, 104, 160, 0.18), transparent 70%);
+    animation-duration: 190s;
+  }
+  .cloud-layer.is-mid {
+    transform: translate3d(calc(var(--cloud-x, 0) * -26px), calc(var(--cloud-y, 0) * -12px), 0);
+  }
+  .cloud-layer.is-mid > div {
+    background-image:
+      radial-gradient(20% 12% at 24% 44%, rgba(70, 78, 124, 0.26), transparent 70%),
+      radial-gradient(26% 14% at 66% 26%, rgba(70, 78, 124, 0.22), transparent 70%),
+      radial-gradient(14% 9% at 90% 56%, rgba(70, 78, 124, 0.2), transparent 70%);
+    animation-duration: 130s;
+  }
+  .cloud-layer.is-near {
+    transform: translate3d(calc(var(--cloud-x, 0) * -46px), calc(var(--cloud-y, 0) * -20px), 0);
+    filter: blur(22px);
+  }
+  .cloud-layer.is-near > div {
+    background-image:
+      radial-gradient(24% 11% at 8% 60%, rgba(30, 34, 58, 0.55), transparent 70%),
+      radial-gradient(18% 9% at 54% 66%, rgba(30, 34, 58, 0.45), transparent 70%),
+      radial-gradient(22% 10% at 84% 20%, rgba(30, 34, 58, 0.42), transparent 70%);
+    animation-duration: 85s;
+  }
+  @keyframes cloud-drift {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  /* The beam: an outer box that is placed and blurred, and an inner cone
+     clipped to shape, so the blur softens the cone's edges into light. */
+  .signal-beam {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 230px;
+    margin-top: -115px;
+    transform-origin: 0 50%;
+    filter: blur(10px);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    will-change: transform, width;
+  }
+  .signal-beam > div {
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(0 47%, 100% 4%, 100% 96%, 0 53%);
+    background:
+      linear-gradient(to bottom, transparent 0%, rgba(255, 236, 214, 0.5) 30%, rgba(255, 236, 214, 0.5) 70%, transparent 100%),
+      linear-gradient(to right, rgba(255, 236, 214, 0.5), rgba(255, 236, 214, 0.12) 80%);
+    background-blend-mode: multiply;
+    opacity: 0.55;
+  }
+  .signal-disc {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 246, 232, 0.88) 0%,
+      rgba(255, 240, 220, 0.66) 40%,
+      rgba(255, 234, 208, 0.3) 56%,
+      rgba(255, 230, 200, 0.08) 66%,
+      transparent 72%
+    );
+    pointer-events: none;
+    will-change: transform;
+  }
+  @media (max-width: 1023px) {
+    .signal-beam {
+      height: 150px;
+      margin-top: -75px;
+    }
+    .signal-disc {
+      width: 170px;
+      height: 170px;
+      opacity: 0.7;
+    }
+  }
+  .signal-emblem {
+    position: absolute;
+    inset: 14%;
+    width: 72%;
+    height: 72%;
+  }
+  .signal-web path {
+    fill: none;
+    stroke: rgba(14, 16, 30, 0.62);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    transition: opacity 0.3s ease;
+  }
+  .signal-web.has-glyph path {
+    opacity: 0.45;
+  }
+  .signal-hub {
+    fill: rgba(14, 16, 30, 0.7);
+  }
+  .signal-glyph {
+    fill: rgba(14, 16, 30, 0.82);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 78px;
+    letter-spacing: 0.01em;
+  }
+  /* The tower the searchlight stands on, rising out of the skyline. */
+  .signal-roof {
+    position: absolute;
+    bottom: 0;
+    right: 14%;
+    width: 68px;
+    height: clamp(170px, 30vh, 290px);
+    background:
+      repeating-linear-gradient(to bottom, transparent 0 14px, rgba(255, 212, 150, 0.06) 14px 18px),
+      #070910;
+  }
+  .signal-roof::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: 22px;
+    height: 10px;
+    margin-left: -11px;
+    background: #070910;
+  }
+  .signal-lamp {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    width: 18px;
+    height: 18px;
+    margin-left: -9px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff 0 30%, #ffd9a8 58%, transparent 72%);
+    box-shadow: 0 0 26px 8px rgba(255, 220, 170, 0.5);
+  }
+  @media (max-width: 1023px) {
+    .signal-roof {
+      right: 8%;
+      width: 52px;
+    }
+  }
+  .contact-btn {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 1.4rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.05);
+    color: #f4f5f7;
+    font-size: 0.95rem;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .contact-btn:hover {
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.09);
+  }
+  .contact-btn.is-primary {
+    border-color: transparent;
+    background: linear-gradient(180deg, #e3283a 0%, #c30e25 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 10px 28px -10px rgba(255, 59, 74, 0.75);
+  }
+  .contact-btn.is-primary:hover {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32), 0 14px 34px -10px rgba(255, 59, 74, 0.9);
+  }
+  .contact-row {
+    display: flex;
+    min-height: 72px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 0.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.09);
+  }
+  .contact-row > span:first-child > span:first-child {
+    transition: color 0.2s ease;
+  }
+  .contact-row-icon {
+    flex: none;
+    color: rgba(255, 255, 255, 0.4);
+    transition: color 0.2s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .contact-row:hover > span:first-child > span:first-child,
+  .contact-row:focus-visible > span:first-child > span:first-child {
+    color: #fff;
+  }
+  .contact-row:hover .contact-row-icon,
+  .contact-row:focus-visible .contact-row-icon {
+    color: #ff5c69;
+    transform: translate(2px, -2px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cloud-layer > div {
+      animation: none;
+    }
+  }
+
   /* Work (Work.tsx): posters hanging on threads from a silk rail. Each slot
      draws its piece of the rail (::before) and its thread; the poster hangs
      --drop below the rail and swings about the thread's attach point. */

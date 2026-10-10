@@ -24,6 +24,7 @@ const LINES: Record<string, string> = {
   skills: 'Hover a group to spin its web!',
   experience: 'Hover a role to see the details!',
   work: 'Click a project to flip it!',
+  contact: 'Send me a signal!',
 }
 
 /**
