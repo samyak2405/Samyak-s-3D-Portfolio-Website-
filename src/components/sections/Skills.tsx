@@ -1,4 +1,13 @@
-import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
+import {
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
+} from 'react'
 import { usePortfolio } from '../../hooks/usePortfolio'
 import { useGsap } from '../../hooks/useGsap'
 import { gsap, ScrollTrigger } from '../../lib/gsap'
@@ -11,10 +20,9 @@ import SectionHeading from '../ui/SectionHeading'
  * Skills: a short index of groups strung on a web thread, and a web that shows
  * the chosen group's skills.
  *
- * Desktop (lg+): the groups are a vertical tab list on the left; the selected
- * group's skills hang in a full orb web on the right, each at the end of a
- * spoke, with rings sagging between them. Choosing another group re-spins the
- * web. Below lg there is no room beside the list, so a group opens in place
+ * Desktop (lg+): the groups are a vertical tab list on the left (hover or
+ * click to choose); the selected
+ * group's skills hang in a living 3D orb web on the right (see SkillStage). Below lg there is no room beside the list, so a group opens in place
  * instead, spinning a small web off the thread under its name.
  *
  * The thread down the left edge spins out as you scroll and each group's knot
@@ -62,54 +70,64 @@ function ringPath(pts: Pt[], hub: Pt, closed: boolean) {
 }
 
 // ---------------------------------------------------------------------------
-// Desktop: a full orb web centred in the stage
+// Desktop: a living 3D orb web
 // ---------------------------------------------------------------------------
 
-interface Orb {
-  hub: Pt
+/**
+ * The web is modelled on a flat plane in 3D and drawn in perspective each
+ * frame: it leans toward the pointer, sways a little on its own, its strands
+ * ripple like silk, and hovering a skill plucks that skill's strand. Choosing a
+ * group spins a fresh web in from depth.
+ */
+
+interface WebModel {
   r: number
-  nodes: Array<Pt & { place: Place }>
-  spokes: string[]
+  reach: number
+  angles: number[]
+  /** Node index carried by each spoke, or -1. */
   spokeNode: number[]
-  rings: string[]
+  /** Spoke index for each node. */
+  nodeSpoke: number[]
+  places: Place[]
+  rings: number[]
 }
 
-function layoutOrb(count: number, w: number, h: number): Orb {
-  const hub = { x: w / 2, y: h / 2 }
-  const r = Math.max(110, Math.min(w / 2 - 175, h / 2 - 58))
+function modelFor(count: number, w: number, h: number): WebModel {
+  const r = Math.max(110, Math.min(w / 2 - 180, h / 2 - 64))
   const n = Math.max(count, 1)
-  // Twice as many spokes as skills: every other spoke carries a skill.
   const spokeCount = Math.max(2 * n, 8)
   const per = spokeCount / n
   const angles = Array.from({ length: spokeCount }, (_, k) => -Math.PI / 2 + (k * 2 * Math.PI) / spokeCount)
+  const nodeSpoke = Array.from({ length: count }, (_, i) => Math.round(i * per))
+  const spokeNode = angles.map((_, k) => nodeSpoke.indexOf(k))
+  const places = nodeSpoke.map((k): Place => {
+    const c = Math.cos(angles[k])
+    const sn = Math.sin(angles[k])
+    return c > 0.35 ? 'right' : c < -0.35 ? 'left' : sn < 0 ? 'top' : 'bottom'
+  })
+  return {
+    r,
+    reach: r * 1.9,
+    angles,
+    spokeNode,
+    nodeSpoke,
+    places,
+    rings: [0.14, 0.27, 0.4, 0.53, 0.66, 0.79, 0.92, 1.06, 1.22],
+  }
+}
 
-  const nodes = Array.from({ length: count }, (_, i) => {
-    const a = angles[Math.round(i * per)]
-    const c = Math.cos(a)
-    const s = Math.sin(a)
-    const place: Place = c > 0.35 ? 'right' : c < -0.35 ? 'left' : s < 0 ? 'top' : 'bottom'
-    return { x: hub.x + r * c, y: hub.y + r * s, place }
-  })
-  const spokeNode = angles.map((_, k) => {
-    const i = k / per
-    return Number.isInteger(i) && i < count ? i : -1
-  })
+const FOCAL = 900
+const BASE_TILT = 0.22 // radians: the web leans back a touch even at rest
 
-  // Anchor lines run out to the edge of the stage; a mask fades them.
-  const spokes = angles.map((a) => {
-    const c = Math.cos(a)
-    const s = Math.sin(a)
-    const reach = Math.min(Math.abs(c) > 1e-6 ? (w / 2) / Math.abs(c) : Infinity, Math.abs(s) > 1e-6 ? (h / 2) / Math.abs(s) : Infinity)
-    return `M${r1(hub.x)} ${r1(hub.y)}L${r1(hub.x + c * reach)} ${r1(hub.y + s * reach)}`
-  })
-  const rings = [0.14, 0.27, 0.4, 0.53, 0.66, 0.79, 0.92, 1.06, 1.22].map((f) =>
-    ringPath(
-      angles.map((a) => ({ x: hub.x + Math.cos(a) * r * f, y: hub.y + Math.sin(a) * r * f })),
-      hub,
-      true,
-    ),
-  )
-  return { hub, r, nodes, spokes, spokeNode, rings }
+interface Motion {
+  t: number
+  rx: number
+  ry: number
+  spin: number
+  depth: number
+  sc: number
+  pluckSpoke: number
+  pluckAt: number
 }
 
 interface StageProps {
@@ -117,7 +135,7 @@ interface StageProps {
   labelledBy: string
   category: SkillCategory
   reduced: boolean
-  /** Bumps when the stage first scrolls into view, to play the first spin. */
+  /** True once the stage has been seen (or a group chosen): spin the web. */
   armed: boolean
 }
 
@@ -126,6 +144,19 @@ function SkillStage({ id, labelledBy, category, reduced, armed }: StageProps) {
   const [size, setSize] = useState({ w: 0, h: 0 })
   const [hover, setHover] = useState(-1)
   const maskId = useId().replace(/:/g, '')
+
+  const model = useMemo(() => modelFor(category.items.length, size.w, size.h), [category.items.length, size.w, size.h])
+  const live = useRef({ model, size })
+  live.current = { model, size }
+
+  const els = useRef({
+    spokes: [] as Array<SVGPathElement | null>,
+    rings: [] as Array<SVGPathElement | null>,
+    labels: [] as Array<HTMLLIElement | null>,
+    hub: null as SVGCircleElement | null,
+  })
+  const motion = useRef<Motion>({ t: 0, rx: BASE_TILT, ry: -0.1, spin: 0, depth: 0, sc: 1, pluckSpoke: -1, pluckAt: -10 })
+  const aim = useRef({ x: -0.25, y: 0 })
 
   useLayoutEffect(() => {
     const el = box.current
@@ -137,22 +168,195 @@ function SkillStage({ id, labelledBy, category, reduced, armed }: StageProps) {
     return () => ro.disconnect()
   }, [])
 
-  const orb = useMemo(() => layoutOrb(category.items.length, size.w, size.h), [category.items.length, size.w, size.h])
+  // Project the model with the current motion and write it to the DOM.
+  const draw = useRef(() => {})
+  draw.current = () => {
+    const { model: m, size: sz } = live.current
+    const st = motion.current
+    if (!sz.w) return
+    const hx = sz.w / 2
+    const hy = sz.h / 2
+    const cS = Math.cos(st.spin)
+    const sS = Math.sin(st.spin)
+    const cX = Math.cos(st.rx)
+    const sX = Math.sin(st.rx)
+    const cY = Math.cos(st.ry)
+    const sY = Math.sin(st.ry)
+    const breathe = 1 + Math.sin(st.t * 0.9) * 0.008
+    const spokeCount = m.angles.length
+    const sincePluck = st.t - st.pluckAt
+    const pluck = sincePluck < 2.5 ? 30 * Math.exp(-sincePluck * 3) * Math.sin(sincePluck * 24) : 0
 
-  // Spin the web each time a group is chosen (and the first time it's seen).
+    // z offset of a point on spoke k at plane radius d: a slow silk ripple
+    // plus a decaying pluck around the hovered strand.
+    const zAt = (k: number, d: number) => {
+      const a = m.angles[k]
+      let z = (reduced ? 0 : 7) * (d / m.r) * Math.sin(st.t * 1.25 + d * 0.018 + a * 2)
+      if (pluck && st.pluckSpoke >= 0) {
+        const di = Math.min(Math.abs(k - st.pluckSpoke), spokeCount - Math.abs(k - st.pluckSpoke))
+        z += pluck * Math.exp(-(di * di) / 1.1) * Math.min(1, d / m.r)
+      }
+      return z
+    }
+    const P = { x: 0, y: 0, k: 1 }
+    const project = (x: number, y: number, z: number) => {
+      const px = (x * cS - y * sS) * breathe * st.sc
+      const py = (x * sS + y * cS) * breathe * st.sc
+      const y1 = py * cX - z * sX
+      const z1 = py * sX + z * cX
+      const x2 = px * cY + z1 * sY
+      const z2 = -px * sY + z1 * cY + st.depth
+      const k = FOCAL / (FOCAL + z2)
+      P.x = hx + x2 * k
+      P.y = hy + y1 * k
+      P.k = k
+      return P
+    }
+    const at = (k: number, d: number) => {
+      const a = m.angles[k]
+      return project(Math.cos(a) * d, Math.sin(a) * d, zAt(k, d))
+    }
+    const f1 = (n: number) => n.toFixed(1)
+    const shade = (k: number) => Math.max(0.35, Math.min(1.3, 1 + (k - 1) * 3))
+
+    const e = els.current
+    for (let k = 0; k < spokeCount; k++) {
+      const path = e.spokes[k]
+      if (!path) continue
+      const a = at(k, 0)
+      const ax = a.x
+      const ay = a.y
+      const b = at(k, m.r)
+      const bx = b.x
+      const by = b.y
+      const bk = b.k
+      const c = at(k, m.reach)
+      path.setAttribute('d', `M${f1(ax)} ${f1(ay)}L${f1(bx)} ${f1(by)}L${f1(c.x)} ${f1(c.y)}`)
+      path.style.opacity = shade(bk).toFixed(2)
+    }
+    m.rings.forEach((f, ri) => {
+      const path = e.rings[ri]
+      if (!path) return
+      const d = m.r * f
+      let str = ''
+      let kSum = 0
+      for (let k = 0; k <= spokeCount; k++) {
+        const kk = k % spokeCount
+        const p = at(kk, d)
+        const px = p.x
+        const py = p.y
+        kSum += p.k
+        if (k === 0) {
+          str = `M${f1(px)} ${f1(py)}`
+          continue
+        }
+        // Sagging control point: the chord's midpoint pulled toward the hub.
+        const a0 = m.angles[(kk - 1 + spokeCount) % spokeCount]
+        const a1 = k === spokeCount ? m.angles[0] + 2 * Math.PI : m.angles[kk]
+        const mid = (a0 + a1) / 2
+        const chord = 2 * d * Math.sin((a1 - a0) / 2)
+        const cd = d * Math.cos((a1 - a0) / 2) - chord * 0.16
+        const cz = (zAt((kk - 1 + spokeCount) % spokeCount, d) + zAt(kk, d)) / 2
+        const q = project(Math.cos(mid) * cd, Math.sin(mid) * cd, cz)
+        str += `Q${f1(q.x)} ${f1(q.y)} ${f1(px)} ${f1(py)}`
+      }
+      path.setAttribute('d', str)
+      path.style.opacity = shade(kSum / (spokeCount + 1)).toFixed(2)
+    })
+    if (e.hub) {
+      const h = at(0, 0)
+      e.hub.setAttribute('cx', f1(h.x))
+      e.hub.setAttribute('cy', f1(h.y))
+      e.hub.setAttribute('r', f1(6 * h.k))
+    }
+    m.nodeSpoke.forEach((k, i) => {
+      const li = e.labels[i]
+      if (!li) return
+      const p = at(k, m.r)
+      const s = Math.max(0.82, Math.min(1.18, p.k))
+      li.style.transform = `translate3d(${f1(p.x)}px, ${f1(p.y)}px, 0) scale(${s.toFixed(3)})`
+      li.style.zIndex = String(Math.round(p.k * 100))
+    })
+  }
+
+  // Pointer: the web leans toward wherever the cursor is on the page,
+  // relative to the stage's centre.
+  useEffect(() => {
+    if (reduced) return
+    const onMove = (ev: PointerEvent) => {
+      const el = box.current
+      if (!el || ev.pointerType !== 'mouse') return
+      const r = el.getBoundingClientRect()
+      aim.current.x = Math.max(-1, Math.min(1, (ev.clientX - (r.left + r.width / 2)) / (r.width / 2)))
+      aim.current.y = Math.max(-1, Math.min(1, (ev.clientY - (r.top + r.height / 2)) / (r.height / 2)))
+    }
+    window.addEventListener('pointermove', onMove, { passive: true })
+    return () => window.removeEventListener('pointermove', onMove)
+  }, [reduced])
+
+  // The frame loop runs only while the stage is on screen.
+  useEffect(() => {
+    const el = box.current
+    if (!el) return
+    if (reduced) {
+      draw.current()
+      return
+    }
+    let running = false
+    const tick = (_time: number, deltaMs: number) => {
+      const dt = Math.min(deltaMs, 50) / 1000
+      const st = motion.current
+      st.t += dt
+      const k = 1 - Math.exp(-dt / 0.35)
+      const tx = BASE_TILT - aim.current.y * 0.34 + Math.sin(st.t * 0.27 + 1) * 0.05
+      const ty = aim.current.x * 0.42 + Math.sin(st.t * 0.35) * 0.08
+      st.rx += (tx - st.rx) * k
+      st.ry += (ty - st.ry) * k
+      draw.current()
+    }
+    const io = new IntersectionObserver(([entry]) => {
+      const on = entry.isIntersecting
+      if (on && !running) gsap.ticker.add(tick)
+      if (!on && running) gsap.ticker.remove(tick)
+      running = on
+    })
+    io.observe(el)
+    return () => {
+      io.disconnect()
+      if (running) gsap.ticker.remove(tick)
+    }
+  }, [reduced])
+
+  // Redraw immediately when the model changes (size or group), so the first
+  // frame is right even before the loop ticks.
+  useLayoutEffect(() => {
+    draw.current()
+  }, [model, size])
+
+  // Spin a fresh web in from depth each time a group is chosen.
   useLayoutEffect(() => {
     const el = box.current
     if (!el || !size.w || reduced || !armed) return
     const ctx = gsap.context(() => {
       gsap
         .timeline()
-        .fromTo('.orb-hub', { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.4, ease: 'back.out(3)' })
-        .fromTo('.orb-spoke', { attr: { 'stroke-dashoffset': 1 } }, { attr: { 'stroke-dashoffset': 0 }, duration: 0.7, ease: 'power2.out', stagger: 0.025 }, 0.05)
-        .fromTo('.orb-ring', { attr: { 'stroke-dashoffset': 1 } }, { attr: { 'stroke-dashoffset': 0 }, duration: 0.7, ease: 'power1.inOut', stagger: 0.07 }, 0.25)
-        .fromTo('.orb-label', { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)', stagger: 0.06 }, 0.45)
+        .fromTo(motion.current, { spin: -1.15, depth: 620, sc: 0.78 }, { spin: 0, depth: 0, sc: 1, duration: 1.5, ease: 'expo.out' }, 0)
+        .fromTo('.orb-spoke', { attr: { 'stroke-dashoffset': 1 } }, { attr: { 'stroke-dashoffset': 0 }, duration: 0.8, ease: 'power2.out', stagger: 0.025 }, 0.05)
+        .fromTo('.orb-ring', { attr: { 'stroke-dashoffset': 1 } }, { attr: { 'stroke-dashoffset': 0 }, duration: 0.8, ease: 'power1.inOut', stagger: 0.06 }, 0.2)
+        .fromTo('.orb-label', { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power2.out', stagger: 0.06 }, 0.45)
     }, el)
     return () => ctx.revert()
   }, [category.name, size.w, size.h, reduced, armed])
+
+  const pluck = (i: number) => {
+    setHover(i)
+    motion.current.pluckSpoke = model.nodeSpoke[i]
+    motion.current.pluckAt = motion.current.t
+  }
+
+  els.current.spokes.length = model.angles.length
+  els.current.rings.length = model.rings.length
+  els.current.labels.length = category.items.length
 
   return (
     <div
@@ -161,62 +365,77 @@ function SkillStage({ id, labelledBy, category, reduced, armed }: StageProps) {
       role="tabpanel"
       aria-labelledby={labelledBy}
       tabIndex={0}
-      className={cn('skill-stage relative h-full min-h-[460px] outline-none', (armed || reduced) && 'is-armed')}
+      className={cn('skill-stage relative h-full min-h-[480px] outline-none', (armed || reduced) && 'is-armed')}
     >
       {size.w > 0 && (
         <>
           <svg aria-hidden className="absolute inset-0" width={size.w} height={size.h} fill="none">
             <defs>
-              <radialGradient id={`${maskId}g`} gradientUnits="userSpaceOnUse" cx={orb.hub.x} cy={orb.hub.y} r={orb.r * 1.75}>
+              <radialGradient id={`${maskId}g`} gradientUnits="userSpaceOnUse" cx={size.w / 2} cy={size.h / 2} r={model.r * 1.8}>
                 <stop offset="0" stopColor="#fff" />
-                <stop offset="0.62" stopColor="#fff" />
+                <stop offset="0.6" stopColor="#fff" />
                 <stop offset="1" stopColor="#fff" stopOpacity="0" />
               </radialGradient>
-              <mask id={`${maskId}m`}>
+              <mask id={`${maskId}m`} maskUnits="userSpaceOnUse" x={0} y={0} width={size.w} height={size.h}>
                 <rect width={size.w} height={size.h} fill={`url(#${maskId}g)`} />
               </mask>
             </defs>
             <g mask={`url(#${maskId}m)`}>
-              {orb.rings.map((d, i) => (
-                <path key={`${category.name}r${i}`} className="orb-strand orb-ring" d={d} pathLength={1} strokeDasharray="1 1" />
-              ))}
-              {orb.spokes.map((d, i) => (
+              {model.rings.map((_, i) => (
                 <path
-                  key={`${category.name}s${i}`}
+                  key={`${category.name}r${i}`}
+                  ref={(node) => {
+                    els.current.rings[i] = node
+                  }}
+                  className="orb-strand orb-ring"
+                  pathLength={1}
+                  strokeDasharray="1 1"
+                />
+              ))}
+              {model.angles.map((_, k) => (
+                <path
+                  key={`${category.name}s${k}`}
+                  ref={(node) => {
+                    els.current.spokes[k] = node
+                  }}
                   className={cn(
                     'orb-strand orb-spoke',
-                    orb.spokeNode[i] >= 0 && 'is-skill',
-                    orb.spokeNode[i] >= 0 && orb.spokeNode[i] === hover && 'is-hot',
+                    model.spokeNode[k] >= 0 && 'is-skill',
+                    model.spokeNode[k] >= 0 && model.spokeNode[k] === hover && 'is-hot',
                   )}
-                  d={d}
                   pathLength={1}
                   strokeDasharray="1 1"
                 />
               ))}
             </g>
-            <circle className="orb-hub" cx={orb.hub.x} cy={orb.hub.y} r={6} />
+            <circle
+              ref={(node) => {
+                els.current.hub = node
+              }}
+              className="orb-hub"
+              r={6}
+            />
           </svg>
           <ul aria-label={`${category.name} skills`}>
-            {category.items.map((item, i) => {
-              const node = orb.nodes[i]
-              return (
-                <li
-                  key={`${category.name}-${item.name}`}
-                  className={cn('orb-pin absolute', `is-${node.place}`)}
-                  style={{ left: node.x, top: node.y }}
-                  onPointerEnter={() => setHover(i)}
-                  onPointerLeave={() => setHover(-1)}
-                >
-                  <span className="orb-label">
-                    <span aria-hidden className={cn('web-node', item.recent && 'is-recent')} />
-                    <span className="orb-text">
-                      {item.name}
-                      {item.recent && <span className="sr-only"> (recent)</span>}
-                    </span>
+            {category.items.map((item, i) => (
+              <li
+                key={`${category.name}-${item.name}`}
+                ref={(node) => {
+                  els.current.labels[i] = node
+                }}
+                className={cn('orb-pin absolute left-0 top-0', `is-${model.places[i]}`)}
+                onPointerEnter={() => pluck(i)}
+                onPointerLeave={() => setHover(-1)}
+              >
+                <span className="orb-label">
+                  <span aria-hidden className={cn('web-node', item.recent && 'is-recent')} />
+                  <span className="orb-text">
+                    {item.name}
+                    {item.recent && <span className="sr-only"> (recent)</span>}
                   </span>
-                </li>
-              )
-            })}
+                </span>
+              </li>
+            ))}
           </ul>
         </>
       )}
@@ -418,10 +637,36 @@ export default function Skills() {
     return () => window.clearTimeout(t)
   }, [open, wide])
 
+  const hoverTimer = useRef<number>()
   const choose = (i: number) => {
+    if (!touched.current) window.dispatchEvent(new CustomEvent('skills:engaged'))
     touched.current = true
     setArmed(true)
     setActive(i)
+  }
+  // Hover selects only when the mouse itself moves onto a group, never when
+  // the page scrolls a group under a resting cursor (browsers fire enter
+  // events for that too), so scrolling past the list doesn't flick through it.
+  const lastPointer = useRef({ x: -1, y: -1 })
+  useEffect(() => {
+    const onMove = (e: PointerEvent) => {
+      lastPointer.current.x = e.clientX
+      lastPointer.current.y = e.clientY
+    }
+    window.addEventListener('pointermove', onMove, { passive: true })
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      window.clearTimeout(hoverTimer.current)
+    }
+  }, [])
+  const hoverChoose = (i: number, e: ReactPointerEvent<HTMLButtonElement>) => {
+    if (e.pointerType !== 'mouse' || i === active) return
+    const still = e.type === 'pointerenter'
+      ? e.clientX === lastPointer.current.x && e.clientY === lastPointer.current.y
+      : !e.movementX && !e.movementY
+    if (still) return
+    window.clearTimeout(hoverTimer.current)
+    hoverTimer.current = window.setTimeout(() => choose(i), 110)
   }
   const toggle = (i: number) => {
     touched.current = true
@@ -486,11 +731,7 @@ export default function Skills() {
     <section ref={scope} id="skills" className="relative border-t border-hairline py-24 md:py-32">
       <WebBackdrop corner="tr" seed={17} strength={0.08} size="min(85vw, 640px)" />
       <div className="container-edge relative">
-        <SectionHeading
-          label="skills"
-          title="What I build with"
-          lead="Grouped by where each tool lives in a system. Pick a group to see its web; blue knots mark what I've picked up most recently."
-        />
+        <SectionHeading label="skills" title="What I build with" />
 
         <div className="mt-12 md:mt-16 lg:grid lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] lg:items-stretch lg:gap-12">
           <div
@@ -514,6 +755,9 @@ export default function Skills() {
                     aria-controls={`${ids}-stage`}
                     tabIndex={active === i ? 0 : -1}
                     onClick={() => choose(i)}
+                    onPointerEnter={(e) => hoverChoose(i, e)}
+                    onPointerMove={(e) => hoverChoose(i, e)}
+                    onPointerLeave={() => window.clearTimeout(hoverTimer.current)}
                     className="skill-head relative flex w-full items-center py-3 pl-14 pr-2 text-left"
                   >
                     <span aria-hidden className="skill-knot" />
