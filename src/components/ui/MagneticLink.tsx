@@ -18,12 +18,12 @@ interface MagneticLinkProps {
 }
 
 const VARIANTS = {
-  // Gamer/coder: solid electric-blue primary that glows on hover, neon-outlined
-  // secondary.
+  // Suit-red primary lit from above (inner highlight, warm drop glow); a quiet
+  // frosted secondary that brightens rather than glows.
   primary:
-    'bg-accent-deep text-white font-medium shadow-soft hover:shadow-glow-primary',
+    'bg-[linear-gradient(180deg,#e3283a_0%,#c30e25_100%)] text-white font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.28),0_10px_28px_-10px_rgba(255,59,74,0.75)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.32),0_14px_34px_-10px_rgba(255,59,74,0.9)]',
   ghost:
-    'border border-hairline-strong text-steel-100 hover:border-accent/70 hover:text-accent hover:shadow-glow-primary',
+    'border border-white/15 bg-white/[0.04] text-steel-100 backdrop-blur-md hover:border-white/35 hover:bg-white/[0.08]',
 } as const
 
 /**
@@ -68,7 +68,7 @@ export default function MagneticLink({
       whileTap={{ scale: 0.97 }}
       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm',
+        'inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-[0.95rem]',
         'transition-colors duration-300 will-change-transform',
         VARIANTS[variant],
         className,

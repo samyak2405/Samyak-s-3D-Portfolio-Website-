@@ -1,4 +1,3 @@
-import { ArrowUpRight } from 'lucide-react'
 import { usePortfolio } from '../../hooks/usePortfolio'
 import type { Social } from '../../types/portfolio'
 import Skyline from '../fx/Skyline'
@@ -36,14 +35,9 @@ export default function Contact() {
       <Skyline className="h-[24vh] min-h-[140px] max-h-[240px]" seed={29} />
       <div className="container-edge relative pt-24 pb-44 md:pt-32 md:pb-56">
         {/* CTA */}
-        <div className="max-w-2xl">
+        <div className="max-w-4xl">
             <Reveal>
-              <p className="mono-label !text-amber">
-                <span className="text-white/40">// </span>contact
-              </p>
-            </Reveal>
-            <Reveal delay={0.05}>
-              <h2 className="display h-fluid-2 mt-5">
+              <h2 className="display h-fluid-2">
                 Let's build something
                 <br className="hidden sm:block" /> that has to be correct.
               </h2>
@@ -57,13 +51,12 @@ export default function Contact() {
             <Reveal delay={0.15}>
               <a
                 href={`mailto:${email}`}
-                className="group mt-9 inline-flex items-center gap-3 font-mono text-lg text-white transition-colors hover:text-amber sm:text-2xl"
+                className="group mt-10 inline-flex items-center gap-3 font-display text-4xl font-bold tracking-[0.01em] text-white transition-colors hover:text-accent sm:text-6xl"
               >
-                <span className="border-b border-white/30 pb-1 transition-colors group-hover:border-amber">
+                <span className="border-b-2 border-white/25 pb-1 transition-colors group-hover:border-accent">
                   {email}
                 </span>
-                <ArrowUpRight size={22} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
+                              </a>
             </Reveal>
             <Reveal delay={0.2}>
               <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2">
@@ -81,7 +74,7 @@ export default function Contact() {
                 {phone && (
                   <a
                     href={`tel:${phone}`}
-                    className="inline-flex min-h-[44px] items-center font-mono text-sm text-white/50 transition-colors hover:text-white/80"
+                    className="inline-flex min-h-[44px] items-center text-sm tabular-nums text-white/50 transition-colors hover:text-white/80"
                   >
                     {phone}
                   </a>
@@ -92,16 +85,17 @@ export default function Contact() {
 
         {/* Footer line */}
         <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-white/12 pt-8 text-sm text-white/55 sm:flex-row sm:items-center">
-          <p>
-            <span className="text-white/80">{profile.name}</span> · {profile.role}
+          <p className="flex flex-wrap gap-x-3">
+            <span className="text-white/80">{profile.name}</span>
+            <span>{profile.role}</span>
           </p>
-          <div className="flex items-center gap-6 font-mono text-xs">
+          <div className="flex items-center gap-6 text-xs">
             <span>© {year}</span>
             <a
               href="#hero"
               className="inline-flex min-h-[44px] items-center transition-colors hover:text-white"
             >
-              Back to top ↑
+              Back to top
             </a>
           </div>
         </div>

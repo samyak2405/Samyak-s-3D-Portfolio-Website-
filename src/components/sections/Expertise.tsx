@@ -2,6 +2,7 @@ import { usePortfolio } from '../../hooks/usePortfolio'
 import { serviceIcon } from '../../lib/icons'
 import Reveal from '../ui/Reveal'
 import Statement from '../ui/Statement'
+import Tilt from '../ui/Tilt'
 import WebBackdrop from '../fx/WebBackdrop'
 
 export default function Expertise() {
@@ -14,14 +15,13 @@ export default function Expertise() {
       <div className="container-edge relative">
         {/* Headline (kept) + broadened subtext */}
         <div className="flex justify-end">
-          <div className="max-w-2xl">
+          <div className="max-w-3xl">
             <Statement
               align="right"
-              eyebrow="// how I work"
-              className="text-3xl leading-[1.12] sm:text-4xl md:text-5xl"
+              className="h-fluid-2"
               segments={[
                 { text: 'From first principles' },
-                { text: 'to production,', className: 'text-dim' },
+                { text: 'to production,' },
                 { text: 'I own the whole system.' },
               ]}
             />
@@ -40,15 +40,19 @@ export default function Expertise() {
             const Icon = serviceIcon(service.icon)
             return (
               <Reveal key={service.title} delay={(i % 4) * 0.08} className="h-full">
-                <div className="group h-full rounded-2xl border border-hairline bg-ink-3 p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-glow-primary">
-                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent transition-transform duration-300 group-hover:scale-110">
-                    <Icon size={20} strokeWidth={1.75} />
-                  </span>
-                  <h3 className="mt-5 text-base font-semibold text-steel-100">{service.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-steel-300 [text-wrap:pretty]">
-                    {service.description}
-                  </p>
-                </div>
+                <Tilt className="h-full">
+                  <div className="panel h-full rounded-2xl p-6">
+                    <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent [transform:translateZ(36px)]">
+                      <Icon size={20} strokeWidth={1.75} />
+                    </span>
+                    <h3 className="mt-6 font-display text-[1.7rem] font-bold leading-none text-[color:var(--moonlight)] [transform:translateZ(24px)]">
+                      {service.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-steel-300 [text-wrap:pretty] [transform:translateZ(12px)]">
+                      {service.description}
+                    </p>
+                  </div>
+                </Tilt>
               </Reveal>
             )
           })}

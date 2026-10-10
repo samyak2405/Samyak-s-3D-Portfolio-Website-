@@ -6,28 +6,20 @@ interface SectionHeadingProps {
   title: ReactNode
   /** Optional lead paragraph, stacked under the title. */
   lead?: ReactNode
-  /** Code-comment style eyebrow, e.g. "about" renders as "// about". */
+  /** Section name. Kept for callers/anchors; not rendered — the heading says it. */
   label?: string
   className?: string
 }
 
-export default function SectionHeading({ title, lead, label, className }: SectionHeadingProps) {
+export default function SectionHeading({ title, lead, className }: SectionHeadingProps) {
   return (
     <div className={cn('max-w-3xl', className)}>
-      {label && (
-        <Reveal>
-          <p className="mono-label text-accent">
-            <span className="text-steel-500">// </span>
-            {label}
-          </p>
-        </Reveal>
-      )}
-      <Reveal delay={label ? 0.05 : 0}>
-        <h2 className="display h-fluid-2 mt-4 text-steel-100">{title}</h2>
+      <Reveal>
+        <h2 className="display h-fluid-2">{title}</h2>
       </Reveal>
       {lead && (
         <Reveal delay={0.1}>
-          <p className="mt-5 max-w-[60ch] text-base leading-relaxed text-steel-300 md:text-lg">
+          <p className="mt-6 max-w-[60ch] text-base leading-relaxed text-steel-300 md:text-lg">
             {lead}
           </p>
         </Reveal>

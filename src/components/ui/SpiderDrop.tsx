@@ -171,8 +171,8 @@ export default function SpiderDrop() {
             decoding="async"
             className="block h-auto w-full select-none"
           />
-          <span className="spidey-tip mono-label" aria-hidden>
-            <span className="text-steel-500">// </span>thwip ↑ top
+          <span className="spidey-tip meta-label" aria-hidden>
+            Back to top
           </span>
         </a>
       </div>

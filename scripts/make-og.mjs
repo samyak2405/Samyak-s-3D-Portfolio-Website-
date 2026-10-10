@@ -1,5 +1,5 @@
 // Generate public/og.png (1200x630) and public/apple-touch-icon.png (180x180).
-// Rendered with Playwright/Chromium so the self-hosted Geist (woff2) renders
+// Rendered with Playwright/Chromium so the self-hosted site fonts (woff2) render
 // exactly as on the site. Run: npm run og
 import { chromium } from 'playwright'
 import { readFileSync } from 'node:fs'
@@ -9,13 +9,13 @@ import { dirname, resolve } from 'node:path'
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const b64 = (p, mime) => `data:${mime};base64,${readFileSync(resolve(root, p)).toString('base64')}`
 
-const geist = b64('node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2', 'font/woff2')
-const geistMono = b64('node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2', 'font/woff2')
+const display = b64('node_modules/@fontsource-variable/big-shoulders-display/files/big-shoulders-display-latin-wght-normal.woff2', 'font/woff2')
+const body = b64('node_modules/@fontsource-variable/schibsted-grotesk/files/schibsted-grotesk-latin-wght-normal.woff2', 'font/woff2')
 const faviconSvg = readFileSync(resolve(root, 'public/favicon.svg'), 'utf8')
 
 const fonts = `
-  @font-face{font-family:'Geist';src:url(${geist}) format('woff2');font-weight:100 900;font-display:block}
-  @font-face{font-family:'Geist Mono';src:url(${geistMono}) format('woff2');font-weight:100 900;font-display:block}
+  @font-face{font-family:'Big Shoulders Display';src:url(${display}) format('woff2');font-weight:100 900;font-display:block}
+  @font-face{font-family:'Schibsted Grotesk';src:url(${body}) format('woff2');font-weight:100 900;font-display:block}
   *{margin:0;box-sizing:border-box}`
 
 // The right-hand art: a moon framed by a web strung from the top-right corner
@@ -49,10 +49,9 @@ const og = `<!doctype html><html><head><meta charset="utf-8"><style>${fonts}</st
     <g mask="url(#m)" stroke="rgba(236,238,244,0.28)" stroke-linecap="round"></g>
   </svg>
   <div style="position:relative;flex:1;padding:0 72px">
-    <div style="font-family:'Geist Mono';color:#FF3B4A;font-size:22px;letter-spacing:0.18em;text-transform:uppercase">// Portfolio</div>
-    <div style="font-family:'Geist';font-weight:600;color:#F4F5F7;font-size:94px;letter-spacing:-0.03em;line-height:1.0;margin-top:20px">Samyak Moon</div>
-    <div style="font-family:'Geist Mono';color:#4D8BFF;font-size:40px;margin-top:24px;letter-spacing:-0.01em">Backend &amp; AI Engineer</div>
-    <div style="font-family:'Geist';color:#AEB3BD;font-size:25px;margin-top:28px;max-width:600px;line-height:1.45">Scalable, secure backend &amp; distributed systems · Java · Spring Boot · AI / RAG</div>
+    <div style="font-family:'Big Shoulders Display';font-weight:800;color:#ECEBF4;font-size:112px;line-height:0.9">Samyak Moon</div>
+    <div style="font-family:'Schibsted Grotesk';font-weight:500;color:#FF4A57;font-size:34px;margin-top:22px">Backend and AI engineer</div>
+    <div style="font-family:'Schibsted Grotesk';color:#AEB3BD;font-size:25px;margin-top:22px;max-width:600px;line-height:1.45">Scalable, secure backend and distributed systems in Java and Spring Boot, now building AI and RAG.</div>
   </div>
 </div><script>${webScript}</script></body></html>`
 

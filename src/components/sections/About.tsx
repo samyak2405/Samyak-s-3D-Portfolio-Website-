@@ -29,10 +29,7 @@ export default function About() {
       <WebBackdrop corner="bl" seed={9} size="min(85vw, 640px)" />
       <div className="container-edge relative">
         <div className="about-copy max-w-3xl">
-          <p className="about-reveal mono-label text-accent">
-            <span className="text-steel-500">// </span>about
-          </p>
-          <h2 className="about-reveal display h-fluid-2 mt-4 text-steel-100">
+          <h2 className="about-reveal display h-fluid-2">
             I own whole systems, not tickets.
           </h2>
           <p className="about-reveal mt-6 text-base leading-relaxed text-steel-300 md:text-lg [text-wrap:pretty]">
@@ -46,7 +43,7 @@ export default function About() {
             <div key={metric.label} className="metric">
               <Counter
                 value={metric.value}
-                className="block font-mono text-3xl font-semibold text-amber md:text-4xl"
+                className="block font-display text-6xl font-extrabold leading-none text-amber md:text-7xl"
               />
               <p className="mt-2 text-sm font-semibold text-steel-100">{metric.label}</p>
               <p className="mt-1 text-xs leading-snug text-steel-400">{metric.context}</p>
