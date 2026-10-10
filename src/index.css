@@ -226,46 +226,92 @@ section[id] {
     }
   }
 
-  /* Floating skill "atoms". The per-atom category colour is injected as the
-     --cat / --cat-glow / --cat-dim CSS variables; a physics loop drives each
-     atom's translate transform, while an orbiting electron spins on ::before. */
-  .atom {
-    touch-action: none;
-    cursor: grab;
-    will-change: transform;
-    background: rgba(18, 20, 24, 0.72);
-    border: 1.5px solid var(--cat-dim);
-    box-shadow: 0 8px 22px -10px var(--cat-glow);
-    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  /* Skills index (Skills.tsx): a silk thread down the left edge, a knot per
+     row that lights when the thread reaches it, and hover focus on one row. */
+  .skill-index {
+    --thread-x: 15px;
   }
-  .atom::before {
+  @media (min-width: 768px) {
+    .skill-index {
+      --thread-x: 22px;
+    }
+  }
+  .skill-thread {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--thread-x);
+    width: 1.5px;
+    margin-left: -0.75px;
+    background: rgba(255, 255, 255, 0.07);
+  }
+  .skill-thread-spun {
+    background: linear-gradient(to bottom, rgba(236, 238, 244, 0.25), rgba(236, 238, 244, 0.9) 18%);
+    box-shadow: 0 0 6px rgba(77, 139, 255, 0.45);
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+  }
+  .skill-row {
+    position: relative;
+    transition: opacity 0.35s ease;
+  }
+  .skill-row::before {
     content: '';
     position: absolute;
-    inset: -5px;
+    left: calc(var(--thread-x) - 6px);
+    top: calc(1.75rem + 0.62rem);
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background: radial-gradient(circle at 50% 0, var(--cat) 0 2.5px, transparent 3.5px);
-    opacity: 0.7;
-    animation: orbit 6s linear infinite;
+    border: 1.5px solid rgba(255, 255, 255, 0.22);
+    background: #07080f;
+    transition: background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
   }
-  .atom:hover,
-  .atom:active {
-    border-color: var(--cat);
-    box-shadow: 0 0 0 1px var(--cat-glow), 0 0 24px -2px var(--cat-glow);
-  }
-  .atom:active {
-    cursor: grabbing;
-  }
-  @keyframes orbit {
-    to {
-      transform: rotate(360deg);
+  @media (min-width: 768px) {
+    .skill-row::before {
+      top: calc(2.25rem + 0.85rem);
     }
+  }
+  .skill-row.is-reached::before {
+    background: #ff3b4a;
+    border-color: #ff3b4a;
+    box-shadow: 0 0 0 4px rgba(255, 59, 74, 0.14), 0 0 16px rgba(255, 59, 74, 0.6);
+  }
+  .skill-row dt,
+  .skill-row dd {
+    transition: color 0.3s ease;
+  }
+  @media (hover: hover) {
+    .skill-index:hover .skill-row:not(:hover) {
+      opacity: 0.36;
+    }
+    .skill-row:hover dt {
+      color: #fff;
+    }
+    .skill-row:hover dd {
+      color: #e8eaed;
+    }
+    .skill-row:hover::before {
+      transform: scale(1.25);
+    }
+  }
+  /* Recently added skill: a small suit-blue dot riding the end of the word. */
+  .skill-new {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-left: 5px;
+    border-radius: 50%;
+    background: #4d8bff;
+    box-shadow: 0 0 8px rgba(77, 139, 255, 0.85);
+    transform: translateY(-0.55em);
   }
   @media (prefers-reduced-motion: reduce) {
-    .atom {
-      cursor: default;
-    }
-    .atom::before {
-      animation: none;
+    .skill-row,
+    .skill-row::before,
+    .skill-row dt,
+    .skill-row dd {
+      transition: none;
     }
   }
 
